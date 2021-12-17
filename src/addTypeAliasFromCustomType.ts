@@ -3,9 +3,10 @@ import {
 	CustomTypeModelField,
 	CustomTypeModelLinkSelectType,
 	CustomTypeModelSliceType,
+	SharedSliceModel,
 } from "@prismicio/types";
 import type {
-	InterfaceDeclarationStructure,
+	InterfaceDeclaration,
 	JSDocableNodeStructure,
 	SourceFile,
 	TypeAliasDeclaration,
@@ -43,323 +44,336 @@ const buildFieldDocs = (
 	];
 };
 
-type DefinitionToDataInterfacePropertiesConfig = {
-	customTypeModel: CustomTypeModel;
-	fields: Record<string, CustomTypeModelField>;
+type AddInterfacePropertyFromFieldConfig = {
+	name: string;
+	field: CustomTypeModelField;
+	interface: InterfaceDeclaration;
 	sourceFile: SourceFile;
+	rootModel: CustomTypeModel | SharedSliceModel;
 };
 
-const definitionToDataInterfaceProperties = (
-	config: DefinitionToDataInterfacePropertiesConfig,
-): NonNullable<InterfaceDeclarationStructure["properties"]> => {
-	const properties: InterfaceDeclarationStructure["properties"] = [];
+const addInterfacePropertyFromField = (
+	config: AddInterfacePropertyFromFieldConfig,
+) => {
+	switch (config.field.type) {
+		case "UID": {
+			// UID fields are not included in Data.
+			break;
+		}
 
-	for (const id in config.fields) {
-		const field = config.fields[id];
+		case "Boolean": {
+			config.interface.addProperty({
+				name: config.name,
+				type: "prismicT.BooleanField",
+				docs: buildFieldDocs({ field: config.field }),
+			});
 
-		switch (field.type) {
-			case "UID": {
-				// UID fields are not included in Data.
-				break;
-			}
+			break;
+		}
 
-			case "Boolean": {
-				properties.push({
-					name: id,
-					type: "prismicT.BooleanField",
-					docs: buildFieldDocs({ field }),
-				});
+		case "Color": {
+			config.interface.addProperty({
+				name: config.name,
+				type: "prismicT.ColorField",
+				docs: buildFieldDocs({ field: config.field }),
+			});
 
-				break;
-			}
+			break;
+		}
 
-			case "Color": {
-				properties.push({
-					name: id,
-					type: "prismicT.ColorField",
-					docs: buildFieldDocs({ field }),
-				});
+		case "Date": {
+			config.interface.addProperty({
+				name: config.name,
+				type: "prismicT.DateField",
+				docs: buildFieldDocs({ field: config.field }),
+			});
 
-				break;
-			}
+			break;
+		}
 
-			case "Date": {
-				properties.push({
-					name: id,
-					type: "prismicT.DateField",
-					docs: buildFieldDocs({ field }),
-				});
+		case "Embed": {
+			config.interface.addProperty({
+				name: config.name,
+				type: "prismicT.EmbedField",
+				docs: buildFieldDocs({ field: config.field }),
+			});
 
-				break;
-			}
+			break;
+		}
 
-			case "Embed": {
-				properties.push({
-					name: id,
-					type: "prismicT.EmbedField",
-					docs: buildFieldDocs({ field }),
-				});
+		case "GeoPoint": {
+			config.interface.addProperty({
+				name: config.name,
+				type: "prismicT.GeoPointField",
+				docs: buildFieldDocs({ field: config.field }),
+			});
 
-				break;
-			}
+			break;
+		}
 
-			case "GeoPoint": {
-				properties.push({
-					name: id,
-					type: "prismicT.GeoPointField",
-					docs: buildFieldDocs({ field }),
-				});
-
-				break;
-			}
-
-			case "Image": {
-				if (field.config.thumbnails.length > 0) {
-					const thumbnailNames = field.config.thumbnails
-						.map((thumbnail) => `"${thumbnail.name}"`)
-						.join(" | ");
-
-					properties.push({
-						name: id,
-						type: `prismicT.Image<${thumbnailNames}>`,
-						docs: buildFieldDocs({ field }),
-					});
-				} else {
-					properties.push({
-						name: id,
-						type: "prismicT.Image",
-						docs: buildFieldDocs({ field }),
-					});
-				}
-
-				break;
-			}
-
-			case "IntegrationFields": {
-				properties.push({
-					name: id,
-					type: "prismicT.IntegrationFields",
-					docs: buildFieldDocs({ field }),
-				});
-
-				break;
-			}
-
-			case "Link": {
-				field.config.select;
-
-				switch (field.config.select) {
-					case CustomTypeModelLinkSelectType.Document: {
-						field.config.customtypes;
-
-						properties.push({
-							name: id,
-							type:
-								field.config.customtypes && field.config.customtypes.length > 0
-									? `prismicT.RelationField<${field.config.customtypes
-											.map((type) => `"${type}"`)
-											.join(" | ")}>`
-									: "prismicT.RelationField",
-							docs: buildFieldDocs({ field }),
-						});
-
-						break;
-					}
-
-					case CustomTypeModelLinkSelectType.Media: {
-						properties.push({
-							name: id,
-							type: "prismicT.LinkToMediaField",
-							docs: buildFieldDocs({ field }),
-						});
-
-						break;
-					}
-
-					default: {
-						properties.push({
-							name: id,
-							type: "prismicT.LinkField",
-							docs: buildFieldDocs({ field }),
-						});
-					}
-				}
-
-				break;
-			}
-
-			case "Number": {
-				properties.push({
-					name: id,
-					type: "prismicT.NumberField",
-					docs: buildFieldDocs({ field }),
-				});
-
-				break;
-			}
-
-			case "StructuredText": {
-				const isTitleField =
-					"single" in field.config &&
-					field.config.single
-						.split(",")
-						.every((blockType) => /heading/.test(blockType));
-
-				if (isTitleField) {
-					properties.push({
-						name: id,
-						type: "prismicT.TitleField",
-						docs: buildFieldDocs({ field }),
-					});
-				} else {
-					properties.push({
-						name: id,
-						type: "prismicT.RichTextField",
-						docs: buildFieldDocs({ field }),
-					});
-				}
-
-				break;
-			}
-
-			case "Select": {
-				const options = field.config.options
-					.map((option) => `"${option}"`)
+		case "Image": {
+			if (config.field.config.thumbnails.length > 0) {
+				const thumbnailNames = config.field.config.thumbnails
+					.map((thumbnail) => `"${thumbnail.name}"`)
 					.join(" | ");
-				const hasDefault = Boolean(field.config.default_value);
 
-				if (hasDefault) {
-					properties.push({
-						name: id,
-						type: `prismicT.Select<${options}, "filled">`,
-						docs: buildFieldDocs({ field }),
+				config.interface.addProperty({
+					name: config.name,
+					type: `prismicT.Image<${thumbnailNames}>`,
+					docs: buildFieldDocs({ field: config.field }),
+				});
+			} else {
+				config.interface.addProperty({
+					name: config.name,
+					type: "prismicT.Image",
+					docs: buildFieldDocs({ field: config.field }),
+				});
+			}
+
+			break;
+		}
+
+		case "IntegrationFields": {
+			config.interface.addProperty({
+				name: config.name,
+				type: "prismicT.IntegrationFields",
+				docs: buildFieldDocs({ field: config.field }),
+			});
+
+			break;
+		}
+
+		case "Link": {
+			switch (config.field.config.select) {
+				case CustomTypeModelLinkSelectType.Document: {
+					config.interface.addProperty({
+						name: config.name,
+						type:
+							config.field.config.customtypes &&
+							config.field.config.customtypes.length > 0
+								? `prismicT.RelationField<${config.field.config.customtypes
+										.map((type) => `"${type}"`)
+										.join(" | ")}>`
+								: "prismicT.RelationField",
+						docs: buildFieldDocs({ field: config.field }),
 					});
-				} else {
-					properties.push({
-						name: id,
-						type: `prismicT.Select<${options}>`,
-						docs: buildFieldDocs({ field }),
-					});
+
+					break;
 				}
 
-				break;
+				case CustomTypeModelLinkSelectType.Media: {
+					config.interface.addProperty({
+						name: config.name,
+						type: "prismicT.LinkToMediaField",
+						docs: buildFieldDocs({ field: config.field }),
+					});
+
+					break;
+				}
+
+				default: {
+					config.interface.addProperty({
+						name: config.name,
+						type: "prismicT.LinkField",
+						docs: buildFieldDocs({ field: config.field }),
+					});
+				}
 			}
 
-			case "Text": {
-				properties.push({
-					name: id,
-					type: "prismicT.KeyTextField",
-					docs: buildFieldDocs({ field }),
+			break;
+		}
+
+		case "Number": {
+			config.interface.addProperty({
+				name: config.name,
+				type: "prismicT.NumberField",
+				docs: buildFieldDocs({ field: config.field }),
+			});
+
+			break;
+		}
+
+		case "StructuredText": {
+			const isTitleField =
+				"single" in config.field.config &&
+				config.field.config.single
+					.split(",")
+					.every((blockType) => /heading/.test(blockType));
+
+			if (isTitleField) {
+				config.interface.addProperty({
+					name: config.name,
+					type: "prismicT.TitleField",
+					docs: buildFieldDocs({ field: config.field }),
 				});
-
-				break;
-			}
-
-			case "Timestamp": {
-				properties.push({
-					name: id,
-					type: "prismicT.TimestampField",
-					docs: buildFieldDocs({ field }),
+			} else {
+				config.interface.addProperty({
+					name: config.name,
+					type: "prismicT.RichTextField",
+					docs: buildFieldDocs({ field: config.field }),
 				});
-
-				break;
 			}
 
-			case "Group": {
-				const itemInterface = config.sourceFile.addInterface({
-					name: pascalCase(
-						`${config.customTypeModel.id} Document Data ${id} Item`,
-					),
-					properties: definitionToDataInterfaceProperties({
-						customTypeModel: config.customTypeModel,
-						fields: field.config.fields,
+			break;
+		}
+
+		case "Select": {
+			const options = config.field.config.options
+				.map((option) => `"${option}"`)
+				.join(" | ");
+			const hasDefault = Boolean(config.field.config.default_value);
+
+			if (hasDefault) {
+				config.interface.addProperty({
+					name: config.name,
+					type: `prismicT.Select<${options}, "filled">`,
+					docs: buildFieldDocs({ field: config.field }),
+				});
+			} else {
+				config.interface.addProperty({
+					name: config.name,
+					type: `prismicT.Select<${options}>`,
+					docs: buildFieldDocs({ field: config.field }),
+				});
+			}
+
+			break;
+		}
+
+		case "Text": {
+			config.interface.addProperty({
+				name: config.name,
+				type: "prismicT.KeyTextField",
+				docs: buildFieldDocs({ field: config.field }),
+			});
+
+			break;
+		}
+
+		case "Timestamp": {
+			config.interface.addProperty({
+				name: config.name,
+				type: "prismicT.TimestampField",
+				docs: buildFieldDocs({ field: config.field }),
+			});
+
+			break;
+		}
+
+		case "Group": {
+			const itemInterface = config.sourceFile.addInterface({
+				name: pascalCase(
+					`${config.rootModel.id} Document Data ${config.name} Item`,
+				),
+			});
+			addInterfacePropertiesFromFields({
+				interface: itemInterface,
+				sourceFile: config.sourceFile,
+				fields: config.field.config.fields,
+				rootModel: config.rootModel,
+			});
+
+			config.interface.addProperty({
+				name: config.name,
+				type: `prismicT.GroupField<${itemInterface.getName()}>`,
+				docs: buildFieldDocs({ field: config.field }),
+			});
+
+			break;
+		}
+
+		case "Slices": {
+			const choiceInterfaceNames: string[] = [];
+
+			for (const choiceId in config.field.config.choices) {
+				const choice = config.field.config.choices[choiceId];
+
+				if (choice.type === CustomTypeModelSliceType.SharedSlice) {
+					choiceInterfaceNames.push(
+						buildSharedSliceInterfaceName({ id: choiceId }),
+					);
+				} else if (choice.type === CustomTypeModelSliceType.Slice) {
+					const primaryInterface = config.sourceFile.addInterface({
+						name: pascalCase(
+							`${config.rootModel.id} Document Data ${config.name} ${choiceId} Slice Primary`,
+						),
+					});
+					addInterfacePropertiesFromFields({
+						interface: primaryInterface,
 						sourceFile: config.sourceFile,
-					}),
-				});
+						fields: choice["non-repeat"],
+						rootModel: config.rootModel,
+					});
 
-				properties.push({
-					name: id,
-					type: `prismicT.GroupField<${itemInterface.getName()}>`,
-					docs: buildFieldDocs({ field }),
-				});
+					const itemInterface = config.sourceFile.addInterface({
+						name: pascalCase(
+							`${config.rootModel.id} Document Data ${config.name} ${choiceId} Slice Item`,
+						),
+					});
+					addInterfacePropertiesFromFields({
+						interface: itemInterface,
+						sourceFile: config.sourceFile,
+						fields: choice.repeat,
+						rootModel: config.rootModel,
+					});
 
-				break;
-			}
+					const sliceType = config.sourceFile.addTypeAlias({
+						name: pascalCase(
+							`${config.rootModel.id} Document Data ${config.name} ${choiceId} Slice`,
+						),
+						type: `prismicT.Slice<"${choiceId}", ${primaryInterface.getName()}, ${itemInterface.getName()}>`,
+					});
 
-			case "Slices": {
-				const choiceInterfaceNames: string[] = [];
-
-				for (const choiceId in field.config.choices) {
-					const choice = field.config.choices[choiceId];
-
-					if (choice.type === CustomTypeModelSliceType.SharedSlice) {
-						choiceInterfaceNames.push(
-							buildSharedSliceInterfaceName({ id: choiceId }),
-						);
-					} else if (choice.type === CustomTypeModelSliceType.Slice) {
-						const primaryInterface = config.sourceFile.addInterface({
-							name: pascalCase(
-								`${config.customTypeModel.id} Document Data ${id} ${choiceId} Slice Primary`,
-							),
-							properties: definitionToDataInterfaceProperties({
-								customTypeModel: config.customTypeModel,
-								fields: choice["non-repeat"],
-								sourceFile: config.sourceFile,
-							}),
-						});
-
-						const itemInterface = config.sourceFile.addInterface({
-							name: pascalCase(
-								`${config.customTypeModel.id} Document Data ${id} ${choiceId} Slice Item`,
-							),
-							properties: definitionToDataInterfaceProperties({
-								customTypeModel: config.customTypeModel,
-								fields: choice.repeat,
-								sourceFile: config.sourceFile,
-							}),
-						});
-
-						const sliceType = config.sourceFile.addTypeAlias({
-							name: pascalCase(
-								`${config.customTypeModel.id} Document Data ${id} ${choiceId} Slice`,
-							),
-							type: `prismicT.Slice<"${choiceId}", ${primaryInterface.getName()}, ${itemInterface.getName()}>`,
-						});
-
-						choiceInterfaceNames.push(sliceType.getName());
-					}
+					choiceInterfaceNames.push(sliceType.getName());
 				}
-
-				const slicesType = config.sourceFile.addTypeAlias({
-					name: pascalCase(
-						`${config.customTypeModel.id} Document Data ${id} Slice`,
-					),
-					type:
-						choiceInterfaceNames.length > 0
-							? choiceInterfaceNames.join(" | ")
-							: "never",
-				});
-
-				properties.push({
-					name: id,
-					type: `prismicT.SliceZone<${slicesType.getName()}>`,
-					docs: buildFieldDocs({ field }),
-				});
-
-				break;
 			}
 
-			default: {
-				properties.push({
-					name: id,
-					type: "unknown",
-					docs: buildFieldDocs({ field }),
-				});
-			}
+			const slicesType = config.sourceFile.addTypeAlias({
+				name: pascalCase(
+					`${config.rootModel.id} Document Data ${config.name} Slice`,
+				),
+				type:
+					choiceInterfaceNames.length > 0
+						? choiceInterfaceNames.join(" | ")
+						: "never",
+			});
+
+			config.interface.addProperty({
+				name: config.name,
+				type: `prismicT.SliceZone<${slicesType.getName()}>`,
+				docs: buildFieldDocs({ field: config.field }),
+			});
+
+			break;
+		}
+
+		default: {
+			config.interface.addProperty({
+				name: config.name,
+				type: "unknown",
+				docs: buildFieldDocs({ field: config.field }),
+			});
 		}
 	}
+};
 
-	return properties;
+type AddInterfacePropertiesFromFieldsConfig = Omit<
+	AddInterfacePropertyFromFieldConfig,
+	"name" | "field"
+> & {
+	fields: Record<string, AddInterfacePropertyFromFieldConfig["field"]>;
+};
+
+const addInterfacePropertiesFromFields = (
+	config: AddInterfacePropertiesFromFieldsConfig,
+) => {
+	for (const name in config.fields) {
+		addInterfacePropertyFromField({
+			...config,
+			name,
+			field: config.fields[name],
+		});
+	}
 };
 
 type CustomTypeToTypeConfig = {
@@ -377,11 +391,12 @@ export const addTypeAliasFromCustomType = (
 
 	const dataInterface = config.sourceFile.addInterface({
 		name: pascalCase(`${config.model.id} Document Data`),
-		properties: definitionToDataInterfaceProperties({
-			customTypeModel: config.model,
-			fields,
-			sourceFile: config.sourceFile,
-		}),
+	});
+	addInterfacePropertiesFromFields({
+		fields,
+		interface: dataInterface,
+		sourceFile: config.sourceFile,
+		rootModel: config.model,
 	});
 
 	return config.sourceFile.addTypeAlias({
@@ -396,6 +411,17 @@ export const addTypeAliasFromCustomType = (
 		type: `PrismicDocument<${dataInterface.getName()}, "${
 			config.model.id
 		}", Lang>`,
+		docs: [
+			{
+				description: `${config.model.label} Prismic document (API ID: ${config.model.id})`,
+				tags: [
+					{
+						tagName: "typeParam",
+						text: "Lang - Language API ID of the document.",
+					},
+				],
+			},
+		],
 		isExported: true,
 	});
 };
