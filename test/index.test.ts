@@ -34,7 +34,12 @@ test("exports something", (t) => {
 				title: prismicM.model.title(),
 
 				group: prismicM.model.group(),
-				sliceZone: prismicM.model.sliceZone(),
+				sliceZone: prismicM.model.sliceZone({
+					choices: {
+						foo: prismicM.model.slice(),
+						bar: prismicM.model.sharedSliceChoice(),
+					},
+				}),
 			},
 		},
 	};
