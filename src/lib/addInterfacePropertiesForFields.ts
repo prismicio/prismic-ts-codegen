@@ -9,11 +9,10 @@ import type {
 	InterfaceDeclaration,
 	JSDocableNodeStructure,
 	SourceFile,
-	TypeAliasDeclaration,
 } from "ts-morph";
-import { buildSharedSliceInterfaceName } from "./lib/buildSharedSliceInterfaceName";
 
-import { pascalCase } from "./lib/pascalCase";
+import { buildSharedSliceInterfaceName } from "./buildSharedSliceInterfaceName";
+import { pascalCase } from "./pascalCase";
 
 type BuildFieldDocsConfig = {
 	field: CustomTypeModelField;
@@ -266,7 +265,7 @@ const addInterfacePropertyFromField = (
 					`${config.rootModel.id} Document Data ${config.name} Item`,
 				),
 			});
-			addInterfacePropertiesFromFields({
+			addInterfacePropertiesForFields({
 				interface: itemInterface,
 				sourceFile: config.sourceFile,
 				fields: config.field.config.fields,
@@ -298,7 +297,7 @@ const addInterfacePropertyFromField = (
 							`${config.rootModel.id} Document Data ${config.name} ${choiceId} Slice Primary`,
 						),
 					});
-					addInterfacePropertiesFromFields({
+					addInterfacePropertiesForFields({
 						interface: primaryInterface,
 						sourceFile: config.sourceFile,
 						fields: choice["non-repeat"],
@@ -310,7 +309,7 @@ const addInterfacePropertyFromField = (
 							`${config.rootModel.id} Document Data ${config.name} ${choiceId} Slice Item`,
 						),
 					});
-					addInterfacePropertiesFromFields({
+					addInterfacePropertiesForFields({
 						interface: itemInterface,
 						sourceFile: config.sourceFile,
 						fields: choice.repeat,
@@ -357,15 +356,15 @@ const addInterfacePropertyFromField = (
 	}
 };
 
-type AddInterfacePropertiesFromFieldsConfig = Omit<
+type AddInterfacePropertiesForFieldsConfig = Omit<
 	AddInterfacePropertyFromFieldConfig,
 	"name" | "field"
 > & {
 	fields: Record<string, AddInterfacePropertyFromFieldConfig["field"]>;
 };
 
-const addInterfacePropertiesFromFields = (
-	config: AddInterfacePropertiesFromFieldsConfig,
+export const addInterfacePropertiesForFields = (
+	config: AddInterfacePropertiesForFieldsConfig,
 ) => {
 	for (const name in config.fields) {
 		addInterfacePropertyFromField({
@@ -374,54 +373,4 @@ const addInterfacePropertiesFromFields = (
 			field: config.fields[name],
 		});
 	}
-};
-
-type CustomTypeToTypeConfig = {
-	model: CustomTypeModel;
-	sourceFile: SourceFile;
-};
-
-export const addTypeAliasFromCustomType = (
-	config: CustomTypeToTypeConfig,
-): TypeAliasDeclaration => {
-	const fields: Record<string, CustomTypeModelField> = Object.assign(
-		{},
-		...Object.values(config.model.json),
-	);
-
-	const dataInterface = config.sourceFile.addInterface({
-		name: pascalCase(`${config.model.id} Document Data`),
-	});
-	addInterfacePropertiesFromFields({
-		fields,
-		interface: dataInterface,
-		sourceFile: config.sourceFile,
-		rootModel: config.model,
-	});
-
-	return config.sourceFile.addTypeAlias({
-		name: pascalCase(`${config.model.id} Document`),
-		typeParameters: [
-			{
-				name: "Lang",
-				constraint: "string",
-				default: "string",
-			},
-		],
-		type: `PrismicDocument<${dataInterface.getName()}, "${
-			config.model.id
-		}", Lang>`,
-		docs: [
-			{
-				description: `${config.model.label} Prismic document (API ID: ${config.model.id})`,
-				tags: [
-					{
-						tagName: "typeParam",
-						text: "Lang - Language API ID of the document.",
-					},
-				],
-			},
-		],
-		isExported: true,
-	});
 };

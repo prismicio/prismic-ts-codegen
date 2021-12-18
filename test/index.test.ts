@@ -1,9 +1,9 @@
 import test from "ava";
+import { Project } from "ts-morph";
 import * as prismicT from "@prismicio/types";
 import * as prismicM from "@prismicio/mock";
 
-import * as generator from "../src";
-import { Project } from "ts-morph";
+import * as lib from "../src";
 
 // TODO: Dummy test, meant to be removed when real tests come in
 test("exports something", (t) => {
@@ -47,9 +47,28 @@ test("exports something", (t) => {
 	const project = new Project();
 	const sourceFile = project.createSourceFile("types.ts");
 
-	generator.addTypeAliasFromCustomType({ sourceFile, model });
+	lib.addTypeAliasForCustomType({
+		sourceFile,
+		customTypeModel: model,
+	});
 
-	t.log(generator.getSourceFileText(sourceFile));
+	t.log(lib.getSourceFileText(sourceFile));
+
+	t.pass();
+});
+
+test.only("shared slice", (t) => {
+	const model = prismicM.model.sharedSlice({ variationsCount: 2 });
+
+	const project = new Project();
+	const sourceFile = project.createSourceFile("types.ts");
+
+	lib.addTypeAliasForSharedSlice({
+		sourceFile,
+		sharedSliceModel: model,
+	});
+
+	t.log(lib.getSourceFileText(sourceFile));
 
 	t.pass();
 });
