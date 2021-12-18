@@ -17,6 +17,10 @@ An experimental Prismic model-to-TypeScript-type generator.
 - Built on the `@prismicio/types` library
 - Integrates with other Prismic TypeScript libraries
 
+```bash
+prismic-typescript-generator -c customtypes/**/*.json -s slices/**/*.json -w types.ts
+```
+
 ## Install
 
 ```bash
