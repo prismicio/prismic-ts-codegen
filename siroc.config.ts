@@ -5,5 +5,8 @@ export default defineSirocConfig({
 		output: {
 			sourcemap: true,
 		},
+		esbuildOptions: {
+			target: "es2020",
+		},
 	},
 });

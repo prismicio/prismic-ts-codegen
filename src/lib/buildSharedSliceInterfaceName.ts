@@ -7,5 +7,5 @@ type BuildSharedSliceInterfaceNameConfig = {
 export const buildSharedSliceInterfaceName = (
 	config: BuildSharedSliceInterfaceNameConfig,
 ): string => {
-	return pascalCase(`${config.id} SharedSlice`);
+	return pascalCase(`${config.id} Slice`);
 };

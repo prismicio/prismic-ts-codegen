@@ -23,6 +23,7 @@
 	"main": "dist/index.cjs",
 	"module": "dist/index.js",
 	"types": "dist/index.d.ts",
+	"bin": "bin/cli.mjs",
 	"files": [
 		"dist",
 		"src"
@@ -42,6 +43,8 @@
 	},
 	"dependencies": {
 		"common-tags": "^1.8.2",
+		"fast-glob": "^3.2.7",
+		"meow": "^10.1.2",
 		"pascal-case": "^3.1.2",
 		"prettier": "^2.5.1",
 		"ts-morph": "^13.0.2"

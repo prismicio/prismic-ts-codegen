@@ -14,6 +14,7 @@ test("exports something", (t) => {
 		repeatable: true,
 		json: {
 			Main: {
+				uid: prismicM.model.uid(),
 				boolean: prismicM.model.boolean(),
 				color: prismicM.model.color(),
 				contentRelationship: prismicM.model.contentRelationship({
@@ -32,7 +33,6 @@ test("exports something", (t) => {
 				select: prismicM.model.select(),
 				timestamp: prismicM.model.timestamp(),
 				title: prismicM.model.title(),
-
 				group: prismicM.model.group(),
 				sliceZone: prismicM.model.sliceZone({
 					choices: {
@@ -47,28 +47,36 @@ test("exports something", (t) => {
 	const project = new Project();
 	const sourceFile = project.createSourceFile("types.ts");
 
-	lib.addTypeAliasForCustomType({
-		sourceFile,
-		customTypeModel: model,
-	});
+	lib.addTypeAliasForCustomType({ sourceFile, model });
 
 	t.log(lib.getSourceFileText(sourceFile));
 
 	t.pass();
 });
 
-test.only("shared slice", (t) => {
+test("shared slice", (t) => {
 	const model = prismicM.model.sharedSlice({ variationsCount: 2 });
 
 	const project = new Project();
 	const sourceFile = project.createSourceFile("types.ts");
 
-	lib.addTypeAliasForSharedSlice({
-		sourceFile,
-		sharedSliceModel: model,
-	});
+	lib.addTypeAliasForSharedSlice({ sourceFile, model });
 
 	t.log(lib.getSourceFileText(sourceFile));
+
+	t.pass();
+});
+
+test.only("createTypesFile", (t) => {
+	const project = new Project();
+
+	const typesFile = lib.createTypesFile({
+		project,
+		customTypeModels: [prismicM.model.customType()],
+		sharedSliceModels: [prismicM.model.sharedSlice()],
+	});
+
+	t.log(lib.getSourceFileText(typesFile));
 
 	t.pass();
 });

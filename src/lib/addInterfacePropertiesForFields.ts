@@ -1,9 +1,11 @@
-import {
+import type {
 	CustomTypeModel,
 	CustomTypeModelField,
-	CustomTypeModelLinkSelectType,
-	CustomTypeModelSliceType,
 	SharedSliceModel,
+} from "@prismicio/types";
+import {
+	CustomTypeModelSliceType,
+	CustomTypeModelLinkSelectType,
 } from "@prismicio/types";
 import type {
 	InterfaceDeclaration,
@@ -25,8 +27,12 @@ const buildFieldDocs = (
 		{
 			description: (writer) => {
 				if ("label" in config.field.config && config.field.config.label) {
-					writer.writeLine(`Label: ${config.field.config.label}`);
+					writer.write(`${config.field.config.label} field`);
 				}
+
+				writer.spaceIfLastNot();
+				writer.write(`(type: ${config.field.type})`);
+				writer.writeLine("");
 
 				if (
 					"placeholder" in config.field.config &&
@@ -118,13 +124,13 @@ const addInterfacePropertyFromField = (
 
 				config.interface.addProperty({
 					name: config.name,
-					type: `prismicT.Image<${thumbnailNames}>`,
+					type: `prismicT.ImageField<${thumbnailNames}>`,
 					docs: buildFieldDocs({ field: config.field }),
 				});
 			} else {
 				config.interface.addProperty({
 					name: config.name,
-					type: "prismicT.Image",
+					type: "prismicT.ImageField",
 					docs: buildFieldDocs({ field: config.field }),
 				});
 			}
@@ -225,13 +231,13 @@ const addInterfacePropertyFromField = (
 			if (hasDefault) {
 				config.interface.addProperty({
 					name: config.name,
-					type: `prismicT.Select<${options}, "filled">`,
+					type: `prismicT.SelectField<${options}, "filled">`,
 					docs: buildFieldDocs({ field: config.field }),
 				});
 			} else {
 				config.interface.addProperty({
 					name: config.name,
-					type: `prismicT.Select<${options}>`,
+					type: `prismicT.SelectField<${options}>`,
 					docs: buildFieldDocs({ field: config.field }),
 				});
 			}
@@ -274,7 +280,7 @@ const addInterfacePropertyFromField = (
 
 			config.interface.addProperty({
 				name: config.name,
-				type: `prismicT.GroupField<${itemInterface.getName()}>`,
+				type: `prismicT.GroupField<Simplify<${itemInterface.getName()}>>`,
 				docs: buildFieldDocs({ field: config.field }),
 			});
 
@@ -292,35 +298,47 @@ const addInterfacePropertyFromField = (
 						buildSharedSliceInterfaceName({ id: choiceId }),
 					);
 				} else if (choice.type === CustomTypeModelSliceType.Slice) {
-					const primaryInterface = config.sourceFile.addInterface({
-						name: pascalCase(
-							`${config.rootModel.id} Document Data ${config.name} ${choiceId} Slice Primary`,
-						),
-					});
-					addInterfacePropertiesForFields({
-						interface: primaryInterface,
-						sourceFile: config.sourceFile,
-						fields: choice["non-repeat"],
-						rootModel: config.rootModel,
-					});
+					let primaryInterface: InterfaceDeclaration | undefined;
+					if (Object.keys(choice["non-repeat"]).length > 0) {
+						primaryInterface = config.sourceFile.addInterface({
+							name: pascalCase(
+								`${config.rootModel.id} Document Data ${config.name} ${choiceId} Slice Primary`,
+							),
+						});
+						addInterfacePropertiesForFields({
+							interface: primaryInterface,
+							sourceFile: config.sourceFile,
+							fields: choice["non-repeat"],
+							rootModel: config.rootModel,
+						});
+					}
 
-					const itemInterface = config.sourceFile.addInterface({
-						name: pascalCase(
-							`${config.rootModel.id} Document Data ${config.name} ${choiceId} Slice Item`,
-						),
-					});
-					addInterfacePropertiesForFields({
-						interface: itemInterface,
-						sourceFile: config.sourceFile,
-						fields: choice.repeat,
-						rootModel: config.rootModel,
-					});
+					let itemInterface: InterfaceDeclaration | undefined;
+					if (Object.keys(choice.repeat).length > 0) {
+						const itemInterface = config.sourceFile.addInterface({
+							name: pascalCase(
+								`${config.rootModel.id} Document Data ${config.name} ${choiceId} Slice Item`,
+							),
+						});
+						addInterfacePropertiesForFields({
+							interface: itemInterface,
+							sourceFile: config.sourceFile,
+							fields: choice.repeat,
+							rootModel: config.rootModel,
+						});
+					}
 
 					const sliceType = config.sourceFile.addTypeAlias({
 						name: pascalCase(
 							`${config.rootModel.id} Document Data ${config.name} ${choiceId} Slice`,
 						),
-						type: `prismicT.Slice<"${choiceId}", ${primaryInterface.getName()}, ${itemInterface.getName()}>`,
+						type: `prismicT.Slice<"${choiceId}", ${
+							primaryInterface
+								? `Simplify<${primaryInterface.getName()}>`
+								: "Record<string, never>"
+						}, ${
+							itemInterface ? `Simplify<${itemInterface.getName()}>` : "never"
+						}>`,
 					});
 
 					choiceInterfaceNames.push(sliceType.getName());

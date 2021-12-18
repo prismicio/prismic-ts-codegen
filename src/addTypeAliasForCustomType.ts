@@ -4,31 +4,35 @@ import type { SourceFile, TypeAliasDeclaration } from "ts-morph";
 import { addInterfacePropertiesForFields } from "./lib/addInterfacePropertiesForFields";
 import { pascalCase } from "./lib/pascalCase";
 
+const collectCustomTypeFields = (
+	model: CustomTypeModel,
+): Record<string, CustomTypeModelField> => {
+	return Object.assign({}, ...Object.values(model.json));
+};
+
 type AddTypeAliasForCustomTypeConfig = {
-	customTypeModel: CustomTypeModel;
+	model: CustomTypeModel;
 	sourceFile: SourceFile;
 };
 
 export const addTypeAliasForCustomType = (
 	config: AddTypeAliasForCustomTypeConfig,
 ): TypeAliasDeclaration => {
-	const fields: Record<string, CustomTypeModelField> = Object.assign(
-		{},
-		...Object.values(config.customTypeModel.json),
-	);
+	const fields = collectCustomTypeFields(config.model);
+	const hasUIDField = "uid" in fields;
 
 	const dataInterface = config.sourceFile.addInterface({
-		name: pascalCase(`${config.customTypeModel.id} Document Data`),
+		name: pascalCase(`${config.model.id} Document Data`),
 	});
 	addInterfacePropertiesForFields({
 		fields,
 		interface: dataInterface,
 		sourceFile: config.sourceFile,
-		rootModel: config.customTypeModel,
+		rootModel: config.model,
 	});
 
 	return config.sourceFile.addTypeAlias({
-		name: pascalCase(`${config.customTypeModel.id} Document`),
+		name: pascalCase(`${config.model.id} Document`),
 		typeParameters: [
 			{
 				name: "Lang",
@@ -36,12 +40,16 @@ export const addTypeAliasForCustomType = (
 				default: "string",
 			},
 		],
-		type: `PrismicDocument<${dataInterface.getName()}, "${
-			config.customTypeModel.id
-		}", Lang>`,
+		type: hasUIDField
+			? `prismicT.PrismicDocumentWithUID<${dataInterface.getName()}, "${
+					config.model.id
+			  }", Lang>`
+			: `prismicT.PrismicDocumentWithoutUID<${dataInterface.getName()}, "${
+					config.model.id
+			  }", Lang>`,
 		docs: [
 			{
-				description: `${config.customTypeModel.label} Prismic document (API ID: ${config.customTypeModel.id})`,
+				description: `${config.model.label} Prismic document (API ID: \`${config.model.id}\`)`,
 				tags: [
 					{
 						tagName: "typeParam",
