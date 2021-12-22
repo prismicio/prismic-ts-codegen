@@ -1,4 +1,4 @@
-# prismic-typescript-generator
+# @prismicio/ts-codegen
 
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
@@ -17,14 +17,28 @@ An experimental Prismic model-to-TypeScript-type generator.
 - Built on the `@prismicio/types` library
 - Integrates with other Prismic TypeScript libraries
 
-```bash
-prismic-typescript-generator -c customtypes/**/*.json -s slices/**/*.json -w types.ts
-```
-
 ## Install
 
 ```bash
-npm install prismic-typescript-generator
+npm install @prismicio/ts-codegen
+```
+
+## Usage
+
+```
+Usage
+  $ prismic-ts-codegen
+
+Options
+  --customTypes, -c   Paths to Custom Type JSON models (supports globs)
+  --sharedSlices, -s  Paths to Shared Slice JSON models (supports globs)
+  --write, -w         Write generated types to a file
+```
+
+Example:
+
+```bash
+prismic-ts-codegen -c customtypes/**/*.json -s slices/**/*.json -w types.ts
 ```
 
 ## Documentation

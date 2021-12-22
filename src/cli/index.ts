@@ -11,7 +11,7 @@ import { getSourceFileText } from "../lib/getSourceFileText";
 const cli = meow(
 	`
 	Usage
-	  $ prismic-typegen
+	  $ prismic-ts-codegen
 
 	Options
 	  --customTypes, -c   Paths to Custom Type JSON models (supports globs)
@@ -73,7 +73,7 @@ const main = async () => {
 	if (cli.flags.write) {
 		writeFileSync(resolvePath(cli.flags.write), contents);
 	} else {
-		console.log(contents);
+		process.stdout.write(contents + "\n");
 	}
 };
 
