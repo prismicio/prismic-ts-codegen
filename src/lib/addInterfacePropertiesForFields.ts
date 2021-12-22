@@ -1,66 +1,36 @@
 import type {
 	CustomTypeModel,
 	CustomTypeModelField,
+	CustomTypeModelSlice,
 	SharedSliceModel,
 } from "@prismicio/types";
 import {
 	CustomTypeModelSliceType,
 	CustomTypeModelLinkSelectType,
 } from "@prismicio/types";
-import type {
-	InterfaceDeclaration,
-	JSDocableNodeStructure,
-	SourceFile,
-} from "ts-morph";
+import type { InterfaceDeclaration, SourceFile } from "ts-morph";
 
+import { PathElement } from "../types";
+import { buildFieldDocs } from "./buildFieldDocs";
 import { buildSharedSliceInterfaceName } from "./buildSharedSliceInterfaceName";
+import { getHumanReadableFieldPath } from "./getHumanReadableFieldPath";
 import { pascalCase } from "./pascalCase";
 
-type BuildFieldDocsConfig = {
-	field: CustomTypeModelField;
-};
-
-const buildFieldDocs = (
-	config: BuildFieldDocsConfig,
-): NonNullable<JSDocableNodeStructure["docs"]> => {
-	return [
-		{
-			description: (writer) => {
-				if ("label" in config.field.config && config.field.config.label) {
-					writer.write(`${config.field.config.label} field`);
-				}
-
-				writer.spaceIfLastNot();
-				writer.write(`(type: ${config.field.type})`);
-				writer.writeLine("");
-
-				if (
-					"placeholder" in config.field.config &&
-					config.field.config.placeholder
-				) {
-					writer.writeLine(`Placeholder: ${config.field.config.placeholder}`);
-				}
-
-				if ("catalog" in config.field.config) {
-					writer.writeLine(`Catalog: ${config.field.config.catalog}`);
-				}
-			},
-		},
-	];
-};
-
 type AddInterfacePropertyFromFieldConfig = {
-	name: string;
-	field: CustomTypeModelField;
+	id: string;
+	model: CustomTypeModelField;
 	interface: InterfaceDeclaration;
 	sourceFile: SourceFile;
-	rootModel: CustomTypeModel | SharedSliceModel;
+	path: [
+		PathElement<CustomTypeModel | SharedSliceModel>,
+		...PathElement<CustomTypeModelField | CustomTypeModelSlice>[]
+	];
 };
 
 const addInterfacePropertyFromField = (
 	config: AddInterfacePropertyFromFieldConfig,
 ) => {
-	switch (config.field.type) {
+	switch (config.model.type) {
 		case "UID": {
 			// UID fields are not included in Data.
 			break;
@@ -68,9 +38,13 @@ const addInterfacePropertyFromField = (
 
 		case "Boolean": {
 			config.interface.addProperty({
-				name: config.name,
+				name: config.id,
 				type: "prismicT.BooleanField",
-				docs: buildFieldDocs({ field: config.field }),
+				docs: buildFieldDocs({
+					id: config.id,
+					model: config.model,
+					path: config.path,
+				}),
 			});
 
 			break;
@@ -78,9 +52,13 @@ const addInterfacePropertyFromField = (
 
 		case "Color": {
 			config.interface.addProperty({
-				name: config.name,
+				name: config.id,
 				type: "prismicT.ColorField",
-				docs: buildFieldDocs({ field: config.field }),
+				docs: buildFieldDocs({
+					id: config.id,
+					model: config.model,
+					path: config.path,
+				}),
 			});
 
 			break;
@@ -88,9 +66,13 @@ const addInterfacePropertyFromField = (
 
 		case "Date": {
 			config.interface.addProperty({
-				name: config.name,
+				name: config.id,
 				type: "prismicT.DateField",
-				docs: buildFieldDocs({ field: config.field }),
+				docs: buildFieldDocs({
+					id: config.id,
+					model: config.model,
+					path: config.path,
+				}),
 			});
 
 			break;
@@ -98,9 +80,13 @@ const addInterfacePropertyFromField = (
 
 		case "Embed": {
 			config.interface.addProperty({
-				name: config.name,
+				name: config.id,
 				type: "prismicT.EmbedField",
-				docs: buildFieldDocs({ field: config.field }),
+				docs: buildFieldDocs({
+					id: config.id,
+					model: config.model,
+					path: config.path,
+				}),
 			});
 
 			break;
@@ -108,30 +94,42 @@ const addInterfacePropertyFromField = (
 
 		case "GeoPoint": {
 			config.interface.addProperty({
-				name: config.name,
+				name: config.id,
 				type: "prismicT.GeoPointField",
-				docs: buildFieldDocs({ field: config.field }),
+				docs: buildFieldDocs({
+					id: config.id,
+					model: config.model,
+					path: config.path,
+				}),
 			});
 
 			break;
 		}
 
 		case "Image": {
-			if (config.field.config.thumbnails.length > 0) {
-				const thumbnailNames = config.field.config.thumbnails
+			if (config.model.config.thumbnails.length > 0) {
+				const thumbnailNames = config.model.config.thumbnails
 					.map((thumbnail) => `"${thumbnail.name}"`)
 					.join(" | ");
 
 				config.interface.addProperty({
-					name: config.name,
+					name: config.id,
 					type: `prismicT.ImageField<${thumbnailNames}>`,
-					docs: buildFieldDocs({ field: config.field }),
+					docs: buildFieldDocs({
+						id: config.id,
+						model: config.model,
+						path: config.path,
+					}),
 				});
 			} else {
 				config.interface.addProperty({
-					name: config.name,
-					type: "prismicT.ImageField",
-					docs: buildFieldDocs({ field: config.field }),
+					name: config.id,
+					type: "prismicT.ImageField<null>",
+					docs: buildFieldDocs({
+						id: config.id,
+						model: config.model,
+						path: config.path,
+					}),
 				});
 			}
 
@@ -140,27 +138,35 @@ const addInterfacePropertyFromField = (
 
 		case "IntegrationFields": {
 			config.interface.addProperty({
-				name: config.name,
+				name: config.id,
 				type: "prismicT.IntegrationFields",
-				docs: buildFieldDocs({ field: config.field }),
+				docs: buildFieldDocs({
+					id: config.id,
+					model: config.model,
+					path: config.path,
+				}),
 			});
 
 			break;
 		}
 
 		case "Link": {
-			switch (config.field.config.select) {
+			switch (config.model.config.select) {
 				case CustomTypeModelLinkSelectType.Document: {
 					config.interface.addProperty({
-						name: config.name,
+						name: config.id,
 						type:
-							config.field.config.customtypes &&
-							config.field.config.customtypes.length > 0
-								? `prismicT.RelationField<${config.field.config.customtypes
+							config.model.config.customtypes &&
+							config.model.config.customtypes.length > 0
+								? `prismicT.RelationField<${config.model.config.customtypes
 										.map((type) => `"${type}"`)
 										.join(" | ")}>`
 								: "prismicT.RelationField",
-						docs: buildFieldDocs({ field: config.field }),
+						docs: buildFieldDocs({
+							id: config.id,
+							model: config.model,
+							path: config.path,
+						}),
 					});
 
 					break;
@@ -168,9 +174,13 @@ const addInterfacePropertyFromField = (
 
 				case CustomTypeModelLinkSelectType.Media: {
 					config.interface.addProperty({
-						name: config.name,
+						name: config.id,
 						type: "prismicT.LinkToMediaField",
-						docs: buildFieldDocs({ field: config.field }),
+						docs: buildFieldDocs({
+							id: config.id,
+							model: config.model,
+							path: config.path,
+						}),
 					});
 
 					break;
@@ -178,9 +188,13 @@ const addInterfacePropertyFromField = (
 
 				default: {
 					config.interface.addProperty({
-						name: config.name,
+						name: config.id,
 						type: "prismicT.LinkField",
-						docs: buildFieldDocs({ field: config.field }),
+						docs: buildFieldDocs({
+							id: config.id,
+							model: config.model,
+							path: config.path,
+						}),
 					});
 				}
 			}
@@ -190,9 +204,13 @@ const addInterfacePropertyFromField = (
 
 		case "Number": {
 			config.interface.addProperty({
-				name: config.name,
+				name: config.id,
 				type: "prismicT.NumberField",
-				docs: buildFieldDocs({ field: config.field }),
+				docs: buildFieldDocs({
+					id: config.id,
+					model: config.model,
+					path: config.path,
+				}),
 			});
 
 			break;
@@ -200,22 +218,30 @@ const addInterfacePropertyFromField = (
 
 		case "StructuredText": {
 			const isTitleField =
-				"single" in config.field.config &&
-				config.field.config.single
+				"single" in config.model.config &&
+				config.model.config.single
 					.split(",")
 					.every((blockType) => /heading/.test(blockType));
 
 			if (isTitleField) {
 				config.interface.addProperty({
-					name: config.name,
+					name: config.id,
 					type: "prismicT.TitleField",
-					docs: buildFieldDocs({ field: config.field }),
+					docs: buildFieldDocs({
+						id: config.id,
+						model: config.model,
+						path: config.path,
+					}),
 				});
 			} else {
 				config.interface.addProperty({
-					name: config.name,
+					name: config.id,
 					type: "prismicT.RichTextField",
-					docs: buildFieldDocs({ field: config.field }),
+					docs: buildFieldDocs({
+						id: config.id,
+						model: config.model,
+						path: config.path,
+					}),
 				});
 			}
 
@@ -223,22 +249,30 @@ const addInterfacePropertyFromField = (
 		}
 
 		case "Select": {
-			const options = config.field.config.options
+			const options = config.model.config.options
 				.map((option) => `"${option}"`)
 				.join(" | ");
-			const hasDefault = Boolean(config.field.config.default_value);
+			const hasDefault = Boolean(config.model.config.default_value);
 
 			if (hasDefault) {
 				config.interface.addProperty({
-					name: config.name,
+					name: config.id,
 					type: `prismicT.SelectField<${options}, "filled">`,
-					docs: buildFieldDocs({ field: config.field }),
+					docs: buildFieldDocs({
+						id: config.id,
+						model: config.model,
+						path: config.path,
+					}),
 				});
 			} else {
 				config.interface.addProperty({
-					name: config.name,
+					name: config.id,
 					type: `prismicT.SelectField<${options}>`,
-					docs: buildFieldDocs({ field: config.field }),
+					docs: buildFieldDocs({
+						id: config.id,
+						model: config.model,
+						path: config.path,
+					}),
 				});
 			}
 
@@ -247,9 +281,13 @@ const addInterfacePropertyFromField = (
 
 		case "Text": {
 			config.interface.addProperty({
-				name: config.name,
+				name: config.id,
 				type: "prismicT.KeyTextField",
-				docs: buildFieldDocs({ field: config.field }),
+				docs: buildFieldDocs({
+					id: config.id,
+					model: config.model,
+					path: config.path,
+				}),
 			});
 
 			break;
@@ -257,9 +295,13 @@ const addInterfacePropertyFromField = (
 
 		case "Timestamp": {
 			config.interface.addProperty({
-				name: config.name,
+				name: config.id,
 				type: "prismicT.TimestampField",
-				docs: buildFieldDocs({ field: config.field }),
+				docs: buildFieldDocs({
+					id: config.id,
+					model: config.model,
+					path: config.path,
+				}),
 			});
 
 			break;
@@ -268,20 +310,47 @@ const addInterfacePropertyFromField = (
 		case "Group": {
 			const itemInterface = config.sourceFile.addInterface({
 				name: pascalCase(
-					`${config.rootModel.id} Document Data ${config.name} Item`,
+					`${config.path[0].id} Document Data ${config.id} Item`,
 				),
+				docs: [
+					{
+						description: (writer) => {
+							const humanReadablePath = getHumanReadableFieldPath({
+								path: [
+									...config.path,
+									{
+										id: config.id,
+										model: config.model,
+									},
+								],
+							});
+
+							writer.writeLine(`Item in ${humanReadablePath}`);
+						},
+					},
+				],
 			});
 			addInterfacePropertiesForFields({
 				interface: itemInterface,
 				sourceFile: config.sourceFile,
-				fields: config.field.config.fields,
-				rootModel: config.rootModel,
+				fields: config.model.config.fields,
+				path: [
+					...config.path,
+					{
+						id: config.id,
+						model: config.model,
+					},
+				],
 			});
 
 			config.interface.addProperty({
-				name: config.name,
+				name: config.id,
 				type: `prismicT.GroupField<Simplify<${itemInterface.getName()}>>`,
-				docs: buildFieldDocs({ field: config.field }),
+				docs: buildFieldDocs({
+					id: config.id,
+					model: config.model,
+					path: config.path,
+				}),
 			});
 
 			break;
@@ -290,8 +359,8 @@ const addInterfacePropertyFromField = (
 		case "Slices": {
 			const choiceInterfaceNames: string[] = [];
 
-			for (const choiceId in config.field.config.choices) {
-				const choice = config.field.config.choices[choiceId];
+			for (const choiceId in config.model.config.choices) {
+				const choice = config.model.config.choices[choiceId];
 
 				if (choice.type === CustomTypeModelSliceType.SharedSlice) {
 					choiceInterfaceNames.push(
@@ -302,14 +371,53 @@ const addInterfacePropertyFromField = (
 					if (Object.keys(choice["non-repeat"]).length > 0) {
 						primaryInterface = config.sourceFile.addInterface({
 							name: pascalCase(
-								`${config.rootModel.id} Document Data ${config.name} ${choiceId} Slice Primary`,
+								`${config.path[0].id} Document Data ${config.id} ${choiceId} Slice Primary`,
 							),
+							docs: [
+								{
+									description: (writer) => {
+										const humanReadablePath = getHumanReadableFieldPath({
+											path: [
+												...config.path,
+												{
+													id: config.id,
+													model: config.model,
+												},
+												{
+													id: choiceId,
+													model: choice,
+												},
+												{
+													id: "primary",
+													label: "Primary",
+												},
+											],
+										});
+
+										writer.writeLine(`Primary content in ${humanReadablePath}`);
+									},
+								},
+							],
 						});
 						addInterfacePropertiesForFields({
 							interface: primaryInterface,
 							sourceFile: config.sourceFile,
 							fields: choice["non-repeat"],
-							rootModel: config.rootModel,
+							path: [
+								...config.path,
+								{
+									id: config.id,
+									model: config.model,
+								},
+								{
+									id: choiceId,
+									model: choice,
+								},
+								{
+									id: "primary",
+									label: "Primary",
+								},
+							],
 						});
 					}
 
@@ -317,20 +425,59 @@ const addInterfacePropertyFromField = (
 					if (Object.keys(choice.repeat).length > 0) {
 						const itemInterface = config.sourceFile.addInterface({
 							name: pascalCase(
-								`${config.rootModel.id} Document Data ${config.name} ${choiceId} Slice Item`,
+								`${config.path[0].id} Document Data ${config.id} ${choiceId} Slice Item`,
 							),
+							docs: [
+								{
+									description: (writer) => {
+										const humanReadablePath = getHumanReadableFieldPath({
+											path: [
+												...config.path,
+												{
+													id: config.id,
+													model: config.model,
+												},
+												{
+													id: choiceId,
+													model: choice,
+												},
+												{
+													id: "items",
+													label: "Items",
+												},
+											],
+										});
+
+										writer.writeLine(`Item in ${humanReadablePath}`);
+									},
+								},
+							],
 						});
 						addInterfacePropertiesForFields({
 							interface: itemInterface,
 							sourceFile: config.sourceFile,
 							fields: choice.repeat,
-							rootModel: config.rootModel,
+							path: [
+								...config.path,
+								{
+									id: config.id,
+									model: config.model,
+								},
+								{
+									id: choiceId,
+									model: choice,
+								},
+								{
+									id: "items",
+									label: "Items",
+								},
+							],
 						});
 					}
 
 					const sliceType = config.sourceFile.addTypeAlias({
 						name: pascalCase(
-							`${config.rootModel.id} Document Data ${config.name} ${choiceId} Slice`,
+							`${config.path[0].id} Document Data ${config.id} ${choiceId} Slice`,
 						),
 						type: `prismicT.Slice<"${choiceId}", ${
 							primaryInterface
@@ -347,18 +494,39 @@ const addInterfacePropertyFromField = (
 
 			const slicesType = config.sourceFile.addTypeAlias({
 				name: pascalCase(
-					`${config.rootModel.id} Document Data ${config.name} Slice`,
+					`${config.path[0].id} Document Data ${config.id} Slice`,
 				),
 				type:
 					choiceInterfaceNames.length > 0
 						? choiceInterfaceNames.join(" | ")
 						: "never",
+				docs: [
+					{
+						description: (writer) => {
+							const humanReadablePath = getHumanReadableFieldPath({
+								path: [
+									...config.path,
+									{
+										id: config.id,
+										model: config.model,
+									},
+								],
+							});
+
+							writer.writeLine(`Slice for *${humanReadablePath}*`);
+						},
+					},
+				],
 			});
 
 			config.interface.addProperty({
-				name: config.name,
+				name: config.id,
 				type: `prismicT.SliceZone<${slicesType.getName()}>`,
-				docs: buildFieldDocs({ field: config.field }),
+				docs: buildFieldDocs({
+					id: config.id,
+					model: config.model,
+					path: config.path,
+				}),
 			});
 
 			break;
@@ -366,9 +534,13 @@ const addInterfacePropertyFromField = (
 
 		default: {
 			config.interface.addProperty({
-				name: config.name,
+				name: config.id,
 				type: "unknown",
-				docs: buildFieldDocs({ field: config.field }),
+				docs: buildFieldDocs({
+					id: config.id,
+					model: config.model,
+					path: config.path,
+				}),
 			});
 		}
 	}
@@ -376,9 +548,9 @@ const addInterfacePropertyFromField = (
 
 type AddInterfacePropertiesForFieldsConfig = Omit<
 	AddInterfacePropertyFromFieldConfig,
-	"name" | "field"
+	"id" | "model"
 > & {
-	fields: Record<string, AddInterfacePropertyFromFieldConfig["field"]>;
+	fields: Record<string, AddInterfacePropertyFromFieldConfig["model"]>;
 };
 
 export const addInterfacePropertiesForFields = (
@@ -387,8 +559,8 @@ export const addInterfacePropertiesForFields = (
 	for (const name in config.fields) {
 		addInterfacePropertyFromField({
 			...config,
-			name,
-			field: config.fields[name],
+			id: name,
+			model: config.fields[name],
 		});
 	}
 };

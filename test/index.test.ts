@@ -6,7 +6,7 @@ import * as prismicM from "@prismicio/mock";
 import * as lib from "../src";
 
 // TODO: Dummy test, meant to be removed when real tests come in
-test("exports something", (t) => {
+test.only("exports something", (t) => {
 	const model: prismicT.CustomTypeModel = {
 		id: "foo",
 		label: "Foo",
@@ -49,9 +49,7 @@ test("exports something", (t) => {
 
 	lib.addTypeAliasForCustomType({ sourceFile, model });
 
-	t.log(lib.getSourceFileText(sourceFile));
-
-	t.pass();
+	t.is(lib.getSourceFileText(sourceFile), undefined);
 });
 
 test("shared slice", (t) => {
@@ -67,7 +65,7 @@ test("shared slice", (t) => {
 	t.pass();
 });
 
-test.only("createTypesFile", (t) => {
+test("createTypesFile", (t) => {
 	const project = new Project();
 
 	const typesFile = lib.createTypesFile({

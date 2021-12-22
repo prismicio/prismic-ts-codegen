@@ -9,6 +9,8 @@ import { stripIndent } from "common-tags";
 import { addInterfacePropertiesForFields } from "./lib/addInterfacePropertiesForFields";
 import { buildSharedSliceInterfaceName } from "./lib/buildSharedSliceInterfaceName";
 import { pascalCase } from "./lib/pascalCase";
+import { getHumanReadableFieldPath } from "./lib/getHumanReadableFieldPath";
+import { SHARED_SLICES_DOCUMENTATION_URL } from "./constants";
 
 type AddTypeAliasForSharedSliceConfig = {
 	model: SharedSliceModel;
@@ -29,12 +31,41 @@ export const addTypeAliasForSharedSlice = (
 						variation.id
 					} Primary`,
 				),
+				docs: [
+					{
+						description: (writer) => {
+							const humanReadablePath = getHumanReadableFieldPath({
+								path: [
+									{
+										id: config.model.id,
+										model: config.model,
+									},
+									{
+										id: "primary",
+										label: "Primary",
+									},
+								],
+							});
+
+							writer.writeLine(`Primary content in ${humanReadablePath}`);
+						},
+					},
+				],
 			});
 			addInterfacePropertiesForFields({
 				interface: primaryInterface,
 				sourceFile: config.sourceFile,
 				fields: variation.primary,
-				rootModel: config.model,
+				path: [
+					{
+						id: config.model.id,
+						model: config.model,
+					},
+					{
+						id: "primary",
+						label: "Primary",
+					},
+				],
 			});
 		}
 
@@ -46,12 +77,41 @@ export const addTypeAliasForSharedSlice = (
 						variation.id
 					} Item`,
 				),
+				docs: [
+					{
+						description: (writer) => {
+							const humanReadablePath = getHumanReadableFieldPath({
+								path: [
+									{
+										id: config.model.id,
+										model: config.model,
+									},
+									{
+										id: "items",
+										label: "Items",
+									},
+								],
+							});
+
+							writer.writeLine(`Primary content in ${humanReadablePath}`);
+						},
+					},
+				],
 			});
 			addInterfacePropertiesForFields({
 				interface: itemInterface,
 				sourceFile: config.sourceFile,
 				fields: variation.items,
-				rootModel: config.model,
+				path: [
+					{
+						id: config.model.id,
+						model: config.model,
+					},
+					{
+						id: "items",
+						label: "Items",
+					},
+				],
 			});
 		}
 
@@ -66,6 +126,21 @@ export const addTypeAliasForSharedSlice = (
 					? `Simplify<${primaryInterface.getName()}>`
 					: "Record<string, never>"
 			}, ${itemInterface ? `Simplify<${itemInterface.getName()}>` : "never"}>`,
+			docs: [
+				{
+					description: (writer) => {
+						writer.writeLine(
+							`${variation.name} variation for ${config.model.name} Slice`,
+						);
+						writer.blankLine();
+						writer.writeLine(`- **API ID**: \`${variation.id}\``);
+						writer.writeLine(`- **Description**: \`${variation.description}\``);
+						writer.writeLine(
+							`- **Documentation**: ${SHARED_SLICES_DOCUMENTATION_URL}`,
+						);
+					},
+				},
+			],
 		});
 
 		variationTypeNames.push(variationType.getName());
@@ -85,11 +160,17 @@ export const addTypeAliasForSharedSlice = (
 				: "never",
 		docs: [
 			{
-				description: stripIndent`
-					"${config.model.name}" Prismic Shared Slice (API ID: \`${config.model.id}\`)
-
-					Description: ${config.model.description}
-				`,
+				description: (writer) => {
+					writer.writeLine(`${config.model.name} Shared Slice`);
+					writer.blankLine();
+					writer.writeLine(`- **API ID**: \`${config.model.id}\``);
+					writer.writeLine(
+						`- **Description**: \`${config.model.description}\``,
+					);
+					writer.writeLine(
+						`- **Documentation**: ${SHARED_SLICES_DOCUMENTATION_URL}`,
+					);
+				},
 			},
 		],
 		isExported: true,
