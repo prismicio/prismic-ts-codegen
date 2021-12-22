@@ -92,7 +92,7 @@ export const addTypeAliasForSharedSlice = (
 								],
 							});
 
-							writer.writeLine(`Primary content in ${humanReadablePath}`);
+							writer.writeLine(`Item in ${humanReadablePath}`);
 						},
 					},
 				],
