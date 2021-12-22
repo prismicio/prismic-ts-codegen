@@ -1,6 +1,6 @@
 {
-	"name": "prismic-typescript-generator",
-	"version": "0.0.0",
+	"name": "@prismicio/ts-codegen",
+	"version": "0.0.1",
 	"description": "An experimental Prismic model-to-TypeScript-type generator",
 	"keywords": [
 		"typescript",
@@ -23,7 +23,9 @@
 	"main": "dist/index.cjs",
 	"module": "dist/index.js",
 	"types": "dist/index.d.ts",
-	"bin": "bin/cli.mjs",
+	"bin": {
+		"prismic-ts-codegen": "bin/cli.mjs"
+	},
 	"files": [
 		"dist",
 		"src"
