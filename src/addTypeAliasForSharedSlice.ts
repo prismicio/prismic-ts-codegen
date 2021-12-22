@@ -4,7 +4,6 @@ import type {
 	SourceFile,
 	TypeAliasDeclaration,
 } from "ts-morph";
-import { stripIndent } from "common-tags";
 
 import { addInterfacePropertiesForFields } from "./lib/addInterfacePropertiesForFields";
 import { buildSharedSliceInterfaceName } from "./lib/buildSharedSliceInterfaceName";
