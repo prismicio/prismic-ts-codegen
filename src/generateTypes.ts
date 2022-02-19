@@ -9,10 +9,13 @@ import { getSourceFileText } from "./lib/getSourceFileText";
 export type GenerateTypesConfig = {
 	customTypeModels?: CustomTypeModel[];
 	sharedSliceModels?: SharedSliceModel[];
+	langIDs?: string[];
 };
 
 export const generateTypes = (config: GenerateTypesConfig = {}) => {
-	const project = new Project();
+	const project = new Project({
+		useInMemoryFileSystem: true,
+	});
 
 	const sourceFile = project.createSourceFile("types.d.ts");
 
@@ -37,13 +40,20 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 
 	if (config.customTypeModels) {
 		for (const model of config.customTypeModels) {
-			addTypeAliasForCustomType({ model, sourceFile });
+			addTypeAliasForCustomType({
+				model,
+				sourceFile,
+				langIDs: config.langIDs,
+			});
 		}
 	}
 
 	if (config.sharedSliceModels) {
 		for (const model of config.sharedSliceModels) {
-			addTypeAliasForSharedSlice({ model, sourceFile });
+			addTypeAliasForSharedSlice({
+				model,
+				sourceFile,
+			});
 		}
 	}
 

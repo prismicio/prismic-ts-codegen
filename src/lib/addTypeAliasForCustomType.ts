@@ -18,71 +18,77 @@ const collectCustomTypeFields = (
 type AddTypeAliasForCustomTypeConfig = {
 	model: CustomTypeModel;
 	sourceFile: SourceFile;
+	langIDs?: string[];
 };
 
-export const addTypeAliasForCustomType = (
-	config: AddTypeAliasForCustomTypeConfig,
-): TypeAliasDeclaration => {
-	const { uid: uidField, ...fields } = collectCustomTypeFields(config.model);
+export const addTypeAliasForCustomType = ({
+	model,
+	sourceFile,
+	langIDs = [],
+}: AddTypeAliasForCustomTypeConfig): TypeAliasDeclaration => {
+	const { uid: uidField, ...fields } = collectCustomTypeFields(model);
 	const hasDataFields = Object.keys(fields).length > 0;
 	const hasUIDField = Boolean(uidField);
 
 	let dataInterface: InterfaceDeclaration | TypeAliasDeclaration;
 	if (hasDataFields) {
-		dataInterface = config.sourceFile.addInterface({
-			name: pascalCase(`${config.model.id} Document Data`),
+		dataInterface = sourceFile.addInterface({
+			name: pascalCase(`${model.id} Document Data`),
 			docs: [
 				{
-					description: `Content for ${config.model.label} documents`,
+					description: `Content for ${model.label} documents`,
 				},
 			],
 		});
 		addInterfacePropertiesForFields({
 			fields,
 			interface: dataInterface,
-			sourceFile: config.sourceFile,
+			sourceFile: sourceFile,
 			path: [
 				{
-					id: config.model.id,
-					model: config.model,
+					id: model.id,
+					model: model,
 				},
 			],
 		});
 	} else {
-		dataInterface = config.sourceFile.addTypeAlias({
-			name: pascalCase(`${config.model.id} Document Data`),
+		dataInterface = sourceFile.addTypeAlias({
+			name: pascalCase(`${model.id} Document Data`),
 			type: `Record<string, never>`,
 			docs: [
 				{
-					description: `Content for ${config.model.label} documents`,
+					description: `Content for ${model.label} documents`,
 				},
 			],
 		});
 	}
 
-	return config.sourceFile.addTypeAlias({
-		name: pascalCase(`${config.model.id} Document`),
+	return sourceFile.addTypeAlias({
+		name: pascalCase(`${model.id} Document`),
 		typeParameters: [
 			{
 				name: "Lang",
 				constraint: "string",
-				default: "string",
+				default:
+					langIDs.length > 0
+						? langIDs.map((langID) => `"${langID}"`).join(" | ")
+						: "string",
 			},
 		],
 		type: hasUIDField
 			? `prismicT.PrismicDocumentWithUID<${dataInterface.getName()}, "${
-					config.model.id
+					model.id
 			  }", Lang>`
 			: `prismicT.PrismicDocumentWithoutUID<${dataInterface.getName()}, "${
-					config.model.id
+					model.id
 			  }", Lang>`,
 		docs: [
 			{
 				description: (writer) => {
-					writer.writeLine(`${config.model.label} document from Prismic`);
+					writer.writeLine(`${model.label} document from Prismic`);
 					writer.blankLine();
-					writer.writeLine(`- **API ID**: \`${config.model.id}\``);
-					writer.writeLine(`- **Repeatable**: \`${config.model.repeatable}\``);
+					writer.writeLine(`- **API ID**: \`${model.id}\``);
+					writer.writeLine(`- **Repeatable**: \`${model.repeatable}\``);
 					writer.writeLine(
 						`- **Documentation**: ${CUSTOM_TYPES_DOCUMENTATION_URL}`,
 					);
