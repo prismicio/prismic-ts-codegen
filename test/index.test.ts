@@ -1,5 +1,4 @@
 import test from "ava";
-import { Project } from "ts-morph";
 import * as prismicT from "@prismicio/types";
 import * as prismicM from "@prismicio/mock";
 
@@ -44,12 +43,7 @@ test.only("exports something", (t) => {
 		},
 	};
 
-	const project = new Project();
-	const sourceFile = project.createSourceFile("types.ts");
-
-	lib.addTypeAliasForCustomType({ sourceFile, model });
-
-	t.log(lib.getSourceFileText(sourceFile));
+	t.log(lib.generateTypes({ customTypeModels: [model] }));
 
 	t.pass();
 });
@@ -57,26 +51,18 @@ test.only("exports something", (t) => {
 test("shared slice", (t) => {
 	const model = prismicM.model.sharedSlice({ variationsCount: 2 });
 
-	const project = new Project();
-	const sourceFile = project.createSourceFile("types.ts");
-
-	lib.addTypeAliasForSharedSlice({ sourceFile, model });
-
-	t.log(lib.getSourceFileText(sourceFile));
+	t.log(lib.generateTypes({ sharedSliceModels: [model] }));
 
 	t.pass();
 });
 
 test("createTypesFile", (t) => {
-	const project = new Project();
-
-	const typesFile = lib.createTypesFile({
-		project,
-		customTypeModels: [prismicM.model.customType()],
-		sharedSliceModels: [prismicM.model.sharedSlice()],
-	});
-
-	t.log(lib.getSourceFileText(typesFile));
+	t.log(
+		lib.generateTypes({
+			customTypeModels: [prismicM.model.customType()],
+			sharedSliceModels: [prismicM.model.sharedSlice()],
+		}),
+	);
 
 	t.pass();
 });

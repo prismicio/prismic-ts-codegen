@@ -1,9 +1,12 @@
 import * as tsm from "ts-morph";
+import prettier from "prettier";
 
-import { formatFileText } from "./formatFileText";
+import { BLANK_LINE_IDENTIFIER } from "../constants";
 
 export const getSourceFileText = (sourceFile: tsm.SourceFile): string => {
-	const text = sourceFile.print();
+	const text = sourceFile
+		.print()
+		.replace(new RegExp(BLANK_LINE_IDENTIFIER, "g"), "");
 
-	return formatFileText(text);
+	return prettier.format(text, { parser: "typescript" });
 };

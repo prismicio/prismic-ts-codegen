@@ -5,11 +5,11 @@ import type {
 	TypeAliasDeclaration,
 } from "ts-morph";
 
-import { addInterfacePropertiesForFields } from "./lib/addInterfacePropertiesForFields";
-import { buildSharedSliceInterfaceName } from "./lib/buildSharedSliceInterfaceName";
-import { pascalCase } from "./lib/pascalCase";
-import { getHumanReadableFieldPath } from "./lib/getHumanReadableFieldPath";
-import { SHARED_SLICES_DOCUMENTATION_URL } from "./constants";
+import { addInterfacePropertiesForFields } from "./addInterfacePropertiesForFields";
+import { buildSharedSliceInterfaceName } from "./buildSharedSliceInterfaceName";
+import { pascalCase } from "./pascalCase";
+import { getHumanReadableFieldPath } from "./getHumanReadableFieldPath";
+import { SHARED_SLICES_DOCUMENTATION_URL } from "../constants";
 
 type AddTypeAliasForSharedSliceConfig = {
 	model: SharedSliceModel;

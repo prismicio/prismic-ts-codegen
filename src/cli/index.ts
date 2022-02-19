@@ -1,12 +1,10 @@
 import { readFileSync, writeFileSync } from "fs";
 import { resolve as resolvePath } from "path";
-import { Project } from "ts-morph";
 import fg from "fast-glob";
 import meow from "meow";
 import type { CustomTypeModel, SharedSliceModel } from "@prismicio/types";
 
-import { createTypesFile } from "../index";
-import { getSourceFileText } from "../lib/getSourceFileText";
+import { generateTypes } from "../index";
 
 const cli = meow(
 	`
@@ -60,20 +58,15 @@ const main = async () => {
 		? await readModelsFromGlobs<SharedSliceModel>(cli.flags.sharedSlices)
 		: [];
 
-	const project = new Project();
-
-	const typesFile = createTypesFile({
-		project,
+	const types = generateTypes({
 		customTypeModels,
 		sharedSliceModels,
 	});
 
-	const contents = getSourceFileText(typesFile);
-
 	if (cli.flags.write) {
-		writeFileSync(resolvePath(cli.flags.write), contents);
+		writeFileSync(resolvePath(cli.flags.write), types);
 	} else {
-		process.stdout.write(contents + "\n");
+		process.stdout.write(types + "\n");
 	}
 };
 

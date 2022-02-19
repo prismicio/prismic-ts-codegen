@@ -4,10 +4,10 @@ import type {
 	TypeAliasDeclaration,
 	InterfaceDeclaration,
 } from "ts-morph";
-import { CUSTOM_TYPES_DOCUMENTATION_URL } from "./constants";
+import { CUSTOM_TYPES_DOCUMENTATION_URL } from "../constants";
 
-import { addInterfacePropertiesForFields } from "./lib/addInterfacePropertiesForFields";
-import { pascalCase } from "./lib/pascalCase";
+import { addInterfacePropertiesForFields } from "./addInterfacePropertiesForFields";
+import { pascalCase } from "./pascalCase";
 
 const collectCustomTypeFields = (
 	model: CustomTypeModel,
