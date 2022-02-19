@@ -1,4 +1,5 @@
 import test from "ava";
+import * as prismicM from "@prismicio/mock";
 
 import { parseSourceFile } from "./__testutils__/parseSourceFile";
 
@@ -7,22 +8,13 @@ import * as lib from "../src";
 test("generates a Custom Type type", (t) => {
 	const res = lib.generateTypes({
 		customTypeModels: [
-			{
+			prismicM.model.customType({
+				seed: t.title,
 				id: "foo",
-				label: "Foo",
-				status: true,
-				repeatable: true,
-				json: {
-					Main: {
-						foo: {
-							type: "Text",
-							config: {
-								label: "Foo",
-							},
-						},
-					},
+				fields: {
+					bar: prismicM.model.keyText({ seed: t.title }),
 				},
-			},
+			}),
 		],
 	});
 
@@ -57,22 +49,13 @@ test("generates a Custom Type type", (t) => {
 test("uses PrismicDocumentWithUID when model contains a UID field", (t) => {
 	const res = lib.generateTypes({
 		customTypeModels: [
-			{
+			prismicM.model.customType({
+				seed: t.title,
 				id: "foo",
-				label: "Foo",
-				status: true,
-				repeatable: true,
-				json: {
-					Main: {
-						uid: {
-							type: "UID",
-							config: {
-								label: "UID",
-							},
-						},
-					},
+				fields: {
+					uid: prismicM.model.uid({ seed: t.title }),
 				},
-			},
+			}),
 		],
 	});
 
@@ -85,22 +68,13 @@ test("uses PrismicDocumentWithUID when model contains a UID field", (t) => {
 test("data interface contains data fields", (t) => {
 	const res = lib.generateTypes({
 		customTypeModels: [
-			{
+			prismicM.model.customType({
+				seed: t.title,
 				id: "foo",
-				label: "Foo",
-				status: true,
-				repeatable: true,
-				json: {
-					Main: {
-						keyText: {
-							type: "Text",
-							config: {
-								label: "KeyText",
-							},
-						},
-					},
+				fields: {
+					bar: prismicM.model.keyText({ seed: t.title }),
 				},
-			},
+			}),
 		],
 	});
 
@@ -110,38 +84,25 @@ test("data interface contains data fields", (t) => {
 	t.false(dataTypeAlias.isExported());
 
 	t.notThrows(() => {
-		dataTypeAlias.getPropertyOrThrow("keyText");
+		dataTypeAlias.getPropertyOrThrow("bar");
 	});
 });
 
 test("data interface is empty record type alias if no data fields are defined", (t) => {
 	const res = lib.generateTypes({
 		customTypeModels: [
-			{
+			prismicM.model.customType({
+				seed: t.title,
 				id: "no_fields",
-				label: "No Fields",
-				status: true,
-				repeatable: true,
-				json: {
-					Main: {},
-				},
-			},
-			{
+				fields: {},
+			}),
+			prismicM.model.customType({
+				seed: t.title,
 				id: "only_uid",
-				label: "Only UID",
-				status: true,
-				repeatable: true,
-				json: {
-					Main: {
-						uid: {
-							type: "UID",
-							config: {
-								label: "UID",
-							},
-						},
-					},
+				fields: {
+					uid: prismicM.model.uid({ seed: t.title }),
 				},
-			},
+			}),
 		],
 	});
 
@@ -167,15 +128,10 @@ test("data interface is empty record type alias if no data fields are defined", 
 test("includes specific lang IDs if given", (t) => {
 	const res = lib.generateTypes({
 		customTypeModels: [
-			{
+			prismicM.model.customType({
+				seed: t.title,
 				id: "foo",
-				label: "Foo",
-				status: true,
-				repeatable: true,
-				json: {
-					Main: {},
-				},
-			},
+			}),
 		],
 		langIDs: ["en-us", "fr-fr"],
 	});
