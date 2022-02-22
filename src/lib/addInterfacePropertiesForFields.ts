@@ -156,9 +156,16 @@ const addInterfacePropertyFromField = (
 		}
 
 		case "IntegrationFields": {
+			const catalogType =
+				config.fieldConfigs.integrationFields?.catalogTypes?.[
+					config.model.config.catalog
+				];
+
 			config.interface.addProperty({
 				name: config.id,
-				type: "prismicT.IntegrationFields",
+				type: catalogType
+					? `prismicT.IntegrationFields<${catalogType}>`
+					: "prismicT.IntegrationFields",
 				docs: buildFieldDocs({
 					id: config.id,
 					model: config.model,

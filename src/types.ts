@@ -21,4 +21,7 @@ export type FieldConfigs = {
 	embed?: {
 		providerTypes?: Record<string, string>;
 	};
+	integrationFields?: {
+		catalogTypes?: Record<string, string>;
+	};
 };
