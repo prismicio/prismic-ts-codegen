@@ -7,10 +7,10 @@ import { macroBasicFieldDocs } from "./__testutils__/macroBasicFieldDocs";
 test(
 	"correctly typed",
 	macroBasicFieldType,
-	(t) => prismicM.model.keyText({ seed: t.title }),
-	"prismicT.KeyTextField",
+	(t) => prismicM.model.geoPoint({ seed: t.title }),
+	"prismicT.GeoPointField",
 );
 
 test("correctly documented", macroBasicFieldDocs, (t) =>
-	prismicM.model.keyText({ seed: t.title }),
+	prismicM.model.geoPoint({ seed: t.title }),
 );

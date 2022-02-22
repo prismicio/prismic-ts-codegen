@@ -7,10 +7,10 @@ import { macroBasicFieldDocs } from "./__testutils__/macroBasicFieldDocs";
 test(
 	"correctly typed",
 	macroBasicFieldType,
-	(t) => prismicM.model.keyText({ seed: t.title }),
-	"prismicT.KeyTextField",
+	(t) => prismicM.model.boolean({ seed: t.title }),
+	"prismicT.BooleanField",
 );
 
 test("correctly documented", macroBasicFieldDocs, (t) =>
-	prismicM.model.keyText({ seed: t.title }),
+	prismicM.model.boolean({ seed: t.title }),
 );

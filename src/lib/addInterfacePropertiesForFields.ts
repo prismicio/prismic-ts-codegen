@@ -423,7 +423,7 @@ const addInterfacePropertyFromField = (
 
 					let itemInterface: InterfaceDeclaration | undefined;
 					if (Object.keys(choice.repeat).length > 0) {
-						const itemInterface = config.sourceFile.addInterface({
+						itemInterface = config.sourceFile.addInterface({
 							name: pascalCase(
 								`${config.path[0].id} Document Data ${config.id} ${choiceId} Slice Item`,
 							),

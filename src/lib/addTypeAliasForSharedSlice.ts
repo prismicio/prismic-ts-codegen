@@ -145,18 +145,37 @@ export const addTypeAliasForSharedSlice = (
 		variationTypeNames.push(variationType.getName());
 	}
 
+	const variationsType = config.sourceFile.addTypeAlias({
+		name: pascalCase(`${config.model.id} Slice Variation`),
+		type:
+			variationTypeNames.length > 0 ? variationTypeNames.join(" | ") : "never",
+		docs: [
+			{
+				description: (writer) => {
+					const humanReadablePath = getHumanReadableFieldPath({
+						path: [
+							{
+								id: config.model.id,
+								model: config.model,
+							},
+						],
+					});
+
+					writer.writeLine(`Slice variation for *${humanReadablePath}*`);
+				},
+			},
+		],
+	});
+
 	return config.sourceFile.addTypeAlias({
 		name: pascalCase(
 			buildSharedSliceInterfaceName({
 				id: config.model.id,
 			}),
 		),
-		type:
-			variationTypeNames.length > 0
-				? `prismicT.SharedSlice<"${config.model.id}", ${variationTypeNames.join(
-						" | ",
-				  )}>`
-				: "never",
+		type: `prismicT.SharedSlice<"${
+			config.model.id
+		}", ${variationsType.getName()}>`,
 		docs: [
 			{
 				description: (writer) => {
