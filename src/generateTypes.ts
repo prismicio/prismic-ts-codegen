@@ -5,11 +5,13 @@ import { BLANK_LINE_IDENTIFIER, NON_EDITABLE_FILE_HEADER } from "./constants";
 import { addTypeAliasForCustomType } from "./lib/addTypeAliasForCustomType";
 import { addTypeAliasForSharedSlice } from "./lib/addTypeAliasForSharedSlice";
 import { getSourceFileText } from "./lib/getSourceFileText";
+import { FieldConfigs } from "./types";
 
 export type GenerateTypesConfig = {
 	customTypeModels?: CustomTypeModel[];
 	sharedSliceModels?: SharedSliceModel[];
 	langIDs?: string[];
+	fieldConfigs?: FieldConfigs;
 };
 
 export const generateTypes = (config: GenerateTypesConfig = {}) => {
@@ -43,7 +45,8 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 			addTypeAliasForCustomType({
 				model,
 				sourceFile,
-				langIDs: config.langIDs,
+				langIDs: config.langIDs || [],
+				fieldConfigs: config.fieldConfigs || {},
 			});
 		}
 	}
@@ -53,6 +56,7 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 			addTypeAliasForSharedSlice({
 				model,
 				sourceFile,
+				fieldConfigs: config.fieldConfigs || {},
 			});
 		}
 	}

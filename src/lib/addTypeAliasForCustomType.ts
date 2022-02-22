@@ -5,6 +5,7 @@ import type {
 	InterfaceDeclaration,
 } from "ts-morph";
 import { CUSTOM_TYPES_DOCUMENTATION_URL } from "../constants";
+import { FieldConfigs } from "../types";
 
 import { addInterfacePropertiesForFields } from "./addInterfacePropertiesForFields";
 import { pascalCase } from "./pascalCase";
@@ -18,13 +19,15 @@ const collectCustomTypeFields = (
 type AddTypeAliasForCustomTypeConfig = {
 	model: CustomTypeModel;
 	sourceFile: SourceFile;
-	langIDs?: string[];
+	langIDs: string[];
+	fieldConfigs: FieldConfigs;
 };
 
 export const addTypeAliasForCustomType = ({
 	model,
 	sourceFile,
-	langIDs = [],
+	langIDs,
+	fieldConfigs,
 }: AddTypeAliasForCustomTypeConfig): TypeAliasDeclaration => {
 	const { uid: uidField, ...fields } = collectCustomTypeFields(model);
 	const hasDataFields = Object.keys(fields).length > 0;
@@ -50,6 +53,7 @@ export const addTypeAliasForCustomType = ({
 					model: model,
 				},
 			],
+			fieldConfigs,
 		});
 	} else {
 		dataInterface = sourceFile.addTypeAlias({

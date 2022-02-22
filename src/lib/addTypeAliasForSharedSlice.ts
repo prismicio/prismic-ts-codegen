@@ -10,10 +10,12 @@ import { buildSharedSliceInterfaceName } from "./buildSharedSliceInterfaceName";
 import { pascalCase } from "./pascalCase";
 import { getHumanReadableFieldPath } from "./getHumanReadableFieldPath";
 import { SHARED_SLICES_DOCUMENTATION_URL } from "../constants";
+import { FieldConfigs } from "../types";
 
 type AddTypeAliasForSharedSliceConfig = {
 	model: SharedSliceModel;
 	sourceFile: SourceFile;
+	fieldConfigs: FieldConfigs;
 };
 
 export const addTypeAliasForSharedSlice = (
@@ -65,6 +67,7 @@ export const addTypeAliasForSharedSlice = (
 						label: "Primary",
 					},
 				],
+				fieldConfigs: config.fieldConfigs,
 			});
 		}
 
@@ -111,6 +114,7 @@ export const addTypeAliasForSharedSlice = (
 						label: "Items",
 					},
 				],
+				fieldConfigs: config.fieldConfigs,
 			});
 		}
 

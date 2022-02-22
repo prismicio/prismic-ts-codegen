@@ -10,7 +10,7 @@ import {
 } from "@prismicio/types";
 import type { InterfaceDeclaration, SourceFile } from "ts-morph";
 
-import { PathElement } from "../types";
+import { FieldConfigs, PathElement } from "../types";
 import { buildFieldDocs } from "./buildFieldDocs";
 import { buildSharedSliceInterfaceName } from "./buildSharedSliceInterfaceName";
 import { getHumanReadableFieldPath } from "./getHumanReadableFieldPath";
@@ -25,6 +25,7 @@ type AddInterfacePropertyFromFieldConfig = {
 		PathElement<CustomTypeModel | SharedSliceModel>,
 		...PathElement<CustomTypeModelField | CustomTypeModelSlice>[]
 	];
+	fieldConfigs: FieldConfigs;
 };
 
 const addInterfacePropertyFromField = (
@@ -79,9 +80,27 @@ const addInterfacePropertyFromField = (
 		}
 
 		case "Embed": {
+			const providerTypes: string[] = [];
+
+			if (config.fieldConfigs.embed?.providerTypes) {
+				for (const providerType in config.fieldConfigs.embed?.providerTypes) {
+					const configuredProviderType =
+						config.fieldConfigs.embed?.providerTypes[providerType];
+
+					providerTypes.push(
+						`({ provider_name: "${providerType}" } & ${configuredProviderType})`,
+					);
+				}
+			}
+
 			config.interface.addProperty({
 				name: config.id,
-				type: "prismicT.EmbedField",
+				type:
+					providerTypes.length > 0
+						? `prismicT.EmbedField<prismicT.AnyOEmbed & prismicT.OEmbedExtra & (${providerTypes.join(
+								" | ",
+						  )})>`
+						: "prismicT.EmbedField",
 				docs: buildFieldDocs({
 					id: config.id,
 					model: config.model,
@@ -341,6 +360,7 @@ const addInterfacePropertyFromField = (
 						model: config.model,
 					},
 				],
+				fieldConfigs: config.fieldConfigs,
 			});
 
 			config.interface.addProperty({
@@ -418,6 +438,7 @@ const addInterfacePropertyFromField = (
 									label: "Primary",
 								},
 							],
+							fieldConfigs: config.fieldConfigs,
 						});
 					}
 
@@ -472,6 +493,7 @@ const addInterfacePropertyFromField = (
 									label: "Items",
 								},
 							],
+							fieldConfigs: config.fieldConfigs,
 						});
 					}
 

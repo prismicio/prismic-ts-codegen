@@ -16,3 +16,9 @@ export type PathElement<
 	model?: Model;
 	label?: string;
 };
+
+export type FieldConfigs = {
+	embed?: {
+		providerTypes?: Record<string, string>;
+	};
+};
