@@ -19,14 +19,14 @@ const collectCustomTypeFields = (
 type AddTypeAliasForCustomTypeConfig = {
 	model: CustomTypeModel;
 	sourceFile: SourceFile;
-	langIDs: string[];
+	localeIDs: string[];
 	fieldConfigs: FieldConfigs;
 };
 
 export const addTypeAliasForCustomType = ({
 	model,
 	sourceFile,
-	langIDs,
+	localeIDs,
 	fieldConfigs,
 }: AddTypeAliasForCustomTypeConfig): TypeAliasDeclaration => {
 	const { uid: uidField, ...fields } = collectCustomTypeFields(model);
@@ -74,8 +74,8 @@ export const addTypeAliasForCustomType = ({
 				name: "Lang",
 				constraint: "string",
 				default:
-					langIDs.length > 0
-						? langIDs.map((langID) => `"${langID}"`).join(" | ")
+					localeIDs.length > 0
+						? localeIDs.map((localeID) => `"${localeID}"`).join(" | ")
 						: "string",
 			},
 		],

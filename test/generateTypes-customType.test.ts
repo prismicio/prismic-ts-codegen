@@ -133,7 +133,7 @@ test("includes specific lang IDs if given", (t) => {
 				id: "foo",
 			}),
 		],
-		langIDs: ["en-us", "fr-fr"],
+		localeIDs: ["en-us", "fr-fr"],
 	});
 
 	const file = parseSourceFile(res);

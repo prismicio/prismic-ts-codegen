@@ -10,7 +10,7 @@ import { FieldConfigs } from "./types";
 export type GenerateTypesConfig = {
 	customTypeModels?: CustomTypeModel[];
 	sharedSliceModels?: SharedSliceModel[];
-	langIDs?: string[];
+	localeIDs?: string[];
 	fieldConfigs?: FieldConfigs;
 };
 
@@ -45,7 +45,7 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 			addTypeAliasForCustomType({
 				model,
 				sourceFile,
-				langIDs: config.langIDs || [],
+				localeIDs: config.localeIDs || [],
 				fieldConfigs: config.fieldConfigs || {},
 			});
 		}

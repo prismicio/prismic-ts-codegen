@@ -45,9 +45,14 @@
 		"unit": "nyc --reporter=lcovonly --reporter=text --exclude-after-remap=false ava"
 	},
 	"dependencies": {
+		"@prismicio/client": "^6.3.0",
+		"@prismicio/custom-types-client": "^0.0.6",
 		"common-tags": "^1.8.2",
 		"fast-glob": "^3.2.11",
+		"jiti": "^1.13.0",
+		"joi": "^17.6.0",
 		"meow": "^10.1.2",
+		"node-fetch": "^3.2.0",
 		"pascal-case": "^3.1.2",
 		"prettier": "^2.5.1",
 		"ts-morph": "^13.0.3"
