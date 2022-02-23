@@ -1,10 +1,13 @@
-import { readFileSync, writeFileSync } from "fs";
+import { writeFileSync } from "fs";
 import { resolve as resolvePath } from "path";
-import fg from "fast-glob";
 import meow from "meow";
-import type { CustomTypeModel, SharedSliceModel } from "@prismicio/types";
 
 import { generateTypes } from "../index";
+
+import { configSchema } from "./configSchema";
+import { loadLocaleIDs } from "./loadLocaleIDs";
+import { loadModels } from "./loadModels";
+import { loadConfig } from "./loadConfig";
 
 const cli = meow(
 	`
@@ -12,61 +15,67 @@ const cli = meow(
 	  $ prismic-ts-codegen
 
 	Options
-	  --customTypes, -c   Paths to Custom Type JSON models (supports globs)
-	  --sharedSlices, -s  Paths to Shared Slice JSON models (supports globs)
-	  --write, -w         Write generated types to a file
+	  -c, --config <path>  Path to a prismic-ts-codegen configuration file.
 	`,
 	{
 		importMeta: import.meta,
 		flags: {
-			customTypes: {
+			config: {
 				type: "string",
 				alias: "c",
-			},
-			sharedSlices: {
-				type: "string",
-				alias: "s",
-			},
-			write: {
-				type: "string",
-				alias: "w",
+				isRequired: false,
 			},
 		},
 	},
 );
 
-const readModelsFromGlobs = async <
-	Model extends CustomTypeModel | SharedSliceModel,
->(
-	globs: string,
-): Promise<Model[]> => {
-	const paths = await fg(globs.split(",").map((path) => path.trim()));
-
-	return paths.map((path): Model => {
-		const raw = readFileSync(path, "utf8");
-
-		return JSON.parse(raw);
-	});
-};
-
 const main = async () => {
-	const customTypeModels = cli.flags.customTypes
-		? await readModelsFromGlobs<CustomTypeModel>(cli.flags.customTypes)
-		: [];
+	const unvalidatedConfig = loadConfig({ path: cli.flags.config });
 
-	const sharedSliceModels = cli.flags.sharedSlices
-		? await readModelsFromGlobs<SharedSliceModel>(cli.flags.sharedSlices)
-		: [];
+	const { value: config, error } = configSchema.validate(unvalidatedConfig);
 
-	const types = generateTypes({
-		customTypeModels,
-		sharedSliceModels,
-	});
+	if (config) {
+		const { customTypeModels, sharedSliceModels } = await loadModels({
+			localPaths: Array.isArray(config.models)
+				? config.models
+				: config.models?.files,
+			repositoryName: config.repositoryName,
+			customTypesAPIToken: config.customTypesAPIToken,
+			fetchFromRepository:
+				config.models &&
+				"fetchFromRepository" in config.models &&
+				config.models.fetchFromRepository,
+		});
 
-	if (cli.flags.write) {
-		writeFileSync(resolvePath(cli.flags.write), types);
+		const localeIDs = await loadLocaleIDs({
+			localeIDs: Array.isArray(config.locales)
+				? config.locales
+				: config.locales?.ids,
+			repositoryName: config.repositoryName,
+			accessToken: config.accessToken,
+			fetchFromRepository:
+				config.locales &&
+				"fetchFromRepository" in config.locales &&
+				config.locales.fetchFromRepository,
+		});
+
+		const types = generateTypes({
+			customTypeModels,
+			sharedSliceModels,
+			localeIDs,
+		});
+
+		if (config.output) {
+			writeFileSync(resolvePath(config.output), types);
+		} else {
+			process.stdout.write(types + "\n");
+		}
 	} else {
-		process.stdout.write(types + "\n");
+		if (error) {
+			console.error(error.message);
+
+			return;
+		}
 	}
 };
 
