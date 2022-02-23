@@ -58,6 +58,8 @@ npm install --save-dev prismic-ts-codegen
    npx prismic-ts-codegen
    ```
 
+   By default, your types will be exported from `types.generated.ts`.
+
 ## Documentation
 
 To discover what's new on this package check out [the changelog][changelog]. For full documentation, visit the [official Prismic documentation][prismic-docs].
