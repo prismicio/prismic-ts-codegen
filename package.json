@@ -1,5 +1,5 @@
 {
-	"name": "@prismicio/ts-codegen",
+	"name": "prismic-ts-codegen",
 	"version": "0.0.1",
 	"description": "An experimental Prismic model-to-TypeScript-type generator",
 	"keywords": [
