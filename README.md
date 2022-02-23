@@ -27,7 +27,7 @@ npm install --save-dev prismic-ts-codegen
 
 1. **Create a config file**
 
-   To get started, create a `prismicCodegen.config.ts` file with the following command:
+   To get started, create a `prismicCodegen.config.ts` file at the root of your project with the following command:
 
    ```bash
    npx prismic-ts-codegen init
@@ -35,9 +35,11 @@ npm install --save-dev prismic-ts-codegen
 
 2. **Configure your model paths**
 
-   Next, add the paths to all of your Custom Type and Shared Slice models in your `prismicCodegen.config.ts` file (globs are supported):
+   Next, add paths to all of your Custom Type and Shared Slice models in your `prismicCodegen.config.ts` file (globs are supported):
 
    ```diff
+     // prismicCodegen.config.ts
+
      import type { Config } from "prismic-ts-codegen";
 
      const config: Config = {
@@ -50,7 +52,7 @@ npm install --save-dev prismic-ts-codegen
 
 3. **Generate your types**
 
-   Now, anytime you want to generate types, such as after updating your models, run the codegen process at the root of your project:
+   Now, anytime you want to generate types, run the codegen tool:
 
    ```bash
    npx prismic-ts-codegen
@@ -77,19 +79,19 @@ For more clarity on this project and its structure you can also check out the de
 ## License
 
 ```
-   Copyright 2013-2022 Prismic <contact@prismic.io> (https://prismic.io)
+Copyright 2013-2022 Prismic <contact@prismic.io> (https://prismic.io)
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+    http://www.apache.org/licenses/LICENSE-2.0
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 ```
 
 <!-- Links -->
