@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.2](https://github.com/prismicio/prismic-ts-codegen/compare/v0.0.1...v0.0.2) (2022-02-23)
+
+
+### Features
+
+* add `init` CLI command ([#4](https://github.com/prismicio/prismic-ts-codegen/issues/4)) ([f7da732](https://github.com/prismicio/prismic-ts-codegen/commit/f7da73209bbc115372d4df210e7a6c096838b612))
+* configure CLI with config file ([#3](https://github.com/prismicio/prismic-ts-codegen/issues/3)) ([75c92bc](https://github.com/prismicio/prismic-ts-codegen/commit/75c92bcd97c36c898457dd0db4ece6f4fc2d78a2))
+* only export a `generateTypes()` function ([933b0c3](https://github.com/prismicio/prismic-ts-codegen/commit/933b0c31937a9e1b7e8f845c1f87a8c770e33729))
+* support custom Embed data with provider-specific types ([#1](https://github.com/prismicio/prismic-ts-codegen/issues/1)) ([6889b29](https://github.com/prismicio/prismic-ts-codegen/commit/6889b293364ebab26a55b7707c84b2ff196f61e4))
+* support custom Integration Fields data with catalog-specific types ([#2](https://github.com/prismicio/prismic-ts-codegen/issues/2)) ([3854af9](https://github.com/prismicio/prismic-ts-codegen/commit/3854af9025e393e6ab2fa1534b4f9070567cbf5b))
+* support lang configuration ([8aa8b35](https://github.com/prismicio/prismic-ts-codegen/commit/8aa8b350d92c20b3394828a0f10ac5ad87ac1165))
+
+
+### Bug Fixes
+
+* error with PrismicDocument type parameter ([fef6edc](https://github.com/prismicio/prismic-ts-codegen/commit/fef6edc082b2f178270e76f8e6d5bb1a9fdf6d27))
+* typo in Shared Slice item TSDoc ([f8faa8e](https://github.com/prismicio/prismic-ts-codegen/commit/f8faa8ea773f718e74116712d5fbb669fc23eb36))
+* update non-editable file header message ([f98e12d](https://github.com/prismicio/prismic-ts-codegen/commit/f98e12deaa3a9cf284921bdfc9140311d41bf240))
+
+
+### Documentation
+
+* mention default codegen file ([cb2af53](https://github.com/prismicio/prismic-ts-codegen/commit/cb2af53889419db4ffc5fd7307ab3676eac520fe))
+* reword steps ([bb635f1](https://github.com/prismicio/prismic-ts-codegen/commit/bb635f1a5c7bd7f53599f4cf01e9a4b51752599d))
+* update usage section ([35e69b9](https://github.com/prismicio/prismic-ts-codegen/commit/35e69b9f3767cbe9eecd0bf6f5d2346824d96427))
+
+
+### Chore
+
+* **deps:** update dependencies ([06354fa](https://github.com/prismicio/prismic-ts-codegen/commit/06354fae386021878c748181abeff6ef5acbc1f7))
+* rename package to prismic-ts-codegen ([cd7c002](https://github.com/prismicio/prismic-ts-codegen/commit/cd7c00202b753b045ff2e57d484e40c9ae4b439d))
+* rename repo ([a772e2c](https://github.com/prismicio/prismic-ts-codegen/commit/a772e2c6c3535ffd010bc9572b6a1fbb4a88df0e))
+* update package infrastructure ([a288428](https://github.com/prismicio/prismic-ts-codegen/commit/a2884284a96ba09e062f750ef77393fe2a7d7989))
+* update package rename in all files ([22cb235](https://github.com/prismicio/prismic-ts-codegen/commit/22cb235fe23c10c2b3d822077dc932eda6358944))
+
 ### 0.0.1 (2021-12-22)
 
 
