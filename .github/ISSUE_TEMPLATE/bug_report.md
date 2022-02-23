@@ -16,7 +16,7 @@ assignees: ""
 
 ### Versions
 
-- prismic-typescript-generator: <!-- ex: v0.1.0 -->
+- prismic-ts-codegen: <!-- ex: v0.1.0 -->
 - node: <!-- ex: v12.14.0 -->
 
 ### Reproduction

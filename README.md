@@ -1,4 +1,4 @@
-# @prismicio/ts-codegen
+# prismic-ts-codegen
 
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
@@ -110,21 +110,21 @@ limitations under the License.
 <!-- TODO: Replace link with a more useful one if available -->
 
 [forum-question]: https://community.prismic.io
-[repo-bug-report]: https://github.com/prismicio/prismic-typescript-generator/issues/new?assignees=&labels=bug&template=bug_report.md&title=
-[repo-feature-request]: https://github.com/prismicio/prismic-typescript-generator/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=
-[repo-pull-requests]: https://github.com/prismicio/prismic-typescript-generator/pulls
+[repo-bug-report]: https://github.com/prismicio/prismic-ts-codegen/issues/new?assignees=&labels=bug&template=bug_report.md&title=
+[repo-feature-request]: https://github.com/prismicio/prismic-ts-codegen/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=
+[repo-pull-requests]: https://github.com/prismicio/prismic-ts-codegen/pulls
 
 <!-- Badges -->
 
-[npm-version-src]: https://img.shields.io/npm/v/prismic-typescript-generator/latest.svg
-[npm-version-href]: https://npmjs.com/package/prismic-typescript-generator
-[npm-downloads-src]: https://img.shields.io/npm/dm/prismic-typescript-generator.svg
-[npm-downloads-href]: https://npmjs.com/package/prismic-typescript-generator
-[github-actions-ci-src]: https://github.com/prismicio/prismic-typescript-generator/workflows/ci/badge.svg
-[github-actions-ci-href]: https://github.com/prismicio/prismic-typescript-generator/actions?query=workflow%3Aci
-[codecov-src]: https://img.shields.io/codecov/c/github/prismicio/prismic-typescript-generator.svg
-[codecov-href]: https://codecov.io/gh/prismicio/prismic-typescript-generator
+[npm-version-src]: https://img.shields.io/npm/v/prismic-ts-codegen/latest.svg
+[npm-version-href]: https://npmjs.com/package/prismic-ts-codegen
+[npm-downloads-src]: https://img.shields.io/npm/dm/prismic-ts-codegen.svg
+[npm-downloads-href]: https://npmjs.com/package/prismic-ts-codegen
+[github-actions-ci-src]: https://github.com/prismicio/prismic-ts-codegen/workflows/ci/badge.svg
+[github-actions-ci-href]: https://github.com/prismicio/prismic-ts-codegen/actions?query=workflow%3Aci
+[codecov-src]: https://img.shields.io/codecov/c/github/prismicio/prismic-ts-codegen.svg
+[codecov-href]: https://codecov.io/gh/prismicio/prismic-ts-codegen
 [conventional-commits-src]: https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg
 [conventional-commits-href]: https://conventionalcommits.org
-[license-src]: https://img.shields.io/npm/l/prismic-typescript-generator.svg
-[license-href]: https://npmjs.com/package/prismic-typescript-generator
+[license-src]: https://img.shields.io/npm/l/prismic-ts-codegen.svg
+[license-href]: https://npmjs.com/package/prismic-ts-codegen

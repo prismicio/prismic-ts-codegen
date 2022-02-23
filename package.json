@@ -8,7 +8,7 @@
 	],
 	"repository": {
 		"type": "git",
-		"url": "ssh://git@github.com/prismicio/prismic-typescript-generator.git"
+		"url": "ssh://git@github.com/prismicio/prismic-ts-codegen.git"
 	},
 	"license": "Apache-2.0",
 	"author": "Prismic <contact@prismic.io> (https://prismic.io)",
