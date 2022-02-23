@@ -1,6 +1,7 @@
-import { writeFileSync } from "fs";
+import { existsSync, writeFileSync } from "fs";
 import { resolve as resolvePath } from "path";
 import meow from "meow";
+import { stripIndent } from "common-tags";
 
 import { generateTypes } from "../index";
 
@@ -11,11 +12,15 @@ import { loadConfig } from "./loadConfig";
 
 const cli = meow(
 	`
-	Usage
-	  $ prismic-ts-codegen
+	Usage:
+	    prismic-ts-codegen [options...]
+	    prismic-ts-codegen init [options...]
 
-	Options
-	  -c, --config <path>  Path to a prismic-ts-codegen configuration file.
+	Commands:
+	    init [options]
+
+	Options:
+	    -c, --config <path>  Path to a prismic-ts-codegen configuration file.
 	`,
 	{
 		importMeta: import.meta,
@@ -30,51 +35,89 @@ const cli = meow(
 );
 
 const main = async () => {
-	const unvalidatedConfig = loadConfig({ path: cli.flags.config });
+	if (cli.input[0] === "init") {
+		const configPath = cli.flags.config || "prismicCodegen.config.ts";
 
-	const { value: config, error } = configSchema.validate(unvalidatedConfig);
-
-	if (config) {
-		const { customTypeModels, sharedSliceModels } = await loadModels({
-			localPaths: Array.isArray(config.models)
-				? config.models
-				: config.models?.files,
-			repositoryName: config.repositoryName,
-			customTypesAPIToken: config.customTypesAPIToken,
-			fetchFromRepository:
-				config.models &&
-				"fetchFromRepository" in config.models &&
-				config.models.fetchFromRepository,
-		});
-
-		const localeIDs = await loadLocaleIDs({
-			localeIDs: Array.isArray(config.locales)
-				? config.locales
-				: config.locales?.ids,
-			repositoryName: config.repositoryName,
-			accessToken: config.accessToken,
-			fetchFromRepository:
-				config.locales &&
-				"fetchFromRepository" in config.locales &&
-				config.locales.fetchFromRepository,
-		});
-
-		const types = generateTypes({
-			customTypeModels,
-			sharedSliceModels,
-			localeIDs,
-		});
-
-		if (config.output) {
-			writeFileSync(resolvePath(config.output), types);
+		if (existsSync(configPath)) {
+			console.info(`\n${configPath} already exists.`);
 		} else {
-			process.stdout.write(types + "\n");
+			let contents = "";
+
+			if (existsSync("sm.json")) {
+				contents = stripIndent`
+					import type { Config } from "prismic-ts-codegen";
+
+					const config: Config = {
+					  output: "./types.generated.ts",
+
+					  models: ["./customtypes/**/index.json", "./slices/**/model.json"],
+					};
+
+					export default config;
+				`;
+			} else {
+				contents = stripIndent`
+					import type { Config } from "prismic-ts-codegen";
+
+					const config: Config = {
+					  output: "./types.generated.ts",
+					};
+
+					export default config;
+				`;
+			}
+
+			writeFileSync(configPath, contents);
+
+			console.info(`\nCreated prismic-ts-codegen config file: ${configPath}`);
 		}
 	} else {
-		if (error) {
-			console.error(error.message);
+		const unvalidatedConfig = loadConfig({ path: cli.flags.config });
 
-			return;
+		const { value: config, error } = configSchema.validate(unvalidatedConfig);
+
+		if (config && !error) {
+			const { customTypeModels, sharedSliceModels } = await loadModels({
+				localPaths: Array.isArray(config.models)
+					? config.models
+					: config.models?.files,
+				repositoryName: config.repositoryName,
+				customTypesAPIToken: config.customTypesAPIToken,
+				fetchFromRepository:
+					config.models &&
+					"fetchFromRepository" in config.models &&
+					config.models.fetchFromRepository,
+			});
+
+			const localeIDs = await loadLocaleIDs({
+				localeIDs: Array.isArray(config.locales)
+					? config.locales
+					: config.locales?.ids,
+				repositoryName: config.repositoryName,
+				accessToken: config.accessToken,
+				fetchFromRepository:
+					config.locales &&
+					"fetchFromRepository" in config.locales &&
+					config.locales.fetchFromRepository,
+			});
+
+			const types = generateTypes({
+				customTypeModels,
+				sharedSliceModels,
+				localeIDs,
+			});
+
+			if (config.output) {
+				writeFileSync(resolvePath(config.output), types);
+			} else {
+				process.stdout.write(types + "\n");
+			}
+		} else {
+			if (error) {
+				console.error(error.message);
+
+				return;
+			}
 		}
 	}
 };
