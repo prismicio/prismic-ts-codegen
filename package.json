@@ -78,6 +78,9 @@
 		"standard-version": "^9.3.2",
 		"typescript": "^4.5.5"
 	},
+	"peerDependencies": {
+		"@prismicio/types": "^0.1.25"
+	},
 	"engines": {
 		"node": ">=12.7.0"
 	},

@@ -20,7 +20,7 @@ An experimental Prismic model-to-TypeScript-type generator.
 ## Install
 
 ```bash
-npm install --save-dev prismic-ts-codegen
+npm install --save-dev prismic-ts-codegen @prismicio/types
 ```
 
 ## Usage
