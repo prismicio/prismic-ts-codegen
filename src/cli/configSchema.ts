@@ -1,8 +1,8 @@
 import Joi from "joi";
 
-import { UserConfig } from "./types";
+import { Config } from "./types";
 
-export const configSchema = Joi.object<UserConfig>({
+export const configSchema = Joi.object<Config>({
 	repositoryName: Joi.string(),
 	accessToken: Joi.string(),
 	customTypesAPIToken: Joi.string(),

@@ -7,7 +7,7 @@ import { generateTypes } from "../index";
 import { configSchema } from "./configSchema";
 import { loadLocaleIDs } from "./loadLocaleIDs";
 import { loadModels } from "./loadModels";
-import { loadUserConfig } from "./loadUserConfig";
+import { loadConfig } from "./loadConfig";
 
 const cli = meow(
 	`
@@ -30,35 +30,33 @@ const cli = meow(
 );
 
 const main = async () => {
-	const rawUserConfig = loadUserConfig({ path: cli.flags.config });
+	const unvalidatedConfig = loadConfig({ path: cli.flags.config });
 
-	const { value: userConfig, error } = configSchema.validate(rawUserConfig);
+	const { value: config, error } = configSchema.validate(unvalidatedConfig);
 
-	if (userConfig) {
+	if (config) {
 		const { customTypeModels, sharedSliceModels } = await loadModels({
-			localPaths:
-				userConfig.models && "files" in userConfig.models
-					? userConfig.models.files
-					: (userConfig.models as string[]),
-			repositoryName: userConfig.repositoryName,
-			customTypesAPIToken: userConfig.customTypesAPIToken,
+			localPaths: Array.isArray(config.models)
+				? config.models
+				: config.models?.files,
+			repositoryName: config.repositoryName,
+			customTypesAPIToken: config.customTypesAPIToken,
 			fetchFromRepository:
-				userConfig.models &&
-				"fetchFromRepository" in userConfig.models &&
-				userConfig.models.fetchFromRepository,
+				config.models &&
+				"fetchFromRepository" in config.models &&
+				config.models.fetchFromRepository,
 		});
 
 		const localeIDs = await loadLocaleIDs({
-			localeIDs:
-				userConfig.locales && "ids" in userConfig.locales
-					? userConfig.locales.ids
-					: (userConfig.locales as string[]),
-			repositoryName: userConfig.repositoryName,
-			accessToken: userConfig.accessToken,
+			localeIDs: Array.isArray(config.locales)
+				? config.locales
+				: config.locales?.ids,
+			repositoryName: config.repositoryName,
+			accessToken: config.accessToken,
 			fetchFromRepository:
-				userConfig.locales &&
-				"fetchFromRepository" in userConfig.locales &&
-				userConfig.locales.fetchFromRepository,
+				config.locales &&
+				"fetchFromRepository" in config.locales &&
+				config.locales.fetchFromRepository,
 		});
 
 		const types = generateTypes({
@@ -67,8 +65,8 @@ const main = async () => {
 			localeIDs,
 		});
 
-		if (userConfig.output) {
-			writeFileSync(resolvePath(userConfig.output), types);
+		if (config.output) {
+			writeFileSync(resolvePath(config.output), types);
 		} else {
 			process.stdout.write(types + "\n");
 		}

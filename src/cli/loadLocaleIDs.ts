@@ -15,7 +15,7 @@ type LoadLocalesConfig =
 export const loadLocaleIDs = async (
 	config: LoadLocalesConfig,
 ): Promise<string[]> => {
-	const localeIDs = new Set<string>(config.localeIDs);
+	const localeIDs = new Set<string>(config.localeIDs || []);
 
 	if ("repositoryName" in config && config.fetchFromRepository) {
 		const client = prismic.createClient(config.repositoryName, {

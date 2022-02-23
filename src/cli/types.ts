@@ -1,4 +1,4 @@
-export type UserConfig = {
+export type Config = {
 	repositoryName?: string;
 	accessToken?: string;
 	customTypesAPIToken?: string;

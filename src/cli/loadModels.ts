@@ -9,7 +9,7 @@ const isCustomTypeModel = (input: unknown): input is CustomTypeModel => {
 };
 
 const isSharedSliceModel = (input: unknown): input is SharedSliceModel => {
-	return typeof input === "object" && input !== null && "variants" in input;
+	return typeof input === "object" && input !== null && "variations" in input;
 };
 
 const readJSONFromGlob = async <T>(globs: string): Promise<T[]> => {
