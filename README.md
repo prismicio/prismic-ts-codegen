@@ -14,32 +14,47 @@
 An experimental Prismic model-to-TypeScript-type generator.
 
 - Converts Custom Type and Shared Slice models to TypeScript types
-- Built on the `@prismicio/types` library
 - Integrates with other Prismic TypeScript libraries
+- Built on the [`@prismicio/types`][prismic-types] library
 
 ## Install
 
 ```bash
-npm install @prismicio/ts-codegen
+npm install --save-dev prismic-ts-codegen
 ```
 
 ## Usage
 
-```
-Usage
-  $ prismic-ts-codegen
+1. **Create a config file**
 
-Options
-  --customTypes, -c   Paths to Custom Type JSON models (supports globs)
-  --sharedSlices, -s  Paths to Shared Slice JSON models (supports globs)
-  --write, -w         Write generated types to a file
-```
+   To get started, create a `prismicCodegen.config.ts` file with the following command:
 
-Example:
+   ```bash
+   npx prismic-ts-codegen init
+   ```
 
-```bash
-prismic-ts-codegen -c customtypes/**/*.json -s slices/**/*.json -w types.ts
-```
+2. **Configure your model paths**
+
+   Next, add the paths to all of your Custom Type and Shared Slice models in your `prismicCodegen.config.ts` file (globs are supported):
+
+   ```diff
+     import type { Config } from "prismic-ts-codegen";
+
+     const config: Config = {
+       output: "./types.generated.ts",
+   +   models: ["./customtypes/**/index.json", "./slices/**/model.json"],
+     };
+
+     export default config;
+   ```
+
+3. **Generate your types**
+
+   Now, anytime you want to generate types, such as after updating your models, run the codegen process at the root of your project:
+
+   ```bash
+   npx prismic-ts-codegen
+   ```
 
 ## Documentation
 
@@ -80,6 +95,7 @@ For more clarity on this project and its structure you can also check out the de
 <!-- Links -->
 
 [prismic]: https://prismic.io
+[prismic-types]: https://github.com/prismicio/prismic-types
 
 <!-- TODO: Replace link with a more useful one if available -->
 
