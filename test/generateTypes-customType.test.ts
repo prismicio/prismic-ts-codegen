@@ -38,7 +38,7 @@ test("generates a Custom Type type", (t) => {
 	const type = typeAlias.getTypeNodeOrThrow();
 	t.is(
 		type.getText(),
-		'prismicT.PrismicDocumentWithoutUID<FooDocumentData, "foo", Lang>',
+		'prismicT.PrismicDocumentWithoutUID<Simplify<FooDocumentData>, "foo", Lang>',
 	);
 
 	t.notThrows(() => {
@@ -61,8 +61,10 @@ test("uses PrismicDocumentWithUID when model contains a UID field", (t) => {
 
 	const file = parseSourceFile(res);
 	const type = file.getTypeAliasOrThrow("FooDocument").getTypeNodeOrThrow();
-
-	t.regex(type.getText(), /^prismicT.PrismicDocumentWithUID</);
+	t.is(
+		type.getText(),
+		'prismicT.PrismicDocumentWithUID<Simplify<FooDocumentData>, "foo", Lang>',
+	);
 });
 
 test("data interface contains data fields", (t) => {

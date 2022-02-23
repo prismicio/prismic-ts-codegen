@@ -80,10 +80,10 @@ export const addTypeAliasForCustomType = ({
 			},
 		],
 		type: hasUIDField
-			? `prismicT.PrismicDocumentWithUID<${dataInterface.getName()}, "${
+			? `prismicT.PrismicDocumentWithUID<Simplify<${dataInterface.getName()}>, "${
 					model.id
 			  }", Lang>`
-			: `prismicT.PrismicDocumentWithoutUID<${dataInterface.getName()}, "${
+			: `prismicT.PrismicDocumentWithoutUID<Simplify<${dataInterface.getName()}>, "${
 					model.id
 			  }", Lang>`,
 		docs: [
