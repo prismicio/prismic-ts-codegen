@@ -62,7 +62,56 @@ npm install --save-dev prismic-ts-codegen @prismicio/types
 
 ## Documentation
 
-To discover what's new on this package check out [the changelog][changelog]. For full documentation, visit the [official Prismic documentation][prismic-docs].
+### Configuration
+
+`prismic-ts-codegen` is configured using a `prismicCodegen.config.ts` file. It must export a configuration object as the default export.
+
+#### Interface
+
+See the [`Config` TypeScript interface](./src/cli/types.ts) for a complete reference of each configuration property.
+
+#### Full example
+
+```typescript
+// prismicCodegen.config.ts
+
+import type { Config } from "prismic-ts-codegen";
+
+const config: Config = {
+	repositoryName: "nextjs-blog-demo",
+	accessToken: "abc123xyz345",
+	customTypesAPIToken: "abc123xyz345",
+
+	output: "./types.generated.ts",
+
+	locales: {
+		ids: ["en-us", "fr-fr", "en-gb"],
+		fetchFromRepository: true,
+	},
+
+	models: {
+		files: ["./customtypes/**/index.json", "./slices/**/model.json"],
+		fetchFromRepository: true,
+	},
+
+	fields: {
+		embed: {
+			providerTypes: {
+				YouTube: 'import("./types").OEmbedYouTube',
+				Twitter: 'import("./types").OEmbedTwitter',
+				Vimeo: 'import("./types").OEmbedVimeo',
+			},
+		},
+		integrationFields: {
+			catalogTypes: {
+				shop: 'import("./types").IntegrationFieldShop',
+			},
+		},
+	},
+};
+
+export default config;
+```
 
 ## Contributing
 
