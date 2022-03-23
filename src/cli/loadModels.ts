@@ -54,7 +54,7 @@ export const loadModels = async (
 		if (config.fetchFromRepository) {
 			const [remoteCustomTypeModels, remoteSharedSliceModels] =
 				await Promise.all([
-					customTypesClient.getAll(),
+					customTypesClient.getAllCustomTypes(),
 					customTypesClient.getAllSharedSlices(),
 				]);
 

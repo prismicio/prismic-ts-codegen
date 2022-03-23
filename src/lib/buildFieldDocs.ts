@@ -19,7 +19,7 @@ type BuildFieldDocsConfig = {
 	model: CustomTypeModelField;
 	path: [
 		PathElement<CustomTypeModel | SharedSliceModel>,
-		...PathElement<CustomTypeModelField | CustomTypeModelSlice>[]
+		...PathElement<CustomTypeModelField | CustomTypeModelSlice>[],
 	];
 };
 

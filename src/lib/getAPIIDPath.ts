@@ -14,7 +14,7 @@ import { isSharedSliceModel } from "./isSharedSliceModel";
 type GetAPIIDPathConfig = {
 	path: [
 		PathElement<CustomTypeModel | SharedSliceModel>,
-		...PathElement<CustomTypeModelField | CustomTypeModelSlice>[]
+		...PathElement<CustomTypeModelField | CustomTypeModelSlice>[],
 	];
 };
 

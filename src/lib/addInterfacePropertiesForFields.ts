@@ -23,7 +23,7 @@ type AddInterfacePropertyFromFieldConfig = {
 	sourceFile: SourceFile;
 	path: [
 		PathElement<CustomTypeModel | SharedSliceModel>,
-		...PathElement<CustomTypeModelField | CustomTypeModelSlice>[]
+		...PathElement<CustomTypeModelField | CustomTypeModelSlice>[],
 	];
 	fieldConfigs: FieldConfigs;
 };

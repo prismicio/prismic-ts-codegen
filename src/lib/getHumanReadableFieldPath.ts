@@ -11,7 +11,7 @@ import { getHumanReadableModelName } from "./getHumanReadableModelName";
 type GetHumanReadableFieldPathConfig = {
 	path: [
 		PathElement<CustomTypeModel | SharedSliceModel>,
-		...PathElement<CustomTypeModelField | CustomTypeModelSlice>[]
+		...PathElement<CustomTypeModelField | CustomTypeModelSlice>[],
 	];
 };
 
