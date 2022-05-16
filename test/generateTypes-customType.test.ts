@@ -46,6 +46,27 @@ test("generates a Custom Type type", (t) => {
 	}, "contains a FooDocumentData interface");
 });
 
+test("handles hyphenated properties", (t) => {
+	const res = lib.generateTypes({
+		customTypeModels: [
+			prismicM.model.customType({
+				seed: t.title,
+				id: "foo-hyphenated",
+				fields: {},
+			}),
+		],
+	});
+
+	const file = parseSourceFile(res);
+	const type = file
+		.getTypeAliasOrThrow("FooHyphenatedDocument")
+		.getTypeNodeOrThrow();
+	t.is(
+		type.getText(),
+		'prismicT.PrismicDocumentWithoutUID<Simplify<FooHyphenatedDocumentData>, "foo-hyphenated", Lang>',
+	);
+});
+
 test("uses PrismicDocumentWithUID when model contains a UID field", (t) => {
 	const res = lib.generateTypes({
 		customTypeModels: [
