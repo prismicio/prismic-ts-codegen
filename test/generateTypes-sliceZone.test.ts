@@ -296,3 +296,52 @@ test("creates an interface for a Slice's items fields", (t) => {
 		"prismicT.SelectField",
 	);
 });
+
+test("handles hyphenated fields", (t) => {
+	const model = prismicM.model.customType({
+		seed: t.title,
+		id: "foo",
+		fields: {
+			bar: prismicM.model.sliceZone({
+				seed: t.title,
+				choices: {
+					baz: prismicM.model.slice({
+						seed: t.title,
+						nonRepeatFields: {
+							"hyphenated-field": prismicM.model.keyText({ seed: t.title }),
+						},
+						repeatFields: {
+							"hyphenated-field": prismicM.model.select({ seed: t.title }),
+						},
+					}),
+				},
+			}),
+		},
+	});
+
+	const types = lib.generateTypes({ customTypeModels: [model] });
+	const file = parseSourceFile(types);
+
+	const primaryInterface = file.getInterfaceOrThrow(
+		"FooDocumentDataBarBazSlicePrimary",
+	);
+	const itemInterface = file.getInterfaceOrThrow(
+		"FooDocumentDataBarBazSliceItem",
+	);
+
+	t.is(
+		primaryInterface
+			.getPropertyOrThrow('"hyphenated-field"')
+			.getTypeNodeOrThrow()
+			.getText(),
+		"prismicT.KeyTextField",
+	);
+
+	t.is(
+		itemInterface
+			.getPropertyOrThrow('"hyphenated-field"')
+			.getTypeNodeOrThrow()
+			.getText(),
+		"prismicT.SelectField",
+	);
+});

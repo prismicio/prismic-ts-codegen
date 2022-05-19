@@ -147,3 +147,28 @@ test("includes specific lang IDs if given", (t) => {
 
 	t.is(langDefault, '"en-us" | "fr-fr"');
 });
+
+test("handles hyphenated fields", (t) => {
+	const res = lib.generateTypes({
+		customTypeModels: [
+			prismicM.model.customType({
+				seed: t.title,
+				id: "foo",
+				fields: {
+					"hyphenated-field": prismicM.model.keyText({ seed: t.title }),
+				},
+			}),
+		],
+	});
+
+	const file = parseSourceFile(res);
+	const dataInterface = file.getInterfaceOrThrow("FooDocumentData");
+
+	t.is(
+		dataInterface
+			.getPropertyOrThrow('"hyphenated-field"')
+			.getTypeNodeOrThrow()
+			.getText(),
+		"prismicT.KeyTextField",
+	);
+});

@@ -241,9 +241,9 @@ test("creates an interface for a Slice variation's items fields", (t) => {
 	const types = lib.generateTypes({ sharedSliceModels: [model] });
 	const file = parseSourceFile(types);
 
-	const primaryInterface = file.getInterfaceOrThrow("FooSliceBarItem");
+	const itemInterface = file.getInterfaceOrThrow("FooSliceBarItem");
 	t.is(
-		primaryInterface.getPropertyOrThrow("def").getTypeNodeOrThrow().getText(),
+		itemInterface.getPropertyOrThrow("def").getTypeNodeOrThrow().getText(),
 		"prismicT.SelectField",
 	);
 });
@@ -269,5 +269,46 @@ test("handles Shared Slice with no variations", (t) => {
 			.getTypeNodeOrThrow()
 			.getText(),
 		"never",
+	);
+});
+
+test("handles hyphenated fields", (t) => {
+	const model = prismicM.model.sharedSlice({
+		seed: t.title,
+		id: "foo",
+		variations: [
+			prismicM.model.sharedSliceVariation({
+				seed: t.title,
+				id: "bar",
+				primaryFields: {
+					"hyphenated-field": prismicM.model.keyText({ seed: t.title }),
+				},
+				itemsFields: {
+					"hyphenated-field": prismicM.model.select({ seed: t.title }),
+				},
+			}),
+		],
+	});
+
+	const types = lib.generateTypes({ sharedSliceModels: [model] });
+	const file = parseSourceFile(types);
+
+	const primaryInterface = file.getInterfaceOrThrow("FooSliceBarPrimary");
+	const itemInterface = file.getInterfaceOrThrow("FooSliceBarItem");
+
+	t.is(
+		primaryInterface
+			.getPropertyOrThrow('"hyphenated-field"')
+			.getTypeNodeOrThrow()
+			.getText(),
+		"prismicT.KeyTextField",
+	);
+
+	t.is(
+		itemInterface
+			.getPropertyOrThrow('"hyphenated-field"')
+			.getTypeNodeOrThrow()
+			.getText(),
+		"prismicT.SelectField",
 	);
 });

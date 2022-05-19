@@ -82,7 +82,11 @@ export const loadModels = async (
 	}
 
 	return {
-		customTypeModels: Object.values(customTypeModels),
-		sharedSliceModels: Object.values(sharedSliceModels),
+		customTypeModels: Object.values(customTypeModels).sort((a, b) => {
+			return a.id.localeCompare(b.id);
+		}),
+		sharedSliceModels: Object.values(sharedSliceModels).sort((a, b) => {
+			return a.id.localeCompare(b.id);
+		}),
 	};
 };
