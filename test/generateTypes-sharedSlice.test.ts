@@ -117,6 +117,9 @@ test("creates a type alias for each Slice variation", (t) => {
 	const barType = file.getTypeAliasOrThrow("FooSliceBar");
 	const bazType = file.getTypeAliasOrThrow("FooSliceBaz");
 
+	t.true(barType.isExported());
+	t.true(bazType.isExported());
+
 	t.is(
 		barType.getTypeNodeOrThrow().getText(),
 		'prismicT.SharedSliceVariation<"bar", Simplify<FooSliceBarPrimary>, Simplify<FooSliceBarItem>>',

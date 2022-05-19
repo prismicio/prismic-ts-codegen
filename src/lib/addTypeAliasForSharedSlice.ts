@@ -145,6 +145,7 @@ export const addTypeAliasForSharedSlice = (
 					},
 				},
 			],
+			isExported: true,
 		});
 
 		variationTypeNames.push(variationType.getName());
@@ -170,7 +171,6 @@ export const addTypeAliasForSharedSlice = (
 				},
 			},
 		],
-		isExported: true,
 	});
 
 	return config.sourceFile.addTypeAlias({
