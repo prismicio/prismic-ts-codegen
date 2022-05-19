@@ -65,3 +65,30 @@ test("creates an interface for a group item containing its fields", (t) => {
 test("correctly documented", macroBasicFieldDocs, (t) =>
 	prismicM.model.boolean({ seed: t.title }),
 );
+
+test("handles hyphenated fields", (t) => {
+	const model = prismicM.model.customType({
+		seed: t.title,
+		id: "foo",
+		fields: {
+			bar: prismicM.model.group({
+				seed: t.title,
+				fields: {
+					"hyphenated-field": prismicM.model.keyText({ seed: t.title }),
+				},
+			}),
+		},
+	});
+
+	const types = lib.generateTypes({ customTypeModels: [model] });
+	const file = parseSourceFile(types);
+	const itemInterface = file.getInterfaceOrThrow("FooDocumentDataBarItem");
+
+	t.is(
+		itemInterface
+			.getPropertyOrThrow('"hyphenated-field"')
+			.getTypeNodeOrThrow()
+			.getText(),
+		"prismicT.KeyTextField",
+	);
+});
