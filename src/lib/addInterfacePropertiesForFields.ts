@@ -588,7 +588,7 @@ export const addInterfacePropertiesForFields = (
 	for (const name in config.fields) {
 		addInterfacePropertyFromField({
 			...config,
-			id: name,
+			id: name.includes("-") ? `"${name}"` : name,
 			model: config.fields[name],
 		});
 	}
