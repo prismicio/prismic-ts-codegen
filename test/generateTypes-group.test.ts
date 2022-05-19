@@ -52,6 +52,8 @@ test("creates an interface for a group item containing its fields", (t) => {
 	const file = parseSourceFile(types);
 	const itemInterface = file.getInterfaceOrThrow("FooDocumentDataBarItem");
 
+	t.true(itemInterface.isExported());
+
 	t.is(
 		itemInterface.getPropertyOrThrow("baz").getTypeNodeOrThrow().getText(),
 		"prismicT.KeyTextField",

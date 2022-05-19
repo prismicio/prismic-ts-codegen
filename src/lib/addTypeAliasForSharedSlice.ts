@@ -99,6 +99,7 @@ export const addTypeAliasForSharedSlice = (
 						},
 					},
 				],
+				isExported: true,
 			});
 			addInterfacePropertiesForFields({
 				interface: itemInterface,
@@ -169,6 +170,7 @@ export const addTypeAliasForSharedSlice = (
 				},
 			},
 		],
+		isExported: true,
 	});
 
 	return config.sourceFile.addTypeAlias({
