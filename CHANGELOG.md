@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.3](https://github.com/prismicio/prismic-ts-codegen/compare/v0.0.2...v0.0.3) (2022-05-19)
+
+
+### Features
+
+* export Slice and Group types ([#10](https://github.com/prismicio/prismic-ts-codegen/issues/10)) ([69cffa3](https://github.com/prismicio/prismic-ts-codegen/commit/69cffa35a66c7bc0c8142cacb1a3415f62549ffd))
+
+
+### Bug Fixes
+
+* **cli:** load models in a deterministic order (alphabetical by ID) ([#9](https://github.com/prismicio/prismic-ts-codegen/issues/9)) ([4d692d9](https://github.com/prismicio/prismic-ts-codegen/commit/4d692d92192f588aad5d9c08d8774178d0ddb57c))
+* support fields with hyphenated API IDs ([#7](https://github.com/prismicio/prismic-ts-codegen/issues/7)) ([c666987](https://github.com/prismicio/prismic-ts-codegen/commit/c66698769b899db488d5e28efb87469d6e7f3459))
+
+
+### Documentation
+
+* configuration ([3db9932](https://github.com/prismicio/prismic-ts-codegen/commit/3db993280d3f40c8ef2b8597ab8e2eea8e354291))
+
+
+### Chore
+
+* add `@prismicio/types` as a peer dependency ([60ddef7](https://github.com/prismicio/prismic-ts-codegen/commit/60ddef794159545492a66592ac75f0c0094e9f73))
+* **deps:** upgrade dependencies ([ef569b2](https://github.com/prismicio/prismic-ts-codegen/commit/ef569b287551cbaeed0e226d6599be14ae7e37d9))
+* **deps:** upgrade dependencies ([0953400](https://github.com/prismicio/prismic-ts-codegen/commit/0953400db747a111fa68385a518ae190da1d929f))
+* remove `examples` directory ([c94f3cc](https://github.com/prismicio/prismic-ts-codegen/commit/c94f3ccde5c3513684224ca439b1e585fc21af65))
+
 ### [0.0.2](https://github.com/prismicio/prismic-ts-codegen/compare/v0.0.1...v0.0.2) (2022-02-23)
 
 
