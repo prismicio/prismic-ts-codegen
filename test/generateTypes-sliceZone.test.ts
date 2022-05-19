@@ -38,12 +38,12 @@ test("correctly typed", (t) => {
 
 	const types = lib.generateTypes({ customTypeModels: [model] });
 	const file = parseSourceFile(types);
-	const groupProperty = file
+	const sliceZoneProperty = file
 		.getInterfaceOrThrow("FooDocumentData")
 		.getPropertyOrThrow("bar");
 
 	t.is(
-		groupProperty.getTypeNodeOrThrow().getText(),
+		sliceZoneProperty.getTypeNodeOrThrow().getText(),
 		"prismicT.SliceZone<FooDocumentDataBarSlice>",
 	);
 });
@@ -124,19 +124,19 @@ test("creates a type alias for each Slice", (t) => {
 	const types = lib.generateTypes({ customTypeModels: [model] });
 	const file = parseSourceFile(types);
 
+	const bazSliceType = file.getTypeAliasOrThrow("FooDocumentDataBarBazSlice");
+	const quxSliceType = file.getTypeAliasOrThrow("FooDocumentDataBarQuxSlice");
+
+	t.true(bazSliceType.isExported());
+	t.true(quxSliceType.isExported());
+
 	t.is(
-		file
-			.getTypeAliasOrThrow("FooDocumentDataBarBazSlice")
-			.getTypeNodeOrThrow()
-			.getText(),
+		bazSliceType.getTypeNodeOrThrow().getText(),
 		'prismicT.Slice<"baz", Simplify<FooDocumentDataBarBazSlicePrimary>, Simplify<FooDocumentDataBarBazSliceItem>>',
 	);
 
 	t.is(
-		file
-			.getTypeAliasOrThrow("FooDocumentDataBarQuxSlice")
-			.getTypeNodeOrThrow()
-			.getText(),
+		quxSliceType.getTypeNodeOrThrow().getText(),
 		'prismicT.Slice<"qux", Simplify<FooDocumentDataBarQuxSlicePrimary>, Simplify<FooDocumentDataBarQuxSliceItem>>',
 	);
 });
@@ -291,6 +291,9 @@ test("creates an interface for a Slice's items fields", (t) => {
 	const itemInterface = file.getInterfaceOrThrow(
 		"FooDocumentDataBarBazSliceItem",
 	);
+
+	t.true(itemInterface.isExported());
+
 	t.is(
 		itemInterface.getPropertyOrThrow("def").getTypeNodeOrThrow().getText(),
 		"prismicT.SelectField",

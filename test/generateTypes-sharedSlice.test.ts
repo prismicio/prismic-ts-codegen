@@ -37,6 +37,8 @@ test("correctly typed", (t) => {
 	const file = parseSourceFile(types);
 	const sliceTypeAlias = file.getTypeAliasOrThrow("FooSlice");
 
+	t.true(sliceTypeAlias.isExported());
+
 	t.is(
 		sliceTypeAlias.getTypeNodeOrThrow().getText(),
 		'prismicT.SharedSlice<"foo", FooSliceVariation>',
@@ -112,13 +114,19 @@ test("creates a type alias for each Slice variation", (t) => {
 	const types = lib.generateTypes({ sharedSliceModels: [model] });
 	const file = parseSourceFile(types);
 
+	const barType = file.getTypeAliasOrThrow("FooSliceBar");
+	const bazType = file.getTypeAliasOrThrow("FooSliceBaz");
+
+	t.true(barType.isExported());
+	t.true(bazType.isExported());
+
 	t.is(
-		file.getTypeAliasOrThrow("FooSliceBar").getTypeNodeOrThrow().getText(),
+		barType.getTypeNodeOrThrow().getText(),
 		'prismicT.SharedSliceVariation<"bar", Simplify<FooSliceBarPrimary>, Simplify<FooSliceBarItem>>',
 	);
 
 	t.is(
-		file.getTypeAliasOrThrow("FooSliceBaz").getTypeNodeOrThrow().getText(),
+		bazType.getTypeNodeOrThrow().getText(),
 		'prismicT.SharedSliceVariation<"baz", Simplify<FooSliceBazPrimary>, Simplify<FooSliceBazItem>>',
 	);
 });
@@ -242,6 +250,9 @@ test("creates an interface for a Slice variation's items fields", (t) => {
 	const file = parseSourceFile(types);
 
 	const itemInterface = file.getInterfaceOrThrow("FooSliceBarItem");
+
+	t.true(itemInterface.isExported());
+
 	t.is(
 		itemInterface.getPropertyOrThrow("def").getTypeNodeOrThrow().getText(),
 		"prismicT.SelectField",

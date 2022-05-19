@@ -355,6 +355,7 @@ const addInterfacePropertyFromField = (
 						},
 					},
 				],
+				isExported: true,
 			});
 			addInterfacePropertiesForFields({
 				interface: itemInterface,
@@ -480,6 +481,7 @@ const addInterfacePropertyFromField = (
 									},
 								},
 							],
+							isExported: true,
 						});
 						addInterfacePropertiesForFields({
 							interface: itemInterface,
@@ -515,6 +517,7 @@ const addInterfacePropertyFromField = (
 						}, ${
 							itemInterface ? `Simplify<${itemInterface.getName()}>` : "never"
 						}>`,
+						isExported: true,
 					});
 
 					choiceInterfaceNames.push(sliceType.getName());

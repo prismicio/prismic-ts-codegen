@@ -99,6 +99,7 @@ export const addTypeAliasForSharedSlice = (
 						},
 					},
 				],
+				isExported: true,
 			});
 			addInterfacePropertiesForFields({
 				interface: itemInterface,
@@ -144,6 +145,7 @@ export const addTypeAliasForSharedSlice = (
 					},
 				},
 			],
+			isExported: true,
 		});
 
 		variationTypeNames.push(variationType.getName());
