@@ -43,18 +43,26 @@ export const addTypeAliasForCustomType = ({
 				},
 			],
 		});
-		addInterfacePropertiesForFields({
-			fields,
-			interface: dataInterface,
-			sourceFile: sourceFile,
-			path: [
-				{
-					id: model.id,
-					model: model,
-				},
-			],
-			fieldConfigs,
-		});
+
+		for (const tabID in model.json) {
+			// This is destructured to ensure the UID field is
+			// ignored.
+			const { uid: _uidField, ...tabFields } = model.json[tabID];
+
+			addInterfacePropertiesForFields({
+				fields: tabFields,
+				interface: dataInterface,
+				sourceFile: sourceFile,
+				path: [
+					{
+						id: model.id,
+						model: model,
+					},
+				],
+				fieldConfigs,
+				tabID,
+			});
+		}
 	} else {
 		dataInterface = sourceFile.addTypeAlias({
 			name: pascalCase(`${model.id} Document Data`),

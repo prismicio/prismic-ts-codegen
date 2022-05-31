@@ -26,9 +26,10 @@ type AddInterfacePropertyFromFieldConfig = {
 		...PathElement<CustomTypeModelField | CustomTypeModelSlice>[],
 	];
 	fieldConfigs: FieldConfigs;
+	tabID?: string;
 };
 
-const addInterfacePropertyFromField = (
+const addInterfacePropertyForField = (
 	config: AddInterfacePropertyFromFieldConfig,
 ) => {
 	switch (config.model.type) {
@@ -45,6 +46,7 @@ const addInterfacePropertyFromField = (
 					id: config.id,
 					model: config.model,
 					path: config.path,
+					tabID: config.tabID,
 				}),
 			});
 
@@ -59,6 +61,7 @@ const addInterfacePropertyFromField = (
 					id: config.id,
 					model: config.model,
 					path: config.path,
+					tabID: config.tabID,
 				}),
 			});
 
@@ -73,6 +76,7 @@ const addInterfacePropertyFromField = (
 					id: config.id,
 					model: config.model,
 					path: config.path,
+					tabID: config.tabID,
 				}),
 			});
 
@@ -105,6 +109,7 @@ const addInterfacePropertyFromField = (
 					id: config.id,
 					model: config.model,
 					path: config.path,
+					tabID: config.tabID,
 				}),
 			});
 
@@ -119,6 +124,7 @@ const addInterfacePropertyFromField = (
 					id: config.id,
 					model: config.model,
 					path: config.path,
+					tabID: config.tabID,
 				}),
 			});
 
@@ -138,6 +144,7 @@ const addInterfacePropertyFromField = (
 						id: config.id,
 						model: config.model,
 						path: config.path,
+						tabID: config.tabID,
 					}),
 				});
 			} else {
@@ -148,6 +155,7 @@ const addInterfacePropertyFromField = (
 						id: config.id,
 						model: config.model,
 						path: config.path,
+						tabID: config.tabID,
 					}),
 				});
 			}
@@ -170,6 +178,7 @@ const addInterfacePropertyFromField = (
 					id: config.id,
 					model: config.model,
 					path: config.path,
+					tabID: config.tabID,
 				}),
 			});
 
@@ -192,6 +201,7 @@ const addInterfacePropertyFromField = (
 							id: config.id,
 							model: config.model,
 							path: config.path,
+							tabID: config.tabID,
 						}),
 					});
 
@@ -206,6 +216,7 @@ const addInterfacePropertyFromField = (
 							id: config.id,
 							model: config.model,
 							path: config.path,
+							tabID: config.tabID,
 						}),
 					});
 
@@ -220,6 +231,7 @@ const addInterfacePropertyFromField = (
 							id: config.id,
 							model: config.model,
 							path: config.path,
+							tabID: config.tabID,
 						}),
 					});
 				}
@@ -236,6 +248,7 @@ const addInterfacePropertyFromField = (
 					id: config.id,
 					model: config.model,
 					path: config.path,
+					tabID: config.tabID,
 				}),
 			});
 
@@ -257,6 +270,7 @@ const addInterfacePropertyFromField = (
 						id: config.id,
 						model: config.model,
 						path: config.path,
+						tabID: config.tabID,
 					}),
 				});
 			} else {
@@ -267,6 +281,7 @@ const addInterfacePropertyFromField = (
 						id: config.id,
 						model: config.model,
 						path: config.path,
+						tabID: config.tabID,
 					}),
 				});
 			}
@@ -288,6 +303,7 @@ const addInterfacePropertyFromField = (
 						id: config.id,
 						model: config.model,
 						path: config.path,
+						tabID: config.tabID,
 					}),
 				});
 			} else {
@@ -298,6 +314,7 @@ const addInterfacePropertyFromField = (
 						id: config.id,
 						model: config.model,
 						path: config.path,
+						tabID: config.tabID,
 					}),
 				});
 			}
@@ -313,6 +330,7 @@ const addInterfacePropertyFromField = (
 					id: config.id,
 					model: config.model,
 					path: config.path,
+					tabID: config.tabID,
 				}),
 			});
 
@@ -327,6 +345,7 @@ const addInterfacePropertyFromField = (
 					id: config.id,
 					model: config.model,
 					path: config.path,
+					tabID: config.tabID,
 				}),
 			});
 
@@ -378,6 +397,7 @@ const addInterfacePropertyFromField = (
 					id: config.id,
 					model: config.model,
 					path: config.path,
+					tabID: config.tabID,
 				}),
 			});
 
@@ -558,6 +578,7 @@ const addInterfacePropertyFromField = (
 					id: config.id,
 					model: config.model,
 					path: config.path,
+					tabID: config.tabID,
 				}),
 			});
 
@@ -572,6 +593,7 @@ const addInterfacePropertyFromField = (
 					id: config.id,
 					model: config.model,
 					path: config.path,
+					tabID: config.tabID,
 				}),
 			});
 		}
@@ -583,16 +605,18 @@ type AddInterfacePropertiesForFieldsConfig = Omit<
 	"id" | "model"
 > & {
 	fields: Record<string, AddInterfacePropertyFromFieldConfig["model"]>;
+	tabID?: string;
 };
 
 export const addInterfacePropertiesForFields = (
 	config: AddInterfacePropertiesForFieldsConfig,
 ) => {
 	for (const name in config.fields) {
-		addInterfacePropertyFromField({
+		addInterfacePropertyForField({
 			...config,
 			id: name.includes("-") ? `"${name}"` : name,
 			model: config.fields[name],
+			tabID: config.tabID,
 		});
 	}
 };
