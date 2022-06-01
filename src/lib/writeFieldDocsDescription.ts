@@ -7,7 +7,7 @@ type BuildFieldDocsConfig = {
 	defaultValue?: string | boolean;
 	placeholder?: string;
 	apiIDPath?: string;
-	tabID?: string;
+	tabName?: string;
 	documentationURL?: string;
 };
 
@@ -41,8 +41,8 @@ export const writeFieldDocsDescription = (
 		config.writer.writeLine(`- **API ID Path**: ${config.apiIDPath}`);
 	}
 
-	if (config.tabID) {
-		config.writer.writeLine(`- **Tab ID**: ${config.tabID}`);
+	if (config.tabName) {
+		config.writer.writeLine(`- **Tab**: ${config.tabName}`);
 	}
 
 	if (config.documentationURL) {

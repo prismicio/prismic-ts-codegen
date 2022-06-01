@@ -44,10 +44,10 @@ export const addTypeAliasForCustomType = ({
 			],
 		});
 
-		for (const tabID in model.json) {
+		for (const tabName in model.json) {
 			// This is destructured to ensure the UID field is
 			// ignored.
-			const { uid: _uidField, ...tabFields } = model.json[tabID];
+			const { uid: _uidField, ...tabFields } = model.json[tabName];
 
 			addInterfacePropertiesForFields({
 				fields: tabFields,
@@ -60,7 +60,7 @@ export const addTypeAliasForCustomType = ({
 					},
 				],
 				fieldConfigs,
-				tabID,
+				tabName,
 			});
 		}
 	} else {
