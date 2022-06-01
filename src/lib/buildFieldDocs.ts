@@ -21,6 +21,7 @@ type BuildFieldDocsConfig = {
 		PathElement<CustomTypeModel | SharedSliceModel>,
 		...PathElement<CustomTypeModelField | CustomTypeModelSlice>[],
 	];
+	tabName?: string;
 };
 
 export const buildFieldDocs = (
@@ -63,6 +64,7 @@ export const buildFieldDocs = (
 					placeholder,
 					defaultValue,
 					apiIDPath,
+					tabName: config.tabName,
 					documentationURL: getFieldDocumentationURL({ model: config.model }),
 				});
 			},
