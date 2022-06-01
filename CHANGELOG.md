@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.4](https://github.com/prismicio/prismic-ts-codegen/compare/v0.0.3...v0.0.4) (2022-06-01)
+
+
+### Features
+
+* add a Custom Type field's tab name to its description ([#13](https://github.com/prismicio/prismic-ts-codegen/issues/13)) ([29c3151](https://github.com/prismicio/prismic-ts-codegen/commit/29c31514649ec57fae041acc0e97c45d8a3a254f))
+
 ### [0.0.3](https://github.com/prismicio/prismic-ts-codegen/compare/v0.0.2...v0.0.3) (2022-05-19)
 
 
