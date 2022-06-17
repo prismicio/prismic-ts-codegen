@@ -102,7 +102,7 @@ const main = async () => {
 			});
 
 			let types;
-			if (config.includeClientInterface && config.repositoryName) {
+			if ((config.includeClientInterface ?? true) && config.repositoryName) {
 				types = generateTypes({
 					repositoryName: config.repositoryName,
 					customTypeModels,
