@@ -101,11 +101,24 @@ const main = async () => {
 					config.locales.fetchFromRepository,
 			});
 
-			const types = generateTypes({
-				customTypeModels,
-				sharedSliceModels,
-				localeIDs,
-			});
+			let types;
+			if (config.includeClientInterface && config.repositoryName) {
+				types = generateTypes({
+					repositoryName: config.repositoryName,
+					customTypeModels,
+					sharedSliceModels,
+					localeIDs,
+					includeClientInterface: true,
+				});
+			} else {
+				types = generateTypes({
+					repositoryName: config.repositoryName,
+					customTypeModels,
+					sharedSliceModels,
+					localeIDs,
+					includeClientInterface: false,
+				});
+			}
 
 			if (config.output) {
 				writeFileSync(resolvePath(config.output), types);

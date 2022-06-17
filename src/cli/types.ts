@@ -26,6 +26,17 @@ export type Config = {
 	output?: string;
 
 	/**
+	 * Determines if a `@prismicio/client` interface with automatic typing should
+	 * be included in the output.
+	 *
+	 * If set to `true`, Prismic clients created for this config's Prismic
+	 * repository will automatically be typed with its Custom Types and Slices.
+	 *
+	 * @defaultValue `true`
+	 */
+	includeClientInterface?: boolean;
+
+	/**
 	 * Configuration for languages for the Prismic repository.
 	 *
 	 * It can be configured by providing an array of locale IDs configured for the

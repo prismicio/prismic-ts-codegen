@@ -1,4 +1,5 @@
 import test from "ava";
+import * as prismicM from "@prismicio/mock";
 
 import { parseSourceFile } from "./__testutils__/parseSourceFile";
 
@@ -23,4 +24,77 @@ test("imports @prismicio/types as prismicT", (t) => {
 
 	t.is(importDeclaration.getNamespaceImportOrThrow().getText(), "prismicT");
 	t.true(importDeclaration.isTypeOnly());
+});
+
+test("includes AllDocumentTypes type alias if Custom Types are provided", (t) => {
+	const res = lib.generateTypes({
+		customTypeModels: [
+			prismicM.model.customType({ seed: t.title, id: "foo" }),
+			prismicM.model.customType({ seed: t.title, id: "bar" }),
+		],
+	});
+
+	const file = parseSourceFile(res);
+	const typeAlias = file.getTypeAliasOrThrow("AllDocumentTypes");
+
+	t.is(typeAlias.getTypeNodeOrThrow().getText(), "FooDocument | BarDocument");
+	t.true(typeAlias.isExported());
+});
+
+test("includes @prismicio/client module declaration including a CreateClient interface if configured", (t) => {
+	const res = lib.generateTypes({
+		repositoryName: "qwerty",
+		includeClientInterface: true,
+		customTypeModels: [prismicM.model.customType({ seed: t.title, id: "foo" })],
+	});
+
+	const file = parseSourceFile(res);
+	const createClientInterface = file
+		.getModuleOrThrow('"@prismicio/client"')
+		.getInterfaceOrThrow("CreateClient");
+	const callSignatures = createClientInterface.getCallSignatures();
+	const firstCallSignature = callSignatures[0];
+
+	t.is(callSignatures.length, 1);
+
+	t.is(
+		firstCallSignature
+			.getParameterOrThrow("repositoryNameOrEndpoint")
+			.getTypeNodeOrThrow()
+			.getText(),
+		`"qwerty"`,
+	);
+
+	t.is(
+		firstCallSignature
+			.getParameterOrThrow("options")
+			.getTypeNodeOrThrow()
+			.getText(),
+		`prismic.ClientConfig`,
+	);
+	t.true(firstCallSignature.getParameterOrThrow("options").isOptional());
+
+	t.is(
+		firstCallSignature.getReturnTypeNodeOrThrow().getText(),
+		"prismic.Client<AllDocumentTypes>",
+	);
+});
+
+test("returns untyped `@prismicio/client` in CreateClient interface if no Custom Type models are provided", (t) => {
+	const res = lib.generateTypes({
+		repositoryName: "qwerty",
+		includeClientInterface: true,
+		customTypeModels: [],
+	});
+
+	const file = parseSourceFile(res);
+	const createClientInterface = file
+		.getModuleOrThrow('"@prismicio/client"')
+		.getInterfaceOrThrow("CreateClient");
+	const callSignatures = createClientInterface.getCallSignatures();
+
+	t.is(
+		callSignatures[0].getReturnTypeNodeOrThrow().getText(),
+		"prismic.Client",
+	);
 });

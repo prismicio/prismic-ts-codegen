@@ -3,7 +3,19 @@ import Joi from "joi";
 import { Config } from "./types";
 
 export const configSchema = Joi.object<Config>({
-	repositoryName: Joi.string(),
+	repositoryName: Joi.string()
+		.when("includeClientInterface", {
+			is: true,
+			then: Joi.required(),
+		})
+		.when("locales.fetchFromRepository", {
+			is: true,
+			then: Joi.required(),
+		})
+		.when("models.fetchFromRepository", {
+			is: true,
+			then: Joi.required(),
+		}),
 	accessToken: Joi.string(),
 	customTypesAPIToken: Joi.string(),
 
@@ -36,29 +48,6 @@ export const configSchema = Joi.object<Config>({
 			catalogTypes: Joi.object().pattern(Joi.string(), Joi.string().required()),
 		}),
 	}),
-})
-	.when(
-		Joi.object({
-			locales: Joi.object({
-				fetchFromRepository: Joi.valid(true),
-			}),
-		}),
-		{
-			then: Joi.object({
-				repositoryName: Joi.required(),
-			}),
-		},
-	)
-	.when(
-		Joi.object({
-			models: Joi.object({
-				fetchFromRepository: Joi.valid(true),
-			}),
-		}),
-		{
-			then: Joi.object({
-				repositoryName: Joi.required(),
-				customTypesAPIToken: Joi.required(),
-			}),
-		},
-	);
+
+	includeClientInterface: Joi.boolean(),
+});
