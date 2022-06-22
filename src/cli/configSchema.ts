@@ -3,11 +3,23 @@ import Joi from "joi";
 import { Config } from "./types";
 
 export const configSchema = Joi.object<Config>({
-	repositoryName: Joi.string(),
+	repositoryName: Joi.string()
+		.when("locales.fetchFromRepository", {
+			is: true,
+			then: Joi.required(),
+		})
+		.when("models.fetchFromRepository", {
+			is: true,
+			then: Joi.required(),
+		}),
 	accessToken: Joi.string(),
 	customTypesAPIToken: Joi.string(),
 
 	output: Joi.string(),
+
+	clientIntegration: {
+		includeCreateClientInterface: Joi.boolean,
+	},
 
 	locales: Joi.alternatives(
 		Joi.array().items(Joi.string().required()),
@@ -18,9 +30,9 @@ export const configSchema = Joi.object<Config>({
 	),
 
 	models: Joi.alternatives(
-		Joi.array().items(Joi.string().required()),
+		Joi.array().items(Joi.string()),
 		Joi.object({
-			files: Joi.array().items(Joi.string().required()),
+			files: Joi.array().items(Joi.string()),
 			fetchFromRepository: Joi.boolean(),
 		}),
 	),
@@ -36,29 +48,4 @@ export const configSchema = Joi.object<Config>({
 			catalogTypes: Joi.object().pattern(Joi.string(), Joi.string().required()),
 		}),
 	}),
-})
-	.when(
-		Joi.object({
-			locales: Joi.object({
-				fetchFromRepository: Joi.valid(true),
-			}),
-		}),
-		{
-			then: Joi.object({
-				repositoryName: Joi.required(),
-			}),
-		},
-	)
-	.when(
-		Joi.object({
-			models: Joi.object({
-				fetchFromRepository: Joi.valid(true),
-			}),
-		}),
-		{
-			then: Joi.object({
-				repositoryName: Joi.required(),
-				customTypesAPIToken: Joi.required(),
-			}),
-		},
-	);
+});

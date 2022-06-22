@@ -81,6 +81,9 @@
 	"peerDependencies": {
 		"@prismicio/types": "^0.1.25"
 	},
+	"optionalDependencies": {
+		"@prismicio/client": "^6.6"
+	},
 	"engines": {
 		"node": ">=12.7.0"
 	},

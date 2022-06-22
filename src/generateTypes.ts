@@ -1,4 +1,4 @@
-import { Project } from "ts-morph";
+import { Project, ModuleDeclarationKind } from "ts-morph";
 import type { CustomTypeModel, SharedSliceModel } from "@prismicio/types";
 
 import { BLANK_LINE_IDENTIFIER, NON_EDITABLE_FILE_HEADER } from "./constants";
@@ -6,12 +6,16 @@ import { addTypeAliasForCustomType } from "./lib/addTypeAliasForCustomType";
 import { addTypeAliasForSharedSlice } from "./lib/addTypeAliasForSharedSlice";
 import { getSourceFileText } from "./lib/getSourceFileText";
 import { FieldConfigs } from "./types";
+import { pascalCase } from "./lib/pascalCase";
 
 export type GenerateTypesConfig = {
 	customTypeModels?: CustomTypeModel[];
 	sharedSliceModels?: SharedSliceModel[];
 	localeIDs?: string[];
 	fieldConfigs?: FieldConfigs;
+	clientIntegration?: {
+		includeCreateClientInterface?: boolean;
+	};
 };
 
 export const generateTypes = (config: GenerateTypesConfig = {}) => {
@@ -49,6 +53,18 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 				fieldConfigs: config.fieldConfigs || {},
 			});
 		}
+
+		if (config.customTypeModels.length > 0) {
+			sourceFile.addTypeAlias({
+				name: "AllDocumentTypes",
+				type: config.customTypeModels
+					.map((customTypeModel) =>
+						pascalCase(`${customTypeModel.id} Document`),
+					)
+					.join(" | "),
+				isExported: true,
+			});
+		}
 	}
 
 	if (config.sharedSliceModels) {
@@ -59,6 +75,43 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 				fieldConfigs: config.fieldConfigs || {},
 			});
 		}
+	}
+
+	if (config.clientIntegration?.includeCreateClientInterface) {
+		sourceFile.addImportDeclaration({
+			moduleSpecifier: "@prismicio/client",
+			namespaceImport: "prismic",
+			isTypeOnly: true,
+		});
+
+		const clientModuleDeclaration = sourceFile.addModule({
+			name: '"@prismicio/client"',
+			hasDeclareKeyword: true,
+			declarationKind: ModuleDeclarationKind.Module,
+		});
+
+		clientModuleDeclaration.addInterface({
+			name: "CreateClient",
+			callSignatures: [
+				{
+					parameters: [
+						{
+							name: "repositoryNameOrEndpoint",
+							type: "string",
+						},
+						{
+							name: "options",
+							type: "prismic.ClientConfig",
+							hasQuestionToken: true,
+						},
+					],
+					returnType:
+						(config.customTypeModels?.length || 0) > 0
+							? "prismic.Client<AllDocumentTypes>"
+							: "prismic.Client",
+				},
+			],
+		});
 	}
 
 	return getSourceFileText(sourceFile);

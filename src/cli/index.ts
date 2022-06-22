@@ -101,14 +101,32 @@ const main = async () => {
 					config.locales.fetchFromRepository,
 			});
 
+			const hasCustomTypeModels = customTypeModels.length > 0;
+
 			const types = generateTypes({
 				customTypeModels,
 				sharedSliceModels,
 				localeIDs,
+				clientIntegration: {
+					includeCreateClientInterface: hasCustomTypeModels
+						? config.clientIntegration?.includeCreateClientInterface ?? true
+						: false,
+				},
 			});
+
+			if (
+				config.clientIntegration?.includeCreateClientInterface &&
+				!hasCustomTypeModels
+			) {
+				console.info(
+					"[INFO]: prismic-ts-codegen was configured to automatically integrate with `@prismicio/client`, but the integration was generated because no Custom Type models were found. Automatic integration requires at least one Custom Type model.",
+				);
+			}
 
 			if (config.output) {
 				writeFileSync(resolvePath(config.output), types);
+
+				console.info(`\nGenerated types in: ${config.output}`);
 			} else {
 				process.stdout.write(types + "\n");
 			}

@@ -26,6 +26,27 @@ export type Config = {
 	output?: string;
 
 	/**
+	 * Configuration for automatic `@prismicio/client` integration.
+	 */
+	clientIntegration?: {
+		/**
+		 * Determines if a `@prismicio/client` integration with automatic typing
+		 * should be included in the output.
+		 *
+		 * If set to `true`, Prismic clients will automatically be typed with the
+		 * generated Custom Types and Slices.
+		 *
+		 * **Note**: If your project queries content from multiple Prismic
+		 * repositories, set `includeCreateClientInterface` to `false` and manually
+		 * provide the generated `AllDocumentTypes` type to `@prismicio/client`'s
+		 * `createClient()` function instead.
+		 *
+		 * @defaultValue `true`
+		 */
+		includeCreateClientInterface?: boolean;
+	};
+
+	/**
 	 * Configuration for languages for the Prismic repository.
 	 *
 	 * It can be configured by providing an array of locale IDs configured for the
