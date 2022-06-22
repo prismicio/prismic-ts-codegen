@@ -84,6 +84,10 @@ const config: Config = {
 
 	output: "./types.generated.ts",
 
+	clientIntegration: {
+		includeCreateClientInterface: true,
+	},
+
 	locales: {
 		ids: ["en-us", "fr-fr", "en-gb"],
 		fetchFromRepository: true,
