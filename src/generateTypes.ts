@@ -7,22 +7,17 @@ import { addTypeAliasForSharedSlice } from "./lib/addTypeAliasForSharedSlice";
 import { getSourceFileText } from "./lib/getSourceFileText";
 import { FieldConfigs } from "./types";
 import { pascalCase } from "./lib/pascalCase";
+import { addCreateClientCallSignature } from "./lib/addCreateClientCallSignature";
 
 export type GenerateTypesConfig = {
 	customTypeModels?: CustomTypeModel[];
 	sharedSliceModels?: SharedSliceModel[];
 	localeIDs?: string[];
 	fieldConfigs?: FieldConfigs;
-} & (
-	| {
-			repositoryName: string;
-			includeClientInterface: true;
-	  }
-	| {
-			repositoryName?: string;
-			includeClientInterface?: false;
-	  }
-);
+	clientIntegration?: {
+		includeCreateClientInterface?: boolean;
+	};
+};
 
 export const generateTypes = (config: GenerateTypesConfig = {}) => {
 	const project = new Project({
@@ -80,8 +75,7 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 		}
 	}
 
-	// TODO: Test that the module declaration is created
-	if (config.includeClientInterface) {
+	if (config.clientIntegration?.includeCreateClientInterface) {
 		sourceFile.addImportDeclaration({
 			moduleSpecifier: "@prismicio/client",
 			namespaceImport: "prismic",
@@ -101,7 +95,7 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 					parameters: [
 						{
 							name: "repositoryNameOrEndpoint",
-							type: `"${config.repositoryName}"`,
+							type: "string",
 						},
 						{
 							name: "options",

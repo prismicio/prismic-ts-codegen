@@ -43,8 +43,9 @@ test("includes AllDocumentTypes type alias if Custom Types are provided", (t) =>
 
 test("includes @prismicio/client module declaration including a CreateClient interface if configured", (t) => {
 	const res = lib.generateTypes({
-		repositoryName: "qwerty",
-		includeClientInterface: true,
+		clientIntegration: {
+			includeCreateClientInterface: true,
+		},
 		customTypeModels: [prismicM.model.customType({ seed: t.title, id: "foo" })],
 	});
 
@@ -62,7 +63,7 @@ test("includes @prismicio/client module declaration including a CreateClient int
 			.getParameterOrThrow("repositoryNameOrEndpoint")
 			.getTypeNodeOrThrow()
 			.getText(),
-		`"qwerty"`,
+		`string`,
 	);
 
 	t.is(
@@ -78,12 +79,17 @@ test("includes @prismicio/client module declaration including a CreateClient int
 		firstCallSignature.getReturnTypeNodeOrThrow().getText(),
 		"prismic.Client<AllDocumentTypes>",
 	);
+
+	t.notThrows(() => {
+		file.getImportDeclarationOrThrow("@prismicio/client");
+	}, "imports `@prismicio/client`");
 });
 
-test("returns untyped `@prismicio/client` in CreateClient interface if no Custom Type models are provided", (t) => {
+test("includes untyped `@prismicio/client` in CreateClient interface if no Custom Type models are provided", (t) => {
 	const res = lib.generateTypes({
-		repositoryName: "qwerty",
-		includeClientInterface: true,
+		clientIntegration: {
+			includeCreateClientInterface: true,
+		},
 		customTypeModels: [],
 	});
 

@@ -4,10 +4,6 @@ import { Config } from "./types";
 
 export const configSchema = Joi.object<Config>({
 	repositoryName: Joi.string()
-		.when("includeClientInterface", {
-			is: true,
-			then: Joi.required(),
-		})
 		.when("locales.fetchFromRepository", {
 			is: true,
 			then: Joi.required(),
@@ -20,6 +16,10 @@ export const configSchema = Joi.object<Config>({
 	customTypesAPIToken: Joi.string(),
 
 	output: Joi.string(),
+
+	clientIntegration: {
+		includeCreateClientInterface: Joi.boolean,
+	},
 
 	locales: Joi.alternatives(
 		Joi.array().items(Joi.string().required()),
@@ -48,6 +48,4 @@ export const configSchema = Joi.object<Config>({
 			catalogTypes: Joi.object().pattern(Joi.string(), Joi.string().required()),
 		}),
 	}),
-
-	includeClientInterface: Joi.boolean(),
 });
