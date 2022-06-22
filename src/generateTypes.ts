@@ -54,14 +54,17 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 			});
 		}
 
-		// TODO: Test that AllDocumentTypes is created and exported
-		sourceFile.addTypeAlias({
-			name: "AllDocumentTypes",
-			type: config.customTypeModels
-				.map((customTypeModel) => pascalCase(`${customTypeModel.id} Document`))
-				.join(" | "),
-			isExported: true,
-		});
+		if (config.customTypeModels.length > 0) {
+			sourceFile.addTypeAlias({
+				name: "AllDocumentTypes",
+				type: config.customTypeModels
+					.map((customTypeModel) =>
+						pascalCase(`${customTypeModel.id} Document`),
+					)
+					.join(" | "),
+				isExported: true,
+			});
+		}
 	}
 
 	if (config.sharedSliceModels) {
