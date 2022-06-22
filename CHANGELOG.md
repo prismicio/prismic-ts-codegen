@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.5](https://github.com/prismicio/prismic-ts-codegen/compare/v0.0.4...v0.0.5) (2022-06-22)
+
+
+### Features
+
+* integrate generated types into `@prismicio/client` automatically ([#14](https://github.com/prismicio/prismic-ts-codegen/issues/14)) ([e0d47ab](https://github.com/prismicio/prismic-ts-codegen/commit/e0d47abd73281e09e394679a342c7994cb97d4fc))
+
 ### [0.0.4](https://github.com/prismicio/prismic-ts-codegen/compare/v0.0.3...v0.0.4) (2022-06-01)
 
 
