@@ -7,7 +7,6 @@ import { addTypeAliasForSharedSlice } from "./lib/addTypeAliasForSharedSlice";
 import { getSourceFileText } from "./lib/getSourceFileText";
 import { FieldConfigs } from "./types";
 import { pascalCase } from "./lib/pascalCase";
-import { addCreateClientCallSignature } from "./lib/addCreateClientCallSignature";
 
 export type GenerateTypesConfig = {
 	customTypeModels?: CustomTypeModel[];
