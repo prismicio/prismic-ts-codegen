@@ -30,9 +30,9 @@ export const configSchema = Joi.object<Config>({
 	),
 
 	models: Joi.alternatives(
-		Joi.array().items(Joi.string().required()),
+		Joi.array().items(Joi.string()),
 		Joi.object({
-			files: Joi.array().items(Joi.string().required()),
+			files: Joi.array().items(Joi.string()),
 			fetchFromRepository: Joi.boolean(),
 		}),
 	),
