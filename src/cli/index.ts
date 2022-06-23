@@ -49,7 +49,6 @@ const main = async () => {
 
 					const config: Config = {
 					  output: "./types.generated.ts",
-
 					  models: ["./customtypes/**/index.json", "./slices/**/model.json"],
 					};
 
