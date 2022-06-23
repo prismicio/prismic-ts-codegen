@@ -107,6 +107,7 @@ const main = async () => {
 				customTypeModels,
 				sharedSliceModels,
 				localeIDs,
+				fieldConfigs: config.fields,
 				clientIntegration: {
 					includeCreateClientInterface: hasCustomTypeModels
 						? config.clientIntegration?.includeCreateClientInterface ?? true
