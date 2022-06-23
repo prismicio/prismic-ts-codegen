@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.6](https://github.com/prismicio/prismic-ts-codegen/compare/v0.0.5...v0.0.6) (2022-06-23)
+
+
+### Bug Fixes
+
+* **cli:** use the `fields` property when generating types ([#19](https://github.com/prismicio/prismic-ts-codegen/issues/19)) ([00efdde](https://github.com/prismicio/prismic-ts-codegen/commit/00efdde9f32b7094b36ca95f6a2d4e1ab7dc5b61))
+
 ### [0.0.5](https://github.com/prismicio/prismic-ts-codegen/compare/v0.0.4...v0.0.5) (2022-06-22)
 
 
