@@ -49,7 +49,6 @@ const main = async () => {
 
 					const config: Config = {
 					  output: "./types.generated.ts",
-
 					  models: ["./customtypes/**/index.json", "./slices/**/model.json"],
 					};
 
@@ -107,6 +106,7 @@ const main = async () => {
 				customTypeModels,
 				sharedSliceModels,
 				localeIDs,
+				fieldConfigs: config.fields,
 				clientIntegration: {
 					includeCreateClientInterface: hasCustomTypeModels
 						? config.clientIntegration?.includeCreateClientInterface ?? true
