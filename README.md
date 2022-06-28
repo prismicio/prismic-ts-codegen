@@ -9,9 +9,7 @@
 
 <!-- TODO: Replacing link to Prismic with [Prismic][prismic] is useful here -->
 
-> ⚠ This project is in an experimental state. Use it at your own risk or stay tuned for the official release!
-
-An experimental Prismic model-to-TypeScript-type generator.
+A Prismic model-to-TypeScript-type generator.
 
 - Converts Custom Type and Shared Slice models to TypeScript types
 - Integrates with other Prismic TypeScript libraries
