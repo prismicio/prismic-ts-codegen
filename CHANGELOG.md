@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.7](https://github.com/prismicio/prismic-ts-codegen/compare/v0.0.6...v0.0.7) (2022-06-30)
+
+
+### Bug Fixes
+
+* **cli:** config schema to support `clientIntegration.includeCreateClientInterface` option ([#22](https://github.com/prismicio/prismic-ts-codegen/issues/22)) ([ff676ae](https://github.com/prismicio/prismic-ts-codegen/commit/ff676ae161def02c5eaa4e94c6446892f3405e9f))
+
+
+### Documentation
+
+* remove experimental warning ([d3365fe](https://github.com/prismicio/prismic-ts-codegen/commit/d3365fe592984db1afaf5d47371362bb5368a614))
+
+
+### Chore
+
+* **deps:** upgrade dependencies ([2a1cdaa](https://github.com/prismicio/prismic-ts-codegen/commit/2a1cdaa0a71bf4396b02e982b0e779cd670289e2))
+
 ### [0.0.6](https://github.com/prismicio/prismic-ts-codegen/compare/v0.0.5...v0.0.6) (2022-06-23)
 
 
