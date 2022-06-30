@@ -18,7 +18,7 @@ export const configSchema = Joi.object<Config>({
 	output: Joi.string(),
 
 	clientIntegration: {
-		includeCreateClientInterface: Joi.boolean,
+		includeCreateClientInterface: Joi.boolean(),
 	},
 
 	locales: Joi.alternatives(
