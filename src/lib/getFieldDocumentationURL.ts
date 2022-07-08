@@ -8,6 +8,8 @@ type GetFieldDocumentationURLConfig = {
 
 export const getFieldDocumentationURL = (
 	config: GetFieldDocumentationURLConfig,
-): string => {
-	return FIELD_DOCUMENTATION_URLS[config.model.type];
+): string | undefined => {
+	return FIELD_DOCUMENTATION_URLS[
+		config.model.type as keyof typeof FIELD_DOCUMENTATION_URLS
+	];
 };

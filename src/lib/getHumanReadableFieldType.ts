@@ -11,7 +11,9 @@ export const getHumanReadableFieldType = (
 	switch (config.model.type) {
 		case "StructuredText": {
 			const isTitleField =
+				config.model.config &&
 				"single" in config.model.config &&
+				config.model.config.single &&
 				config.model.config.single
 					.split(",")
 					.every((blockType) => /heading/.test(blockType));
@@ -20,11 +22,15 @@ export const getHumanReadableFieldType = (
 		}
 
 		case "IntegrationFields": {
-			return `Integration Fields (Catalog: \`${config.model.config.catalog}\`)`;
+			const catalog = config.model.config?.catalog;
+
+			return `Integration Fields (Catalog: ${
+				catalog ? `\`${catalog}\`` : "*unknown*"
+			})`;
 		}
 
 		case "Link": {
-			switch (config.model.config.select) {
+			switch (config.model.config?.select) {
 				case CustomTypeModelLinkSelectType.Document: {
 					return "Content Relationship";
 				}

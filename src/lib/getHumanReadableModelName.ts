@@ -23,18 +23,20 @@ export const getHumanReadableModelName = (
 	config: GetModelHumanNameConfig,
 ): string => {
 	if (isCustomTypeModel(config.model)) {
-		return config.model.label;
+		return config.model.label || config.model.id;
 	} else if (isSharedSliceModel(config.model)) {
 		return config.model.name;
-	} else if (
-		isCustomTypeModelField(config.model) &&
-		"label" in config.model.config
-	) {
-		return config.model.config.label;
+	} else if (isCustomTypeModelField(config.model)) {
+		if (config.model.config && "label" in config.model.config) {
+			// Non-Slice Zone fields
+			return config.model.config.label || config.id;
+		} else if (config.model.config && "fieldset" in config.model) {
+			// Slice Zone
+			return config.model.fieldset || config.id;
+		}
 	} else if (isCustomTypeModelSlice(config.model)) {
-		return config.model.fieldset;
-	} else {
-		// Slice Zone
-		return `Slice Zone (\`${config.id}\`)`;
+		return config.model.fieldset || config.id;
 	}
+
+	return `\`${config.id}\``;
 };
