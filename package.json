@@ -58,7 +58,7 @@
 		"ts-morph": "^15.1.0"
 	},
 	"devDependencies": {
-		"@prismicio/mock": "^0.0.10",
+		"@prismicio/mock": "^0.1.0",
 		"@prismicio/types": "^0.2.0",
 		"@size-limit/preset-small-lib": "^7.0.8",
 		"@types/common-tags": "^1.8.1",
