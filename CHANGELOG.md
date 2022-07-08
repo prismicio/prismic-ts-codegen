@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0](https://github.com/prismicio/prismic-ts-codegen/compare/v0.0.7...v0.1.0) (2022-07-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* update `@prismicio/types` to `v0.2.0` (#23)
+
+### Features
+
+* update `@prismicio/types` to `v0.2.0` ([#23](https://github.com/prismicio/prismic-ts-codegen/issues/23)) ([31d7a4f](https://github.com/prismicio/prismic-ts-codegen/commit/31d7a4f6b94e820ab5c25abfe54d18c77cea46dc))
+
 ### [0.0.7](https://github.com/prismicio/prismic-ts-codegen/compare/v0.0.6...v0.0.7) (2022-06-30)
 
 
