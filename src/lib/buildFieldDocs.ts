@@ -43,13 +43,14 @@ export const buildFieldDocs = (
 				});
 
 				const placeholder =
+					config.model.config &&
 					"placeholder" in config.model.config &&
 					config.model.config.placeholder
 						? config.model.config.placeholder
 						: `*None*`;
 
 				const defaultValue =
-					"default_value" in config.model.config
+					config.model.config && "default_value" in config.model.config
 						? config.model.config.default_value
 						: undefined;
 

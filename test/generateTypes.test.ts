@@ -27,10 +27,12 @@ test("imports @prismicio/types as prismicT", (t) => {
 });
 
 test("includes AllDocumentTypes type alias if Custom Types are provided", (t) => {
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
 	const res = lib.generateTypes({
 		customTypeModels: [
-			prismicM.model.customType({ seed: t.title, id: "foo" }),
-			prismicM.model.customType({ seed: t.title, id: "bar" }),
+			mock.model.customType({ id: "foo" }),
+			mock.model.customType({ id: "bar" }),
 		],
 	});
 

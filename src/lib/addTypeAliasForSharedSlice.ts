@@ -25,7 +25,7 @@ export const addTypeAliasForSharedSlice = (
 
 	for (const variation of config.model.variations) {
 		let primaryInterface: InterfaceDeclaration | undefined;
-		if (Object.keys(variation.primary).length > 0) {
+		if (variation.primary && Object.keys(variation.primary).length > 0) {
 			primaryInterface = config.sourceFile.addInterface({
 				name: pascalCase(
 					`${buildSharedSliceInterfaceName({ id: config.model.id })} ${
@@ -72,7 +72,7 @@ export const addTypeAliasForSharedSlice = (
 		}
 
 		let itemInterface: InterfaceDeclaration | undefined;
-		if (Object.keys(variation.items).length > 0) {
+		if (variation.items && Object.keys(variation.items).length > 0) {
 			itemInterface = config.sourceFile.addInterface({
 				name: pascalCase(
 					`${buildSharedSliceInterfaceName({ id: config.model.id })} ${

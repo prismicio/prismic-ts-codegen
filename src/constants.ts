@@ -15,7 +15,7 @@ export const SHARED_SLICES_DOCUMENTATION_URL =
 	"https://prismic.io/docs/core-concepts/reusing-slices";
 
 export const FIELD_DOCUMENTATION_URLS: Record<
-	keyof typeof CustomTypeModelFieldType,
+	Exclude<keyof typeof CustomTypeModelFieldType, "Range" | "Separator">,
 	string
 > = {
 	UID: "https://prismic.io/docs/core-concepts/uid",
@@ -34,4 +34,5 @@ export const FIELD_DOCUMENTATION_URLS: Record<
 	Group: "https://prismic.io/docs/core-concepts/group",
 	IntegrationFields: "https://prismic.io/docs/core-concepts/integration-fields",
 	Slices: "https://prismic.io/docs/core-concepts/slices",
+	LegacySlices: "https://prismic.io/docs/core-concepts/slices",
 };

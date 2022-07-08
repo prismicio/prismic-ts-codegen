@@ -7,15 +7,15 @@ import { parseSourceFile } from "./__testutils__/parseSourceFile";
 import * as lib from "../src";
 
 test("correctly typed", (t) => {
-	const model = prismicM.model.customType({
-		seed: t.title,
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: prismicM.model.group({
-				seed: t.title,
+			bar: mock.model.group({
 				fields: {
-					baz: prismicM.model.keyText({ seed: t.title }),
-					qux: prismicM.model.select({ seed: t.title }),
+					baz: mock.model.keyText(),
+					qux: mock.model.select(),
 				},
 			}),
 		},
@@ -34,15 +34,15 @@ test("correctly typed", (t) => {
 });
 
 test("creates an interface for a group item containing its fields", (t) => {
-	const model = prismicM.model.customType({
-		seed: t.title,
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: prismicM.model.group({
-				seed: t.title,
+			bar: mock.model.group({
 				fields: {
-					baz: prismicM.model.keyText({ seed: t.title }),
-					qux: prismicM.model.select({ seed: t.title }),
+					baz: mock.model.keyText(),
+					qux: mock.model.select(),
 				},
 			}),
 		},
@@ -69,14 +69,14 @@ test("correctly documented", macroBasicFieldDocs, (t) =>
 );
 
 test("handles hyphenated fields", (t) => {
-	const model = prismicM.model.customType({
-		seed: t.title,
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: prismicM.model.group({
-				seed: t.title,
+			bar: mock.model.group({
 				fields: {
-					"hyphenated-field": prismicM.model.keyText({ seed: t.title }),
+					"hyphenated-field": mock.model.keyText(),
 				},
 			}),
 		},

@@ -15,18 +15,13 @@ test(
 );
 
 test("can be customized with catalog-specific types", (t) => {
-	const model = prismicM.model.customType({
-		seed: t.title,
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: prismicM.model.integrationFields({
-				seed: t.title,
-				catalog: "abc",
-			}),
-			baz: prismicM.model.integrationFields({
-				seed: t.title,
-				catalog: "def",
-			}),
+			bar: mock.model.integrationFields({ catalog: "abc" }),
+			baz: mock.model.integrationFields({ catalog: "def" }),
 		},
 	});
 

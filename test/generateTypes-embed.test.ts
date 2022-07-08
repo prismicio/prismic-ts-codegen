@@ -16,11 +16,12 @@ test(
 );
 
 test("can be customized with provider-specific types", (t) => {
-	const model = prismicM.model.customType({
-		seed: t.title,
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: prismicM.model.embed({ seed: t.title }),
+			bar: mock.model.embed(),
 		},
 	});
 

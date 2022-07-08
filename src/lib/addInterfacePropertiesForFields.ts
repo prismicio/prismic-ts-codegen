@@ -132,7 +132,10 @@ const addInterfacePropertyForField = (
 		}
 
 		case "Image": {
-			if (config.model.config.thumbnails.length > 0) {
+			if (
+				config.model.config?.thumbnails &&
+				config.model.config.thumbnails.length > 0
+			) {
 				const thumbnailNames = config.model.config.thumbnails
 					.map((thumbnail) => `"${thumbnail.name}"`)
 					.join(" | ");
@@ -164,10 +167,11 @@ const addInterfacePropertyForField = (
 		}
 
 		case "IntegrationFields": {
-			const catalogType =
-				config.fieldConfigs.integrationFields?.catalogTypes?.[
-					config.model.config.catalog
-				];
+			const catalogType = config.model.config?.catalog
+				? config.fieldConfigs.integrationFields?.catalogTypes?.[
+						config.model.config.catalog
+				  ]
+				: undefined;
 
 			config.interface.addProperty({
 				name: config.id,
@@ -186,11 +190,13 @@ const addInterfacePropertyForField = (
 		}
 
 		case "Link": {
-			switch (config.model.config.select) {
+			switch (config.model.config?.select) {
 				case CustomTypeModelLinkSelectType.Document: {
+					config.model.config;
 					config.interface.addProperty({
 						name: config.id,
 						type:
+							"customtypes" in config.model.config &&
 							config.model.config.customtypes &&
 							config.model.config.customtypes.length > 0
 								? `prismicT.RelationField<${config.model.config.customtypes
@@ -257,7 +263,9 @@ const addInterfacePropertyForField = (
 
 		case "StructuredText": {
 			const isTitleField =
+				config.model.config &&
 				"single" in config.model.config &&
+				config.model.config.single &&
 				config.model.config.single
 					.split(",")
 					.every((blockType) => /heading/.test(blockType));
@@ -290,15 +298,15 @@ const addInterfacePropertyForField = (
 		}
 
 		case "Select": {
-			const options = config.model.config.options
-				.map((option) => `"${option}"`)
+			const options = config.model.config?.options
+				?.map((option) => `"${option}"`)
 				.join(" | ");
-			const hasDefault = Boolean(config.model.config.default_value);
+			const hasDefault = Boolean(config.model.config?.default_value);
 
 			if (hasDefault) {
 				config.interface.addProperty({
 					name: config.id,
-					type: `prismicT.SelectField<${options}, "filled">`,
+					type: `prismicT.SelectField<${options || "string"}, "filled">`,
 					docs: buildFieldDocs({
 						id: config.id,
 						model: config.model,
@@ -376,19 +384,22 @@ const addInterfacePropertyForField = (
 				],
 				isExported: true,
 			});
-			addInterfacePropertiesForFields({
-				interface: itemInterface,
-				sourceFile: config.sourceFile,
-				fields: config.model.config.fields,
-				path: [
-					...config.path,
-					{
-						id: config.id,
-						model: config.model,
-					},
-				],
-				fieldConfigs: config.fieldConfigs,
-			});
+
+			if (config.model.config?.fields) {
+				addInterfacePropertiesForFields({
+					interface: itemInterface,
+					sourceFile: config.sourceFile,
+					fields: config.model.config.fields,
+					path: [
+						...config.path,
+						{
+							id: config.id,
+							model: config.model,
+						},
+					],
+					fieldConfigs: config.fieldConfigs,
+				});
+			}
 
 			config.interface.addProperty({
 				name: config.id,
@@ -407,140 +418,147 @@ const addInterfacePropertyForField = (
 		case "Slices": {
 			const choiceInterfaceNames: string[] = [];
 
-			for (const choiceId in config.model.config.choices) {
-				const choice = config.model.config.choices[choiceId];
+			if (config.model.config?.choices) {
+				for (const choiceId in config.model.config.choices) {
+					const choice = config.model.config.choices[choiceId];
 
-				if (choice.type === CustomTypeModelSliceType.SharedSlice) {
-					choiceInterfaceNames.push(
-						buildSharedSliceInterfaceName({ id: choiceId }),
-					);
-				} else if (choice.type === CustomTypeModelSliceType.Slice) {
-					let primaryInterface: InterfaceDeclaration | undefined;
-					if (Object.keys(choice["non-repeat"]).length > 0) {
-						primaryInterface = config.sourceFile.addInterface({
-							name: pascalCase(
-								`${config.path[0].id} Document Data ${config.id} ${choiceId} Slice Primary`,
-							),
-							docs: [
-								{
-									description: (writer) => {
-										const humanReadablePath = getHumanReadableFieldPath({
-											path: [
-												...config.path,
-												{
-													id: config.id,
-													model: config.model,
-												},
-												{
-													id: choiceId,
-													model: choice,
-												},
-												{
-													id: "primary",
-													label: "Primary",
-												},
-											],
-										});
+					if (choice.type === CustomTypeModelSliceType.SharedSlice) {
+						choiceInterfaceNames.push(
+							buildSharedSliceInterfaceName({ id: choiceId }),
+						);
+					} else if (choice.type === CustomTypeModelSliceType.Slice) {
+						let primaryInterface: InterfaceDeclaration | undefined;
+						if (
+							choice["non-repeat"] &&
+							Object.keys(choice["non-repeat"]).length > 0
+						) {
+							primaryInterface = config.sourceFile.addInterface({
+								name: pascalCase(
+									`${config.path[0].id} Document Data ${config.id} ${choiceId} Slice Primary`,
+								),
+								docs: [
+									{
+										description: (writer) => {
+											const humanReadablePath = getHumanReadableFieldPath({
+												path: [
+													...config.path,
+													{
+														id: config.id,
+														model: config.model,
+													},
+													{
+														id: choiceId,
+														model: choice,
+													},
+													{
+														id: "primary",
+														label: "Primary",
+													},
+												],
+											});
 
-										writer.writeLine(`Primary content in ${humanReadablePath}`);
+											writer.writeLine(
+												`Primary content in ${humanReadablePath}`,
+											);
+										},
 									},
-								},
-							],
-						});
-						addInterfacePropertiesForFields({
-							interface: primaryInterface,
-							sourceFile: config.sourceFile,
-							fields: choice["non-repeat"],
-							path: [
-								...config.path,
-								{
-									id: config.id,
-									model: config.model,
-								},
-								{
-									id: choiceId,
-									model: choice,
-								},
-								{
-									id: "primary",
-									label: "Primary",
-								},
-							],
-							fieldConfigs: config.fieldConfigs,
-						});
-					}
-
-					let itemInterface: InterfaceDeclaration | undefined;
-					if (Object.keys(choice.repeat).length > 0) {
-						itemInterface = config.sourceFile.addInterface({
-							name: pascalCase(
-								`${config.path[0].id} Document Data ${config.id} ${choiceId} Slice Item`,
-							),
-							docs: [
-								{
-									description: (writer) => {
-										const humanReadablePath = getHumanReadableFieldPath({
-											path: [
-												...config.path,
-												{
-													id: config.id,
-													model: config.model,
-												},
-												{
-													id: choiceId,
-													model: choice,
-												},
-												{
-													id: "items",
-													label: "Items",
-												},
-											],
-										});
-
-										writer.writeLine(`Item in ${humanReadablePath}`);
+								],
+							});
+							addInterfacePropertiesForFields({
+								interface: primaryInterface,
+								sourceFile: config.sourceFile,
+								fields: choice["non-repeat"],
+								path: [
+									...config.path,
+									{
+										id: config.id,
+										model: config.model,
 									},
-								},
-							],
+									{
+										id: choiceId,
+										model: choice,
+									},
+									{
+										id: "primary",
+										label: "Primary",
+									},
+								],
+								fieldConfigs: config.fieldConfigs,
+							});
+						}
+
+						let itemInterface: InterfaceDeclaration | undefined;
+						if (choice.repeat && Object.keys(choice.repeat).length > 0) {
+							itemInterface = config.sourceFile.addInterface({
+								name: pascalCase(
+									`${config.path[0].id} Document Data ${config.id} ${choiceId} Slice Item`,
+								),
+								docs: [
+									{
+										description: (writer) => {
+											const humanReadablePath = getHumanReadableFieldPath({
+												path: [
+													...config.path,
+													{
+														id: config.id,
+														model: config.model,
+													},
+													{
+														id: choiceId,
+														model: choice,
+													},
+													{
+														id: "items",
+														label: "Items",
+													},
+												],
+											});
+
+											writer.writeLine(`Item in ${humanReadablePath}`);
+										},
+									},
+								],
+								isExported: true,
+							});
+							addInterfacePropertiesForFields({
+								interface: itemInterface,
+								sourceFile: config.sourceFile,
+								fields: choice.repeat,
+								path: [
+									...config.path,
+									{
+										id: config.id,
+										model: config.model,
+									},
+									{
+										id: choiceId,
+										model: choice,
+									},
+									{
+										id: "items",
+										label: "Items",
+									},
+								],
+								fieldConfigs: config.fieldConfigs,
+							});
+						}
+
+						const sliceType = config.sourceFile.addTypeAlias({
+							name: pascalCase(
+								`${config.path[0].id} Document Data ${config.id} ${choiceId} Slice`,
+							),
+							type: `prismicT.Slice<"${choiceId}", ${
+								primaryInterface
+									? `Simplify<${primaryInterface.getName()}>`
+									: "Record<string, never>"
+							}, ${
+								itemInterface ? `Simplify<${itemInterface.getName()}>` : "never"
+							}>`,
 							isExported: true,
 						});
-						addInterfacePropertiesForFields({
-							interface: itemInterface,
-							sourceFile: config.sourceFile,
-							fields: choice.repeat,
-							path: [
-								...config.path,
-								{
-									id: config.id,
-									model: config.model,
-								},
-								{
-									id: choiceId,
-									model: choice,
-								},
-								{
-									id: "items",
-									label: "Items",
-								},
-							],
-							fieldConfigs: config.fieldConfigs,
-						});
+
+						choiceInterfaceNames.push(sliceType.getName());
 					}
-
-					const sliceType = config.sourceFile.addTypeAlias({
-						name: pascalCase(
-							`${config.path[0].id} Document Data ${config.id} ${choiceId} Slice`,
-						),
-						type: `prismicT.Slice<"${choiceId}", ${
-							primaryInterface
-								? `Simplify<${primaryInterface.getName()}>`
-								: "Record<string, never>"
-						}, ${
-							itemInterface ? `Simplify<${itemInterface.getName()}>` : "never"
-						}>`,
-						isExported: true,
-					});
-
-					choiceInterfaceNames.push(sliceType.getName());
 				}
 			}
 

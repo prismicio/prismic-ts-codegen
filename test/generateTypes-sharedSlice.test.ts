@@ -6,28 +6,27 @@ import { parseSourceFile } from "./__testutils__/parseSourceFile";
 import * as lib from "../src";
 
 test("correctly typed", (t) => {
-	const model = prismicM.model.sharedSlice({
-		seed: t.title,
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.sharedSlice({
 		id: "foo",
 		variations: [
-			prismicM.model.sharedSliceVariation({
-				seed: t.title,
+			mock.model.sharedSliceVariation({
 				id: "bar",
 				primaryFields: {
-					abc: prismicM.model.keyText({ seed: t.title }),
+					abc: mock.model.keyText(),
 				},
 				itemsFields: {
-					def: prismicM.model.select({ seed: t.title }),
+					def: mock.model.select(),
 				},
 			}),
-			prismicM.model.sharedSliceVariation({
-				seed: t.title,
+			mock.model.sharedSliceVariation({
 				id: "baz",
 				primaryFields: {
-					ghi: prismicM.model.keyText({ seed: t.title }),
+					ghi: mock.model.keyText(),
 				},
 				itemsFields: {
-					jkl: prismicM.model.select({ seed: t.title }),
+					jkl: mock.model.select(),
 				},
 			}),
 		],
@@ -46,28 +45,27 @@ test("correctly typed", (t) => {
 });
 
 test("creates a type alias to a union of all Slice variation types", (t) => {
-	const model = prismicM.model.sharedSlice({
-		seed: t.title,
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.sharedSlice({
 		id: "foo",
 		variations: [
-			prismicM.model.sharedSliceVariation({
-				seed: t.title,
+			mock.model.sharedSliceVariation({
 				id: "bar",
 				primaryFields: {
-					abc: prismicM.model.keyText({ seed: t.title }),
+					abc: mock.model.keyText(),
 				},
 				itemsFields: {
-					def: prismicM.model.select({ seed: t.title }),
+					def: mock.model.select(),
 				},
 			}),
-			prismicM.model.sharedSliceVariation({
-				seed: t.title,
+			mock.model.sharedSliceVariation({
 				id: "baz",
 				primaryFields: {
-					ghi: prismicM.model.keyText({ seed: t.title }),
+					ghi: mock.model.keyText(),
 				},
 				itemsFields: {
-					jkl: prismicM.model.select({ seed: t.title }),
+					jkl: mock.model.select(),
 				},
 			}),
 		],
@@ -84,28 +82,27 @@ test("creates a type alias to a union of all Slice variation types", (t) => {
 });
 
 test("creates a type alias for each Slice variation", (t) => {
-	const model = prismicM.model.sharedSlice({
-		seed: t.title,
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.sharedSlice({
 		id: "foo",
 		variations: [
-			prismicM.model.sharedSliceVariation({
-				seed: t.title,
+			mock.model.sharedSliceVariation({
 				id: "bar",
 				primaryFields: {
-					abc: prismicM.model.keyText({ seed: t.title }),
+					abc: mock.model.keyText(),
 				},
 				itemsFields: {
-					def: prismicM.model.select({ seed: t.title }),
+					def: mock.model.select(),
 				},
 			}),
-			prismicM.model.sharedSliceVariation({
-				seed: t.title,
+			mock.model.sharedSliceVariation({
 				id: "baz",
 				primaryFields: {
-					ghi: prismicM.model.keyText({ seed: t.title }),
+					ghi: mock.model.keyText(),
 				},
 				itemsFields: {
-					jkl: prismicM.model.select({ seed: t.title }),
+					jkl: mock.model.select(),
 				},
 			}),
 		],
@@ -132,15 +129,11 @@ test("creates a type alias for each Slice variation", (t) => {
 });
 
 test("handles Slice variations with no fields", (t) => {
-	const model = prismicM.model.sharedSlice({
-		seed: t.title,
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.sharedSlice({
 		id: "foo",
-		variations: [
-			prismicM.model.sharedSliceVariation({
-				seed: t.title,
-				id: "bar",
-			}),
-		],
+		variations: [mock.model.sharedSliceVariation({ id: "bar" })],
 	});
 
 	const types = lib.generateTypes({ sharedSliceModels: [model] });
@@ -153,15 +146,15 @@ test("handles Slice variations with no fields", (t) => {
 });
 
 test("handles Slice variations with no primary fields", (t) => {
-	const model = prismicM.model.sharedSlice({
-		seed: t.title,
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.sharedSlice({
 		id: "foo",
 		variations: [
-			prismicM.model.sharedSliceVariation({
-				seed: t.title,
+			mock.model.sharedSliceVariation({
 				id: "bar",
 				itemsFields: {
-					def: prismicM.model.select({ seed: t.title }),
+					def: mock.model.select(),
 				},
 			}),
 		],
@@ -177,15 +170,15 @@ test("handles Slice variations with no primary fields", (t) => {
 });
 
 test("handles Slice variations with no item fields", (t) => {
-	const model = prismicM.model.sharedSlice({
-		seed: t.title,
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.sharedSlice({
 		id: "foo",
 		variations: [
-			prismicM.model.sharedSliceVariation({
-				seed: t.title,
+			mock.model.sharedSliceVariation({
 				id: "bar",
 				primaryFields: {
-					abc: prismicM.model.keyText({ seed: t.title }),
+					abc: mock.model.keyText(),
 				},
 			}),
 		],
@@ -201,18 +194,18 @@ test("handles Slice variations with no item fields", (t) => {
 });
 
 test("creates an interface for a Slice variation's primary fields", (t) => {
-	const model = prismicM.model.sharedSlice({
-		seed: t.title,
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.sharedSlice({
 		id: "foo",
 		variations: [
-			prismicM.model.sharedSliceVariation({
-				seed: t.title,
+			mock.model.sharedSliceVariation({
 				id: "bar",
 				primaryFields: {
-					abc: prismicM.model.keyText({ seed: t.title }),
+					abc: mock.model.keyText(),
 				},
 				itemsFields: {
-					def: prismicM.model.select({ seed: t.title }),
+					def: mock.model.select(),
 				},
 			}),
 		],
@@ -229,18 +222,18 @@ test("creates an interface for a Slice variation's primary fields", (t) => {
 });
 
 test("creates an interface for a Slice variation's items fields", (t) => {
-	const model = prismicM.model.sharedSlice({
-		seed: t.title,
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.sharedSlice({
 		id: "foo",
 		variations: [
-			prismicM.model.sharedSliceVariation({
-				seed: t.title,
+			mock.model.sharedSliceVariation({
 				id: "bar",
 				primaryFields: {
-					abc: prismicM.model.keyText({ seed: t.title }),
+					abc: mock.model.keyText(),
 				},
 				itemsFields: {
-					def: prismicM.model.select({ seed: t.title }),
+					def: mock.model.select(),
 				},
 			}),
 		],
@@ -284,18 +277,18 @@ test("handles Shared Slice with no variations", (t) => {
 });
 
 test("handles hyphenated fields", (t) => {
-	const model = prismicM.model.sharedSlice({
-		seed: t.title,
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.sharedSlice({
 		id: "foo",
 		variations: [
-			prismicM.model.sharedSliceVariation({
-				seed: t.title,
+			mock.model.sharedSliceVariation({
 				id: "bar",
 				primaryFields: {
-					"hyphenated-field": prismicM.model.keyText({ seed: t.title }),
+					"hyphenated-field": mock.model.keyText(),
 				},
 				itemsFields: {
-					"hyphenated-field": prismicM.model.select({ seed: t.title }),
+					"hyphenated-field": mock.model.select(),
 				},
 			}),
 		],

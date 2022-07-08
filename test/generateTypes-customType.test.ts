@@ -6,13 +6,14 @@ import { parseSourceFile } from "./__testutils__/parseSourceFile";
 import * as lib from "../src";
 
 test("generates a Custom Type type", (t) => {
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
 	const res = lib.generateTypes({
 		customTypeModels: [
-			prismicM.model.customType({
-				seed: t.title,
+			mock.model.customType({
 				id: "foo",
 				fields: {
-					bar: prismicM.model.keyText({ seed: t.title }),
+					bar: mock.model.keyText(),
 				},
 			}),
 		],
@@ -47,13 +48,14 @@ test("generates a Custom Type type", (t) => {
 });
 
 test("uses PrismicDocumentWithUID when model contains a UID field", (t) => {
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
 	const res = lib.generateTypes({
 		customTypeModels: [
-			prismicM.model.customType({
-				seed: t.title,
+			mock.model.customType({
 				id: "foo",
 				fields: {
-					uid: prismicM.model.uid({ seed: t.title }),
+					uid: mock.model.uid(),
 				},
 			}),
 		],
@@ -68,13 +70,14 @@ test("uses PrismicDocumentWithUID when model contains a UID field", (t) => {
 });
 
 test("data interface contains data fields", (t) => {
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
 	const res = lib.generateTypes({
 		customTypeModels: [
-			prismicM.model.customType({
-				seed: t.title,
+			mock.model.customType({
 				id: "foo",
 				fields: {
-					bar: prismicM.model.keyText({ seed: t.title }),
+					bar: mock.model.keyText(),
 				},
 			}),
 		],
@@ -91,18 +94,18 @@ test("data interface contains data fields", (t) => {
 });
 
 test("data interface is empty record type alias if no data fields are defined", (t) => {
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
 	const res = lib.generateTypes({
 		customTypeModels: [
-			prismicM.model.customType({
-				seed: t.title,
+			mock.model.customType({
 				id: "no_fields",
 				fields: {},
 			}),
-			prismicM.model.customType({
-				seed: t.title,
+			mock.model.customType({
 				id: "only_uid",
 				fields: {
-					uid: prismicM.model.uid({ seed: t.title }),
+					uid: mock.model.uid(),
 				},
 			}),
 		],

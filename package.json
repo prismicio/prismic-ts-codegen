@@ -58,16 +58,16 @@
 		"ts-morph": "^15.1.0"
 	},
 	"devDependencies": {
-		"@prismicio/mock": "^0.0.10",
-		"@prismicio/types": "^0.1.29",
+		"@prismicio/mock": "^0.1.0",
+		"@prismicio/types": "^0.2.0",
 		"@size-limit/preset-small-lib": "^7.0.8",
 		"@types/common-tags": "^1.8.1",
 		"@types/prettier": "^2.6.3",
-		"@typescript-eslint/eslint-plugin": "^5.30.0",
-		"@typescript-eslint/parser": "^5.30.0",
+		"@typescript-eslint/eslint-plugin": "^5.30.5",
+		"@typescript-eslint/parser": "^5.30.5",
 		"ava": "^4.3.0",
 		"esbuild-register": "^3.3.3",
-		"eslint": "^8.18.0",
+		"eslint": "^8.19.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-prettier": "^4.2.1",
 		"eslint-plugin-tsdoc": "^0.2.16",
@@ -79,7 +79,7 @@
 		"typescript": "^4.7.4"
 	},
 	"peerDependencies": {
-		"@prismicio/types": "^0.1.25"
+		"@prismicio/types": "^0.2"
 	},
 	"optionalDependencies": {
 		"@prismicio/client": "^6.6"

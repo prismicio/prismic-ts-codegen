@@ -1,4 +1,9 @@
-import type { CustomTypeModelSlice } from "@prismicio/types";
+import {
+	CustomTypeModelSlice,
+	CustomTypeModelSliceType,
+} from "@prismicio/types";
+
+import { hasOwnProperty } from "./hasOwnProperty";
 
 export const isCustomTypeModelSlice = (
 	model: unknown,
@@ -6,7 +11,7 @@ export const isCustomTypeModelSlice = (
 	return (
 		typeof model === "object" &&
 		model !== null &&
-		"non-repeat" in model &&
-		"repeat" in model
+		hasOwnProperty(model, "type") &&
+		model.type === CustomTypeModelSliceType.Slice
 	);
 };
