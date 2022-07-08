@@ -6,29 +6,27 @@ import { parseSourceFile } from "./__testutils__/parseSourceFile";
 import * as lib from "../src";
 
 test("correctly typed", (t) => {
-	const model = prismicM.model.customType({
-		seed: t.title,
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: prismicM.model.sliceZone({
-				seed: t.title,
+			bar: mock.model.sliceZone({
 				choices: {
-					baz: prismicM.model.slice({
-						seed: t.title,
+					baz: mock.model.slice({
 						nonRepeatFields: {
-							abc: prismicM.model.keyText({ seed: t.title }),
+							abc: mock.model.keyText(),
 						},
 						repeatFields: {
-							def: prismicM.model.select({ seed: t.title }),
+							def: mock.model.select(),
 						},
 					}),
-					qux: prismicM.model.slice({
-						seed: t.title,
+					qux: mock.model.slice({
 						nonRepeatFields: {
-							ghi: prismicM.model.title({ seed: t.title }),
+							ghi: mock.model.title(),
 						},
 						repeatFields: {
-							jkl: prismicM.model.boolean({ seed: t.title }),
+							jkl: mock.model.boolean(),
 						},
 					}),
 				},
@@ -49,32 +47,30 @@ test("correctly typed", (t) => {
 });
 
 test("creates a type alias to a union of all Slice types", (t) => {
-	const model = prismicM.model.customType({
-		seed: t.title,
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: prismicM.model.sliceZone({
-				seed: t.title,
+			bar: mock.model.sliceZone({
 				choices: {
-					baz: prismicM.model.slice({
-						seed: t.title,
+					baz: mock.model.slice({
 						nonRepeatFields: {
-							abc: prismicM.model.keyText({ seed: t.title }),
+							abc: mock.model.keyText(),
 						},
 						repeatFields: {
-							def: prismicM.model.select({ seed: t.title }),
+							def: mock.model.select(),
 						},
 					}),
-					qux: prismicM.model.slice({
-						seed: t.title,
+					qux: mock.model.slice({
 						nonRepeatFields: {
-							ghi: prismicM.model.title({ seed: t.title }),
+							ghi: mock.model.title(),
 						},
 						repeatFields: {
-							jkl: prismicM.model.boolean({ seed: t.title }),
+							jkl: mock.model.boolean(),
 						},
 					}),
-					quux: prismicM.model.sharedSliceChoice(),
+					quux: mock.model.sharedSliceChoice(),
 				},
 			}),
 		},
@@ -91,29 +87,27 @@ test("creates a type alias to a union of all Slice types", (t) => {
 });
 
 test("creates a type alias for each Slice", (t) => {
-	const model = prismicM.model.customType({
-		seed: t.title,
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: prismicM.model.sliceZone({
-				seed: t.title,
+			bar: mock.model.sliceZone({
 				choices: {
-					baz: prismicM.model.slice({
-						seed: t.title,
+					baz: mock.model.slice({
 						nonRepeatFields: {
-							abc: prismicM.model.keyText({ seed: t.title }),
+							abc: mock.model.keyText(),
 						},
 						repeatFields: {
-							def: prismicM.model.select({ seed: t.title }),
+							def: mock.model.select(),
 						},
 					}),
-					qux: prismicM.model.slice({
-						seed: t.title,
+					qux: mock.model.slice({
 						nonRepeatFields: {
-							ghi: prismicM.model.title({ seed: t.title }),
+							ghi: mock.model.title(),
 						},
 						repeatFields: {
-							jkl: prismicM.model.boolean({ seed: t.title }),
+							jkl: mock.model.boolean(),
 						},
 					}),
 				},
@@ -142,14 +136,14 @@ test("creates a type alias for each Slice", (t) => {
 });
 
 test("handles Slices with no fields", (t) => {
-	const model = prismicM.model.customType({
-		seed: t.title,
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: prismicM.model.sliceZone({
-				seed: t.title,
+			bar: mock.model.sliceZone({
 				choices: {
-					baz: prismicM.model.slice({ seed: t.title }),
+					baz: mock.model.slice(),
 				},
 			}),
 		},
@@ -168,17 +162,16 @@ test("handles Slices with no fields", (t) => {
 });
 
 test("handles Slices with no primary fields", (t) => {
-	const model = prismicM.model.customType({
-		seed: t.title,
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: prismicM.model.sliceZone({
-				seed: t.title,
+			bar: mock.model.sliceZone({
 				choices: {
-					baz: prismicM.model.slice({
-						seed: t.title,
+					baz: mock.model.slice({
 						repeatFields: {
-							def: prismicM.model.select({ seed: t.title }),
+							def: mock.model.select(),
 						},
 					}),
 				},
@@ -199,17 +192,16 @@ test("handles Slices with no primary fields", (t) => {
 });
 
 test("handles Slices with no item fields", (t) => {
-	const model = prismicM.model.customType({
-		seed: t.title,
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: prismicM.model.sliceZone({
-				seed: t.title,
+			bar: mock.model.sliceZone({
 				choices: {
-					baz: prismicM.model.slice({
-						seed: t.title,
+					baz: mock.model.slice({
 						nonRepeatFields: {
-							abc: prismicM.model.keyText({ seed: t.title }),
+							abc: mock.model.keyText(),
 						},
 					}),
 				},
@@ -230,20 +222,19 @@ test("handles Slices with no item fields", (t) => {
 });
 
 test("creates an interface for a Slice's primary fields", (t) => {
-	const model = prismicM.model.customType({
-		seed: t.title,
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: prismicM.model.sliceZone({
-				seed: t.title,
+			bar: mock.model.sliceZone({
 				choices: {
-					baz: prismicM.model.slice({
-						seed: t.title,
+					baz: mock.model.slice({
 						nonRepeatFields: {
-							abc: prismicM.model.keyText({ seed: t.title }),
+							abc: mock.model.keyText(),
 						},
 						repeatFields: {
-							def: prismicM.model.select({ seed: t.title }),
+							def: mock.model.select(),
 						},
 					}),
 				},
@@ -264,20 +255,19 @@ test("creates an interface for a Slice's primary fields", (t) => {
 });
 
 test("creates an interface for a Slice's items fields", (t) => {
-	const model = prismicM.model.customType({
-		seed: t.title,
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: prismicM.model.sliceZone({
-				seed: t.title,
+			bar: mock.model.sliceZone({
 				choices: {
-					baz: prismicM.model.slice({
-						seed: t.title,
+					baz: mock.model.slice({
 						nonRepeatFields: {
-							abc: prismicM.model.keyText({ seed: t.title }),
+							abc: mock.model.keyText(),
 						},
 						repeatFields: {
-							def: prismicM.model.select({ seed: t.title }),
+							def: mock.model.select(),
 						},
 					}),
 				},
@@ -301,20 +291,19 @@ test("creates an interface for a Slice's items fields", (t) => {
 });
 
 test("handles hyphenated fields", (t) => {
-	const model = prismicM.model.customType({
-		seed: t.title,
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: prismicM.model.sliceZone({
-				seed: t.title,
+			bar: mock.model.sliceZone({
 				choices: {
-					baz: prismicM.model.slice({
-						seed: t.title,
+					baz: mock.model.slice({
 						nonRepeatFields: {
-							"hyphenated-field": prismicM.model.keyText({ seed: t.title }),
+							"hyphenated-field": mock.model.keyText(),
 						},
 						repeatFields: {
-							"hyphenated-field": prismicM.model.select({ seed: t.title }),
+							"hyphenated-field": mock.model.select(),
 						},
 					}),
 				},
