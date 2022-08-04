@@ -175,3 +175,28 @@ test("handles hyphenated fields", (t) => {
 		"prismicT.KeyTextField",
 	);
 });
+
+test("handles fields starting with a number", (t) => {
+	const res = lib.generateTypes({
+		customTypeModels: [
+			prismicM.model.customType({
+				seed: t.title,
+				id: "foo",
+				fields: {
+					"3d_noodle": prismicM.model.keyText({ seed: t.title }),
+				},
+			}),
+		],
+	});
+
+	const file = parseSourceFile(res);
+	const dataInterface = file.getInterfaceOrThrow("FooDocumentData");
+
+	t.is(
+		dataInterface
+			.getPropertyOrThrow('"3d_noodle"')
+			.getTypeNodeOrThrow()
+			.getText(),
+		"prismicT.KeyTextField",
+	);
+});

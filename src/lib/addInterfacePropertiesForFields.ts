@@ -632,7 +632,7 @@ export const addInterfacePropertiesForFields = (
 	for (const name in config.fields) {
 		addInterfacePropertyForField({
 			...config,
-			id: name.includes("-") ? `"${name}"` : name,
+			id: name.includes("-") || /^[0-9]/.test(name) ? `"${name}"` : name,
 			model: config.fields[name],
 			tabName: config.tabName,
 		});
