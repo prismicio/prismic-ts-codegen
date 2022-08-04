@@ -183,7 +183,7 @@ test("handles fields starting with a number", (t) => {
 				seed: t.title,
 				id: "foo",
 				fields: {
-					"3d-noodle": prismicM.model.keyText({ seed: t.title }),
+					"3d_noodle": prismicM.model.keyText({ seed: t.title }),
 				},
 			}),
 		],
@@ -194,7 +194,7 @@ test("handles fields starting with a number", (t) => {
 
 	t.is(
 		dataInterface
-			.getPropertyOrThrow('"3d-noodle"')
+			.getPropertyOrThrow('"3d_noodle"')
 			.getTypeNodeOrThrow()
 			.getText(),
 		"prismicT.KeyTextField",
