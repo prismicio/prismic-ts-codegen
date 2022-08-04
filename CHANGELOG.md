@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.1](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.0...v0.1.1) (2022-08-04)
+
+
+### Bug Fixes
+
+* support fields with a name starting with a number ([#25](https://github.com/prismicio/prismic-ts-codegen/issues/25)) ([a7b25b5](https://github.com/prismicio/prismic-ts-codegen/commit/a7b25b59f56738378b7c9d194c70baa9ca93a2b7))
+
 ## [0.1.0](https://github.com/prismicio/prismic-ts-codegen/compare/v0.0.7...v0.1.0) (2022-07-08)
 
 
