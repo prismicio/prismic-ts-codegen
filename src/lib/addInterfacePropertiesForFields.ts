@@ -153,7 +153,7 @@ const addInterfacePropertyForField = (
 			} else {
 				config.interface.addProperty({
 					name: config.id,
-					type: "prismicT.ImageField<null>",
+					type: "prismicT.ImageField<never>",
 					docs: buildFieldDocs({
 						id: config.id,
 						model: config.model,

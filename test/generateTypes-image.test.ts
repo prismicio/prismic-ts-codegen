@@ -8,7 +8,7 @@ test(
 	"correctly typed",
 	macroBasicFieldType,
 	(t) => prismicM.model.image({ seed: t.title }),
-	"prismicT.ImageField<null>",
+	"prismicT.ImageField<never>",
 );
 
 test(
