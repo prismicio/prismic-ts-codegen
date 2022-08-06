@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.1...v0.1.2) (2022-08-06)
+
+
+### Refactor
+
+* use `ImageField<never>` rather than `ImageField<null>` ([#26](https://github.com/prismicio/prismic-ts-codegen/issues/26)) ([9960678](https://github.com/prismicio/prismic-ts-codegen/commit/9960678e39fc9bbe184111a74f423f9d7b53a732))
+
 ### [0.1.1](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.0...v0.1.1) (2022-08-04)
 
 
