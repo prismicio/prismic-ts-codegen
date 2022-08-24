@@ -1,4 +1,4 @@
-import { Project, ModuleDeclarationKind, TypeAliasDeclaration } from "ts-morph";
+import { Project, ModuleDeclarationKind } from "ts-morph";
 import type { CustomTypeModel, SharedSliceModel } from "@prismicio/types";
 
 import { BLANK_LINE_IDENTIFIER, NON_EDITABLE_FILE_HEADER } from "./constants";
@@ -45,23 +45,18 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 		type: `{ [KeyType in keyof T]: T[KeyType] }`,
 	});
 
-	const customTypeTypeAliases: TypeAliasDeclaration[] = [];
-	const sharedSliceTypeAliases: TypeAliasDeclaration[] = [];
-
 	if (config.customTypeModels) {
 		for (const model of config.customTypeModels) {
-			const typeAlias = addTypeAliasForCustomType({
+			addTypeAliasForCustomType({
 				model,
 				sourceFile,
 				localeIDs: config.localeIDs || [],
 				fieldConfigs: config.fieldConfigs || {},
 			});
-
-			customTypeTypeAliases.push(typeAlias);
 		}
 
 		if (config.customTypeModels.length > 0) {
-			const typeAlias = sourceFile.addTypeAlias({
+			sourceFile.addTypeAlias({
 				name: "AllDocumentTypes",
 				type: config.customTypeModels
 					.map((customTypeModel) =>
@@ -70,20 +65,16 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 					.join(" | "),
 				isExported: true,
 			});
-
-			customTypeTypeAliases.push(typeAlias);
 		}
 	}
 
 	if (config.sharedSliceModels) {
 		for (const model of config.sharedSliceModels) {
-			const typeAlias = addTypeAliasForSharedSlice({
+			addTypeAliasForSharedSlice({
 				model,
 				sourceFile,
 				fieldConfigs: config.fieldConfigs || {},
 			});
-
-			sharedSliceTypeAliases.push(typeAlias);
 		}
 	}
 
