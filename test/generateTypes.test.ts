@@ -135,8 +135,14 @@ test("includes @prismicio/client Content namespace containing all document and S
 			return exportSymbol.getName();
 		});
 
+	// Documents
 	t.true(exportSymbolNames.includes("FooDocument"));
+	t.true(exportSymbolNames.includes("FooDocumentData"));
 	t.true(exportSymbolNames.includes("AllDocumentTypes"));
+
+	// Slices
+	t.true(exportSymbolNames.includes("BarSliceBaz"));
+	t.true(exportSymbolNames.includes("BarSliceVariation"));
 	t.true(exportSymbolNames.includes("BarSlice"));
 });
 

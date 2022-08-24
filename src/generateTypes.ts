@@ -35,7 +35,7 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 
 	sourceFile.addStatements(BLANK_LINE_IDENTIFIER);
 
-	sourceFile.addTypeAlias({
+	const simplifyTypeAlias = sourceFile.addTypeAlias({
 		name: "Simplify",
 		typeParameters: [
 			{
@@ -134,27 +134,23 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 				declarationKind: ModuleDeclarationKind.Namespace,
 			});
 
-			if (customTypeTypeAliases.length > 0) {
-				contentNamespaceDeclaration.addExportDeclaration({
-					isTypeOnly: true,
-					namedExports: customTypeTypeAliases.map((customTypeTypeAlias) => {
-						return {
-							name: customTypeTypeAlias.getName(),
-						};
-					}),
+			const exportSymbols = sourceFile
+				.getExportSymbols()
+				.filter((exportSymbol) => {
+					// The Simplify utility type should not
+					// be exported, but it is included in
+					// `getExportSymbols()`'s result.
+					return exportSymbol.getName() !== simplifyTypeAlias.getName();
 				});
-			}
 
-			if (sharedSliceTypeAliases.length > 0) {
-				contentNamespaceDeclaration.addExportDeclaration({
-					isTypeOnly: true,
-					namedExports: sharedSliceTypeAliases.map((sharedSliceTypeAlias) => {
-						return {
-							name: sharedSliceTypeAlias.getName(),
-						};
-					}),
-				});
-			}
+			contentNamespaceDeclaration.addExportDeclaration({
+				isTypeOnly: true,
+				namedExports: exportSymbols.map((exportSymbol) => {
+					return {
+						name: exportSymbol.getName(),
+					};
+				}),
+			});
 		}
 	}
 
