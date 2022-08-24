@@ -111,6 +111,8 @@ const main = async () => {
 					includeCreateClientInterface: hasCustomTypeModels
 						? config.clientIntegration?.includeCreateClientInterface ?? true
 						: false,
+					includeContentNamespace:
+						config.clientIntegration?.includeContentNamespace ?? true,
 				},
 			});
 
@@ -119,7 +121,7 @@ const main = async () => {
 				!hasCustomTypeModels
 			) {
 				console.info(
-					"[INFO]: prismic-ts-codegen was configured to automatically integrate with `@prismicio/client`, but the integration was generated because no Custom Type models were found. Automatic integration requires at least one Custom Type model.",
+					"[INFO]: prismic-ts-codegen was configured to automatically integrate with `@prismicio/client`, but the integration was not generated because no Custom Type models were found. Automatic integration requires at least one Custom Type model.",
 				);
 			}
 

@@ -106,3 +106,57 @@ test("includes untyped `@prismicio/client` in CreateClient interface if no Custo
 		"prismic.Client",
 	);
 });
+
+test("includes @prismicio/client Content namespace containing all document and Slice types if configured", (t) => {
+	const res = lib.generateTypes({
+		clientIntegration: {
+			includeContentNamespace: true,
+		},
+		customTypeModels: [prismicM.model.customType({ seed: t.title, id: "foo" })],
+		sharedSliceModels: [
+			prismicM.model.sharedSlice({
+				seed: t.title,
+				id: "bar",
+				variations: [
+					prismicM.model.sharedSliceVariation({ seed: t.title, id: "baz" }),
+				],
+			}),
+		],
+	});
+
+	const file = parseSourceFile(res);
+	const contentNamespace = file
+		.getModuleOrThrow('"@prismicio/client"')
+		.getModuleOrThrow("Content");
+
+	const exportSymbolNames = contentNamespace
+		.getExportSymbols()
+		.map((exportSymbol) => {
+			return exportSymbol.getName();
+		});
+
+	t.true(exportSymbolNames.includes("FooDocument"));
+	t.true(exportSymbolNames.includes("AllDocumentTypes"));
+	t.true(exportSymbolNames.includes("BarSlice"));
+});
+
+test("includes empty @prismicio/client Content namespace if configured and no models are provided", (t) => {
+	const res = lib.generateTypes({
+		clientIntegration: {
+			includeContentNamespace: true,
+		},
+	});
+
+	const file = parseSourceFile(res);
+	const contentNamespace = file
+		.getModuleOrThrow('"@prismicio/client"')
+		.getModuleOrThrow("Content");
+
+	const exportSymbolNames = contentNamespace
+		.getExportSymbols()
+		.map((exportSymbol) => {
+			return exportSymbol.getName();
+		});
+
+	t.is(exportSymbolNames.length, 0);
+});

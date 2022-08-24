@@ -1,4 +1,4 @@
-import { Project, ModuleDeclarationKind } from "ts-morph";
+import { Project, ModuleDeclarationKind, TypeAliasDeclaration } from "ts-morph";
 import type { CustomTypeModel, SharedSliceModel } from "@prismicio/types";
 
 import { BLANK_LINE_IDENTIFIER, NON_EDITABLE_FILE_HEADER } from "./constants";
@@ -15,6 +15,7 @@ export type GenerateTypesConfig = {
 	fieldConfigs?: FieldConfigs;
 	clientIntegration?: {
 		includeCreateClientInterface?: boolean;
+		includeContentNamespace?: boolean;
 	};
 };
 
@@ -44,18 +45,23 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 		type: `{ [KeyType in keyof T]: T[KeyType] }`,
 	});
 
+	const customTypeTypeAliases: TypeAliasDeclaration[] = [];
+	const sharedSliceTypeAliases: TypeAliasDeclaration[] = [];
+
 	if (config.customTypeModels) {
 		for (const model of config.customTypeModels) {
-			addTypeAliasForCustomType({
+			const typeAlias = addTypeAliasForCustomType({
 				model,
 				sourceFile,
 				localeIDs: config.localeIDs || [],
 				fieldConfigs: config.fieldConfigs || {},
 			});
+
+			customTypeTypeAliases.push(typeAlias);
 		}
 
 		if (config.customTypeModels.length > 0) {
-			sourceFile.addTypeAlias({
+			const typeAlias = sourceFile.addTypeAlias({
 				name: "AllDocumentTypes",
 				type: config.customTypeModels
 					.map((customTypeModel) =>
@@ -64,20 +70,27 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 					.join(" | "),
 				isExported: true,
 			});
+
+			customTypeTypeAliases.push(typeAlias);
 		}
 	}
 
 	if (config.sharedSliceModels) {
 		for (const model of config.sharedSliceModels) {
-			addTypeAliasForSharedSlice({
+			const typeAlias = addTypeAliasForSharedSlice({
 				model,
 				sourceFile,
 				fieldConfigs: config.fieldConfigs || {},
 			});
+
+			sharedSliceTypeAliases.push(typeAlias);
 		}
 	}
 
-	if (config.clientIntegration?.includeCreateClientInterface) {
+	if (
+		config.clientIntegration?.includeCreateClientInterface ||
+		config.clientIntegration?.includeContentNamespace
+	) {
 		sourceFile.addImportDeclaration({
 			moduleSpecifier: "@prismicio/client",
 			namespaceImport: "prismic",
@@ -90,28 +103,59 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 			declarationKind: ModuleDeclarationKind.Module,
 		});
 
-		clientModuleDeclaration.addInterface({
-			name: "CreateClient",
-			callSignatures: [
-				{
-					parameters: [
-						{
-							name: "repositoryNameOrEndpoint",
-							type: "string",
-						},
-						{
-							name: "options",
-							type: "prismic.ClientConfig",
-							hasQuestionToken: true,
-						},
-					],
-					returnType:
-						(config.customTypeModels?.length || 0) > 0
-							? "prismic.Client<AllDocumentTypes>"
-							: "prismic.Client",
-				},
-			],
-		});
+		if (config.clientIntegration.includeCreateClientInterface) {
+			clientModuleDeclaration.addInterface({
+				name: "CreateClient",
+				callSignatures: [
+					{
+						parameters: [
+							{
+								name: "repositoryNameOrEndpoint",
+								type: "string",
+							},
+							{
+								name: "options",
+								type: "prismic.ClientConfig",
+								hasQuestionToken: true,
+							},
+						],
+						returnType:
+							(config.customTypeModels?.length || 0) > 0
+								? "prismic.Client<AllDocumentTypes>"
+								: "prismic.Client",
+					},
+				],
+			});
+		}
+
+		if (config.clientIntegration.includeContentNamespace) {
+			const contentNamespaceDeclaration = clientModuleDeclaration.addModule({
+				name: "Content",
+				declarationKind: ModuleDeclarationKind.Namespace,
+			});
+
+			if (customTypeTypeAliases.length > 0) {
+				contentNamespaceDeclaration.addExportDeclaration({
+					isTypeOnly: true,
+					namedExports: customTypeTypeAliases.map((customTypeTypeAlias) => {
+						return {
+							name: customTypeTypeAlias.getName(),
+						};
+					}),
+				});
+			}
+
+			if (sharedSliceTypeAliases.length > 0) {
+				contentNamespaceDeclaration.addExportDeclaration({
+					isTypeOnly: true,
+					namedExports: sharedSliceTypeAliases.map((sharedSliceTypeAlias) => {
+						return {
+							name: sharedSliceTypeAlias.getName(),
+						};
+					}),
+				});
+			}
+		}
 	}
 
 	return getSourceFileText(sourceFile);
