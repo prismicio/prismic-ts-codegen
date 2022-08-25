@@ -36,7 +36,7 @@ export type Config = {
 		 * If set to `true`, Prismic clients will automatically be typed with the
 		 * generated Custom Types and Slices.
 		 *
-		 * **Note**: If you project queries content from multiple Prismic
+		 * **Note**: If your project queries content from multiple Prismic
 		 * repositories, set `includeCreateClientInterface` to `true` for the
 		 * primary repository and `false` or any other repository. The generated
 		 * `AllDocumentTypes` type for non-primary repositories can be provided to
@@ -54,7 +54,7 @@ export type Config = {
 		 * If set to `true`, a `Content` namespace from `@prismicio/client` will be
 		 * available to import to easily access types for your Prismic repository content.
 		 *
-		 * **Note**: If you project queries content from multiple Prismic
+		 * **Note**: If your project queries content from multiple Prismic
 		 * repositories, set `includeContentNamespace` to `true` for the primary
 		 * repository and `false` or any other repository. Types for non-primary
 		 * repositories should be imported directly from the generated file rather
