@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.2...v0.1.3) (2022-08-26)
+
+
+### Features
+
+* support models with IDs starting with a number ([#30](https://github.com/prismicio/prismic-ts-codegen/issues/30)) ([c2edb0a](https://github.com/prismicio/prismic-ts-codegen/commit/c2edb0a2c696a07afd61fcbe23e49e40ccf3bf61))
+
+
+### Chore
+
+* **deps:** upgrade dependencies ([27d332f](https://github.com/prismicio/prismic-ts-codegen/commit/27d332f64c50f330a6d938356f42014932caba22))
+
 ### [0.1.2](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.1...v0.1.2) (2022-08-06)
 
 

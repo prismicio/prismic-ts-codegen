@@ -68,6 +68,33 @@ test("correctly documented", macroBasicFieldDocs, (t) =>
 	prismicM.model.boolean({ seed: t.title }),
 );
 
+test("prefixes Group types starting with a number using an underscore prefix", (t) => {
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.customType({
+		id: "123",
+		fields: {
+			456: mock.model.group({
+				fields: {
+					bar: mock.model.keyText(),
+				},
+			}),
+		},
+	});
+
+	const types = lib.generateTypes({ customTypeModels: [model] });
+	const file = parseSourceFile(types);
+
+	const groupProperty = file
+		.getInterfaceOrThrow("_123DocumentData")
+		.getPropertyOrThrow('"456"');
+
+	t.is(
+		groupProperty.getTypeNodeOrThrow().getText(),
+		"prismicT.GroupField<Simplify<_123DocumentData456Item>>",
+	);
+});
+
 test("handles hyphenated fields", (t) => {
 	const mock = prismicM.createMockFactory({ seed: t.title });
 
