@@ -316,3 +316,42 @@ test("handles hyphenated fields", (t) => {
 		"prismicT.SelectField",
 	);
 });
+
+test("prefixes types starting with a number with an underscore", (t) => {
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.sharedSlice({
+		id: "123",
+		variations: [
+			mock.model.sharedSliceVariation({
+				id: "456",
+				primaryFields: {
+					foo: mock.model.keyText(),
+				},
+			}),
+			mock.model.sharedSliceVariation({
+				id: "789",
+				primaryFields: {
+					bar: mock.model.keyText(),
+				},
+			}),
+		],
+	});
+
+	const types = lib.generateTypes({ sharedSliceModels: [model] });
+	const file = parseSourceFile(types);
+
+	const sliceTypeAlias = file.getTypeAliasOrThrow("_123Slice");
+	const sliceVariationTypeAlias =
+		file.getTypeAliasOrThrow("_123SliceVariation");
+
+	t.is(
+		sliceTypeAlias.getTypeNodeOrThrow().getText(),
+		'prismicT.SharedSlice<"123", _123SliceVariation>',
+	);
+
+	t.is(
+		sliceVariationTypeAlias.getTypeNodeOrThrow().getText(),
+		"_123Slice456 | _123Slice789",
+	);
+});

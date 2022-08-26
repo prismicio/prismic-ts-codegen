@@ -11,10 +11,11 @@ import {
 import type { InterfaceDeclaration, SourceFile } from "ts-morph";
 
 import { FieldConfigs, PathElement } from "../types";
+
 import { buildFieldDocs } from "./buildFieldDocs";
-import { buildSharedSliceInterfaceName } from "./buildSharedSliceInterfaceName";
+import { buildSharedSliceInterfaceNamePart } from "./buildSharedSliceInterfaceNamePart";
+import { buildTypeName } from "./buildTypeName";
 import { getHumanReadableFieldPath } from "./getHumanReadableFieldPath";
-import { pascalCase } from "./pascalCase";
 
 type AddInterfacePropertyFromFieldConfig = {
 	id: string;
@@ -362,8 +363,12 @@ const addInterfacePropertyForField = (
 
 		case "Group": {
 			const itemInterface = config.sourceFile.addInterface({
-				name: pascalCase(
-					`${config.path[0].id} Document Data ${config.id} Item`,
+				name: buildTypeName(
+					config.path[0].id,
+					"Document",
+					"Data",
+					config.id,
+					"Item",
 				),
 				docs: [
 					{
@@ -424,7 +429,7 @@ const addInterfacePropertyForField = (
 
 					if (choice.type === CustomTypeModelSliceType.SharedSlice) {
 						choiceInterfaceNames.push(
-							buildSharedSliceInterfaceName({ id: choiceId }),
+							buildSharedSliceInterfaceNamePart({ id: choiceId }),
 						);
 					} else if (choice.type === CustomTypeModelSliceType.Slice) {
 						let primaryInterface: InterfaceDeclaration | undefined;
@@ -433,8 +438,14 @@ const addInterfacePropertyForField = (
 							Object.keys(choice["non-repeat"]).length > 0
 						) {
 							primaryInterface = config.sourceFile.addInterface({
-								name: pascalCase(
-									`${config.path[0].id} Document Data ${config.id} ${choiceId} Slice Primary`,
+								name: buildTypeName(
+									config.path[0].id,
+									"Document",
+									"Data",
+									config.id,
+									choiceId,
+									"Slice",
+									"Primary",
 								),
 								docs: [
 									{
@@ -490,8 +501,14 @@ const addInterfacePropertyForField = (
 						let itemInterface: InterfaceDeclaration | undefined;
 						if (choice.repeat && Object.keys(choice.repeat).length > 0) {
 							itemInterface = config.sourceFile.addInterface({
-								name: pascalCase(
-									`${config.path[0].id} Document Data ${config.id} ${choiceId} Slice Item`,
+								name: buildTypeName(
+									config.path[0].id,
+									"Document",
+									"Data",
+									config.id,
+									choiceId,
+									"Slice",
+									"Item",
 								),
 								docs: [
 									{
@@ -544,8 +561,13 @@ const addInterfacePropertyForField = (
 						}
 
 						const sliceType = config.sourceFile.addTypeAlias({
-							name: pascalCase(
-								`${config.path[0].id} Document Data ${config.id} ${choiceId} Slice`,
+							name: buildTypeName(
+								config.path[0].id,
+								"Document",
+								"Data",
+								config.id,
+								choiceId,
+								"Slice",
 							),
 							type: `prismicT.Slice<"${choiceId}", ${
 								primaryInterface
@@ -563,8 +585,12 @@ const addInterfacePropertyForField = (
 			}
 
 			const slicesType = config.sourceFile.addTypeAlias({
-				name: pascalCase(
-					`${config.path[0].id} Document Data ${config.id} Slice`,
+				name: buildTypeName(
+					config.path[0].id,
+					"Document",
+					"Data",
+					config.id,
+					"Slice",
 				),
 				type:
 					choiceInterfaceNames.length > 0

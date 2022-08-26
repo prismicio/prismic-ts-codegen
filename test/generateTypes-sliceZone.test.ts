@@ -337,3 +337,51 @@ test("handles hyphenated fields", (t) => {
 		"prismicT.SelectField",
 	);
 });
+
+test("prefixes types starting with a number with an underscore", (t) => {
+	const mock = prismicM.createMockFactory({ seed: t.title });
+
+	const model = mock.model.customType({
+		id: "123",
+		fields: {
+			456: mock.model.sliceZone({
+				choices: {
+					789: mock.model.slice({
+						nonRepeatFields: {
+							foo: mock.model.keyText(),
+						},
+						repeatFields: {
+							bar: mock.model.select(),
+						},
+					}),
+				},
+			}),
+		},
+	});
+
+	const types = lib.generateTypes({ customTypeModels: [model] });
+	const file = parseSourceFile(types);
+
+	const sliceZoneProperty = file
+		.getInterfaceOrThrow("_123DocumentData")
+		.getPropertyOrThrow('"456"');
+	const sliceTypeAlias = file.getTypeAliasOrThrow("_123DocumentData456Slice");
+	const sliceType = file.getTypeAliasOrThrow("_123DocumentData456789Slice");
+
+	t.is(
+		sliceZoneProperty.getTypeNodeOrThrow().getText(),
+		"prismicT.SliceZone<_123DocumentData456Slice>",
+	);
+
+	t.is(
+		sliceTypeAlias.getTypeNodeOrThrow().getText(),
+		"_123DocumentData456789Slice",
+	);
+
+	t.true(sliceType.isExported());
+
+	t.is(
+		sliceType.getTypeNodeOrThrow().getText(),
+		'prismicT.Slice<"789", Simplify<_123DocumentData456789SlicePrimary>, Simplify<_123DocumentData456789SliceItem>>',
+	);
+});

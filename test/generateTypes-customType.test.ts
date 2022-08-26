@@ -200,3 +200,24 @@ test("handles fields starting with a number", (t) => {
 		"prismicT.KeyTextField",
 	);
 });
+
+test("prefixes types starting with a number with an underscore", (t) => {
+	const res = lib.generateTypes({
+		customTypeModels: [
+			prismicM.model.customType({
+				seed: t.title,
+				id: "404",
+			}),
+		],
+	});
+
+	const file = parseSourceFile(res);
+
+	t.notThrows(() => {
+		file.getTypeAliasOrThrow("_404Document");
+	}, "contains a _404Document type alias");
+
+	t.notThrows(() => {
+		file.getTypeAliasOrThrow("_404DocumentData");
+	}, "contains a _404DocumentData type alias");
+});
