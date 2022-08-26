@@ -9,10 +9,9 @@ import { SHARED_SLICES_DOCUMENTATION_URL } from "../constants";
 import { FieldConfigs } from "../types";
 
 import { addInterfacePropertiesForFields } from "./addInterfacePropertiesForFields";
-import { buildSharedSliceInterfaceName } from "./buildSharedSliceInterfaceName";
+import { buildSharedSliceInterfaceNamePart } from "./buildSharedSliceInterfaceNamePart";
+import { buildTypeName } from "./buildTypeName";
 import { getHumanReadableFieldPath } from "./getHumanReadableFieldPath";
-import { makeSafeTypeName } from "./makeSafeTypeName";
-import { pascalCase } from "./pascalCase";
 
 type AddTypeAliasForSharedSliceConfig = {
 	model: SharedSliceModel;
@@ -29,12 +28,10 @@ export const addTypeAliasForSharedSlice = (
 		let primaryInterface: InterfaceDeclaration | undefined;
 		if (variation.primary && Object.keys(variation.primary).length > 0) {
 			primaryInterface = config.sourceFile.addInterface({
-				name: makeSafeTypeName(
-					pascalCase(
-						`${buildSharedSliceInterfaceName({ id: config.model.id })} ${
-							variation.id
-						} Primary`,
-					),
+				name: buildTypeName(
+					buildSharedSliceInterfaceNamePart({ id: config.model.id }),
+					variation.id,
+					"Primary",
 				),
 				docs: [
 					{
@@ -78,12 +75,10 @@ export const addTypeAliasForSharedSlice = (
 		let itemInterface: InterfaceDeclaration | undefined;
 		if (variation.items && Object.keys(variation.items).length > 0) {
 			itemInterface = config.sourceFile.addInterface({
-				name: makeSafeTypeName(
-					pascalCase(
-						`${buildSharedSliceInterfaceName({ id: config.model.id })} ${
-							variation.id
-						} Item`,
-					),
+				name: buildTypeName(
+					buildSharedSliceInterfaceNamePart({ id: config.model.id }),
+					variation.id,
+					"Item",
 				),
 				docs: [
 					{
@@ -126,12 +121,9 @@ export const addTypeAliasForSharedSlice = (
 		}
 
 		const variationType = config.sourceFile.addTypeAlias({
-			name: makeSafeTypeName(
-				pascalCase(
-					`${buildSharedSliceInterfaceName({
-						id: config.model.id,
-					})} ${variation.id}`,
-				),
+			name: buildTypeName(
+				buildSharedSliceInterfaceNamePart({ id: config.model.id }),
+				variation.id,
 			),
 			type: `prismicT.SharedSliceVariation<"${variation.id}", ${
 				primaryInterface
@@ -160,7 +152,7 @@ export const addTypeAliasForSharedSlice = (
 	}
 
 	const variationsType = config.sourceFile.addTypeAlias({
-		name: makeSafeTypeName(pascalCase(`${config.model.id} Slice Variation`)),
+		name: buildTypeName(config.model.id, "Slice", "Variation"),
 		type:
 			variationTypeNames.length > 0 ? variationTypeNames.join(" | ") : "never",
 		docs: [
@@ -182,12 +174,8 @@ export const addTypeAliasForSharedSlice = (
 	});
 
 	return config.sourceFile.addTypeAlias({
-		name: makeSafeTypeName(
-			pascalCase(
-				buildSharedSliceInterfaceName({
-					id: config.model.id,
-				}),
-			),
+		name: buildTypeName(
+			buildSharedSliceInterfaceNamePart({ id: config.model.id }),
 		),
 		type: `prismicT.SharedSlice<"${
 			config.model.id

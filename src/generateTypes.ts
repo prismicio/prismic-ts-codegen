@@ -6,7 +6,7 @@ import { addTypeAliasForCustomType } from "./lib/addTypeAliasForCustomType";
 import { addTypeAliasForSharedSlice } from "./lib/addTypeAliasForSharedSlice";
 import { getSourceFileText } from "./lib/getSourceFileText";
 import { FieldConfigs } from "./types";
-import { pascalCase } from "./lib/pascalCase";
+import { buildTypeName } from "./lib/buildTypeName";
 
 export type GenerateTypesConfig = {
 	customTypeModels?: CustomTypeModel[];
@@ -59,7 +59,7 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 				name: "AllDocumentTypes",
 				type: config.customTypeModels
 					.map((customTypeModel) =>
-						pascalCase(`${customTypeModel.id} Document`),
+						buildTypeName(customTypeModel.id, "Document"),
 					)
 					.join(" | "),
 				isExported: true,
