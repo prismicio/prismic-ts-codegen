@@ -53,7 +53,8 @@ export type Config = {
 		 * all Document and Slice types should be included in the output.
 		 *
 		 * If set to `true`, a `Content` namespace from `@prismicio/client` will be
-		 * available to import to easily access types for your Prismic repository content.
+		 * available to import to easily access types for your Prismic repository
+		 * content.
 		 *
 		 * **Note**: If your project queries content from multiple Prismic
 		 * repositories, set `includeContentNamespace` to `true` for the primary
