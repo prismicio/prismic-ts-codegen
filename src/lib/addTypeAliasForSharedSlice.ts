@@ -5,12 +5,14 @@ import type {
 	TypeAliasDeclaration,
 } from "ts-morph";
 
-import { addInterfacePropertiesForFields } from "./addInterfacePropertiesForFields";
-import { buildSharedSliceInterfaceName } from "./buildSharedSliceInterfaceName";
-import { pascalCase } from "./pascalCase";
-import { getHumanReadableFieldPath } from "./getHumanReadableFieldPath";
 import { SHARED_SLICES_DOCUMENTATION_URL } from "../constants";
 import { FieldConfigs } from "../types";
+
+import { addInterfacePropertiesForFields } from "./addInterfacePropertiesForFields";
+import { buildSharedSliceInterfaceName } from "./buildSharedSliceInterfaceName";
+import { getHumanReadableFieldPath } from "./getHumanReadableFieldPath";
+import { makeSafeTypeName } from "./makeSafeTypeName";
+import { pascalCase } from "./pascalCase";
 
 type AddTypeAliasForSharedSliceConfig = {
 	model: SharedSliceModel;
@@ -27,10 +29,12 @@ export const addTypeAliasForSharedSlice = (
 		let primaryInterface: InterfaceDeclaration | undefined;
 		if (variation.primary && Object.keys(variation.primary).length > 0) {
 			primaryInterface = config.sourceFile.addInterface({
-				name: pascalCase(
-					`${buildSharedSliceInterfaceName({ id: config.model.id })} ${
-						variation.id
-					} Primary`,
+				name: makeSafeTypeName(
+					pascalCase(
+						`${buildSharedSliceInterfaceName({ id: config.model.id })} ${
+							variation.id
+						} Primary`,
+					),
 				),
 				docs: [
 					{
@@ -74,10 +78,12 @@ export const addTypeAliasForSharedSlice = (
 		let itemInterface: InterfaceDeclaration | undefined;
 		if (variation.items && Object.keys(variation.items).length > 0) {
 			itemInterface = config.sourceFile.addInterface({
-				name: pascalCase(
-					`${buildSharedSliceInterfaceName({ id: config.model.id })} ${
-						variation.id
-					} Item`,
+				name: makeSafeTypeName(
+					pascalCase(
+						`${buildSharedSliceInterfaceName({ id: config.model.id })} ${
+							variation.id
+						} Item`,
+					),
 				),
 				docs: [
 					{
@@ -120,10 +126,12 @@ export const addTypeAliasForSharedSlice = (
 		}
 
 		const variationType = config.sourceFile.addTypeAlias({
-			name: pascalCase(
-				`${buildSharedSliceInterfaceName({
-					id: config.model.id,
-				})} ${variation.id}`,
+			name: makeSafeTypeName(
+				pascalCase(
+					`${buildSharedSliceInterfaceName({
+						id: config.model.id,
+					})} ${variation.id}`,
+				),
 			),
 			type: `prismicT.SharedSliceVariation<"${variation.id}", ${
 				primaryInterface
@@ -152,7 +160,7 @@ export const addTypeAliasForSharedSlice = (
 	}
 
 	const variationsType = config.sourceFile.addTypeAlias({
-		name: pascalCase(`${config.model.id} Slice Variation`),
+		name: makeSafeTypeName(pascalCase(`${config.model.id} Slice Variation`)),
 		type:
 			variationTypeNames.length > 0 ? variationTypeNames.join(" | ") : "never",
 		docs: [
@@ -174,10 +182,12 @@ export const addTypeAliasForSharedSlice = (
 	});
 
 	return config.sourceFile.addTypeAlias({
-		name: pascalCase(
-			buildSharedSliceInterfaceName({
-				id: config.model.id,
-			}),
+		name: makeSafeTypeName(
+			pascalCase(
+				buildSharedSliceInterfaceName({
+					id: config.model.id,
+				}),
+			),
 		),
 		type: `prismicT.SharedSlice<"${
 			config.model.id

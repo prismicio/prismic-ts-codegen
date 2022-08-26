@@ -8,6 +8,7 @@ import { CUSTOM_TYPES_DOCUMENTATION_URL } from "../constants";
 import { FieldConfigs } from "../types";
 
 import { addInterfacePropertiesForFields } from "./addInterfacePropertiesForFields";
+import { makeSafeTypeName } from "./makeSafeTypeName";
 import { pascalCase } from "./pascalCase";
 
 const collectCustomTypeFields = (
@@ -36,7 +37,7 @@ export const addTypeAliasForCustomType = ({
 	let dataInterface: InterfaceDeclaration | TypeAliasDeclaration;
 	if (hasDataFields) {
 		dataInterface = sourceFile.addInterface({
-			name: pascalCase(`${model.id} Document Data`),
+			name: makeSafeTypeName(pascalCase(`${model.id} Document Data`)),
 			docs: [
 				{
 					description: `Content for ${model.label} documents`,
@@ -65,7 +66,7 @@ export const addTypeAliasForCustomType = ({
 		}
 	} else {
 		dataInterface = sourceFile.addTypeAlias({
-			name: pascalCase(`${model.id} Document Data`),
+			name: makeSafeTypeName(pascalCase(`${model.id} Document Data`)),
 			type: `Record<string, never>`,
 			docs: [
 				{
@@ -76,7 +77,7 @@ export const addTypeAliasForCustomType = ({
 	}
 
 	return sourceFile.addTypeAlias({
-		name: pascalCase(`${model.id} Document`),
+		name: makeSafeTypeName(pascalCase(`${model.id} Document`)),
 		typeParameters: [
 			{
 				name: "Lang",
