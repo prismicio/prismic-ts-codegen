@@ -9,7 +9,8 @@ export type Config = {
 
 	/**
 	 * The access token for the Prismic repository. If the repository is private
-	 * and `locales.fetchFromRepository` is `true`, providing a token is required.
+	 * and `locales.fetchFromRepository` is `true`, providing a token is
+	 * required.
 	 */
 	accessToken?: string;
 
@@ -99,7 +100,8 @@ export type Config = {
 		| string[]
 		| {
 				/**
-				 * A list of file paths to Custom Type and Slice models. Globs are supported.
+				 * A list of file paths to Custom Type and Slice models. Globs are
+				 * supported.
 				 */
 				files?: string[];
 
