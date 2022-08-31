@@ -6,6 +6,12 @@ import type { Config } from "./types";
 
 const jiti = _jiti(process.cwd());
 
+const loadModuleWithJiti = <TModule>(id: string): TModule => {
+	const mod = jiti(id) as TModule | { default: TModule };
+
+	return "default" in mod ? mod.default : mod;
+};
+
 const DEFAULT_CONFIG_PATHS = [
 	"prismicCodegen.config.ts",
 	"prismicCodegen.config.js",
@@ -18,18 +24,14 @@ type LoadConfigConfig = {
 export const loadConfig = (config: LoadConfigConfig): Config => {
 	if (config.path) {
 		if (existsSync(config.path)) {
-			return jiti(config.path);
+			return loadModuleWithJiti(resolvePath(config.path));
 		} else {
 			throw new Error(`Config file does not exist: ${config.path}`);
 		}
 	} else {
 		for (const configPath of DEFAULT_CONFIG_PATHS) {
 			if (existsSync(configPath)) {
-				const mod = jiti(resolvePath(configPath)) as
-					| Config
-					| { default: Config };
-
-				return "default" in mod ? mod.default : mod;
+				return loadModuleWithJiti(resolvePath(configPath));
 			}
 		}
 	}
