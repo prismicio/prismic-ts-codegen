@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.3...v0.1.4) (2022-08-31)
+
+
+### Bug Fixes
+
+* **cli:** support custom configs via `--config/-c` with a default export ([#32](https://github.com/prismicio/prismic-ts-codegen/issues/32)) ([e9799d3](https://github.com/prismicio/prismic-ts-codegen/commit/e9799d3661063ee112aba925d306e1eb481ec6f1))
+
 ### [0.1.3](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.2...v0.1.3) (2022-08-26)
 
 
