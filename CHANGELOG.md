@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.5](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.4...v0.1.5) (2022-09-07)
+
+
+### Features
+
+* generate `@prismicio/client` `Content` namespace ([#28](https://github.com/prismicio/prismic-ts-codegen/issues/28)) ([7d513e9](https://github.com/prismicio/prismic-ts-codegen/commit/7d513e952b787307982744906f7f1fe56e7282d6))
+* **lib:** remove "DO NOT EDIT" file header ([#34](https://github.com/prismicio/prismic-ts-codegen/issues/34)) ([f74344e](https://github.com/prismicio/prismic-ts-codegen/commit/f74344ea3e70c1a2d1fc235cea0fde9f068decc6))
+
 ### [0.1.4](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.3...v0.1.4) (2022-08-31)
 
 
