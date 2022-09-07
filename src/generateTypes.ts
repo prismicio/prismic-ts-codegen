@@ -15,6 +15,7 @@ export type GenerateTypesConfig = {
 	fieldConfigs?: FieldConfigs;
 	clientIntegration?: {
 		includeCreateClientInterface?: boolean;
+		includeContentNamespace?: boolean;
 	};
 };
 
@@ -34,7 +35,7 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 
 	sourceFile.addStatements(BLANK_LINE_IDENTIFIER);
 
-	sourceFile.addTypeAlias({
+	const simplifyTypeAlias = sourceFile.addTypeAlias({
 		name: "Simplify",
 		typeParameters: [
 			{
@@ -77,7 +78,10 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 		}
 	}
 
-	if (config.clientIntegration?.includeCreateClientInterface) {
+	if (
+		config.clientIntegration?.includeCreateClientInterface ||
+		config.clientIntegration?.includeContentNamespace
+	) {
 		sourceFile.addImportDeclaration({
 			moduleSpecifier: "@prismicio/client",
 			namespaceImport: "prismic",
@@ -90,28 +94,55 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 			declarationKind: ModuleDeclarationKind.Module,
 		});
 
-		clientModuleDeclaration.addInterface({
-			name: "CreateClient",
-			callSignatures: [
-				{
-					parameters: [
-						{
-							name: "repositoryNameOrEndpoint",
-							type: "string",
-						},
-						{
-							name: "options",
-							type: "prismic.ClientConfig",
-							hasQuestionToken: true,
-						},
-					],
-					returnType:
-						(config.customTypeModels?.length || 0) > 0
-							? "prismic.Client<AllDocumentTypes>"
-							: "prismic.Client",
-				},
-			],
-		});
+		if (config.clientIntegration.includeCreateClientInterface) {
+			clientModuleDeclaration.addInterface({
+				name: "CreateClient",
+				callSignatures: [
+					{
+						parameters: [
+							{
+								name: "repositoryNameOrEndpoint",
+								type: "string",
+							},
+							{
+								name: "options",
+								type: "prismic.ClientConfig",
+								hasQuestionToken: true,
+							},
+						],
+						returnType:
+							(config.customTypeModels?.length || 0) > 0
+								? "prismic.Client<AllDocumentTypes>"
+								: "prismic.Client",
+					},
+				],
+			});
+		}
+
+		if (config.clientIntegration.includeContentNamespace) {
+			const contentNamespaceDeclaration = clientModuleDeclaration.addModule({
+				name: "Content",
+				declarationKind: ModuleDeclarationKind.Namespace,
+			});
+
+			const exportSymbols = sourceFile
+				.getExportSymbols()
+				.filter((exportSymbol) => {
+					// The Simplify utility type should not
+					// be exported, but it is included in
+					// `getExportSymbols()`'s result.
+					return exportSymbol.getName() !== simplifyTypeAlias.getName();
+				});
+
+			contentNamespaceDeclaration.addExportDeclaration({
+				isTypeOnly: true,
+				namedExports: exportSymbols.map((exportSymbol) => {
+					return {
+						name: exportSymbol.getName(),
+					};
+				}),
+			});
+		}
 	}
 
 	return getSourceFileText(sourceFile);
