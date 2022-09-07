@@ -1,7 +1,7 @@
 import { Project, ModuleDeclarationKind } from "ts-morph";
 import type { CustomTypeModel, SharedSliceModel } from "@prismicio/types";
 
-import { BLANK_LINE_IDENTIFIER, NON_EDITABLE_FILE_HEADER } from "./constants";
+import { BLANK_LINE_IDENTIFIER } from "./constants";
 import { addTypeAliasForCustomType } from "./lib/addTypeAliasForCustomType";
 import { addTypeAliasForSharedSlice } from "./lib/addTypeAliasForSharedSlice";
 import { getSourceFileText } from "./lib/getSourceFileText";
@@ -30,7 +30,6 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 		moduleSpecifier: "@prismicio/types",
 		namespaceImport: "prismicT",
 		isTypeOnly: true,
-		leadingTrivia: NON_EDITABLE_FILE_HEADER,
 	});
 
 	sourceFile.addStatements(BLANK_LINE_IDENTIFIER);

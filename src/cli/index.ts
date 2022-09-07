@@ -9,6 +9,7 @@ import { configSchema } from "./configSchema";
 import { loadLocaleIDs } from "./loadLocaleIDs";
 import { loadModels } from "./loadModels";
 import { loadConfig } from "./loadConfig";
+import { NON_EDITABLE_FILE_HEADER } from "./constants";
 
 const cli = meow(
 	`
@@ -102,6 +103,15 @@ const main = async () => {
 
 			const hasCustomTypeModels = customTypeModels.length > 0;
 
+			if (
+				config.clientIntegration?.includeCreateClientInterface &&
+				!hasCustomTypeModels
+			) {
+				console.info(
+					"[INFO]: prismic-ts-codegen was configured to automatically integrate with `@prismicio/client`, but the integration was not generated because no Custom Type models were found. Automatic integration requires at least one Custom Type model.",
+				);
+			}
+
 			const types = generateTypes({
 				customTypeModels,
 				sharedSliceModels,
@@ -116,17 +126,10 @@ const main = async () => {
 				},
 			});
 
-			if (
-				config.clientIntegration?.includeCreateClientInterface &&
-				!hasCustomTypeModels
-			) {
-				console.info(
-					"[INFO]: prismic-ts-codegen was configured to automatically integrate with `@prismicio/client`, but the integration was not generated because no Custom Type models were found. Automatic integration requires at least one Custom Type model.",
-				);
-			}
+			const fileContents = `${NON_EDITABLE_FILE_HEADER}\n\n${types}`;
 
 			if (config.output) {
-				writeFileSync(resolvePath(config.output), types);
+				writeFileSync(resolvePath(config.output), fileContents);
 
 				console.info(`\nGenerated types in: ${config.output}`);
 			} else {
