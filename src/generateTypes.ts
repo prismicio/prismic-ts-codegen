@@ -55,6 +55,68 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 		}
 
 		if (config.customTypeModels.length > 0) {
+			const allModelIds: string[] = [];
+			const modelIdsWithUID: string[] = [];
+			const modelIdsWithoutUID: string[] = [];
+			config.customTypeModels.forEach((model) => {
+				const modelIdString = `"${model.id}"`;
+				allModelIds.push(modelIdString);
+				if (Object.assign({}, ...Object.values(model.json)).uid) {
+					modelIdsWithUID.push(modelIdString);
+				} else {
+					modelIdsWithoutUID.push(modelIdString);
+				}
+			});
+
+			const typeGuard = sourceFile.addFunction({
+				name: "isTypeCode",
+				returnType: "typeCode is AllDocumentTypes['type']",
+				isExported: true,
+				parameters: [
+					{
+						name: "typeCode",
+						type: "string",
+					},
+				],
+			});
+			typeGuard.setBodyText((writer) => {
+				writer.writeLine(
+					`return [${allModelIds.join(", ")}].includes(typeCode);`,
+				);
+			});
+			const typeGuardWithoutUIDs = sourceFile.addFunction({
+				name: "isTypeCodeForTypeWithoutUIDs",
+				returnType: "typeCode is AnyOurDocumentWithoutUID['type']",
+				isExported: true,
+				parameters: [
+					{
+						name: "typeCode",
+						type: "string",
+					},
+				],
+			});
+			typeGuardWithoutUIDs.setBodyText((writer) => {
+				writer.writeLine(
+					`return [${modelIdsWithoutUID.join(", ")}].includes(typeCode);`,
+				);
+			});
+			const typeGuardWithUIDs = sourceFile.addFunction({
+				name: "isTypeCodeForTypeWithUIDs",
+				returnType: "typeCode is AnyOurDocumentWithUID['type']",
+				isExported: true,
+				parameters: [
+					{
+						name: "typeCode",
+						type: "string",
+					},
+				],
+			});
+			typeGuardWithUIDs.setBodyText((writer) => {
+				writer.writeLine(
+					`return [${modelIdsWithUID.join(", ")}].includes(typeCode);`,
+				);
+			});
+
 			sourceFile.addTypeAlias({
 				name: "AllDocumentTypes",
 				type: config.customTypeModels
@@ -62,6 +124,27 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 						buildTypeName(customTypeModel.id, "Document"),
 					)
 					.join(" | "),
+				isExported: true,
+			});
+
+			sourceFile.addTypeAlias({
+				name: "OnlyDocumentsWithUID",
+				typeParameters: [{ name: "DocumentTypeWithOrWithoutUID" }],
+				type: "DocumentTypeWithOrWithoutUID extends prismicT.PrismicDocumentWithUID ? DocumentTypeWithOrWithoutUID: never",
+			});
+			sourceFile.addTypeAlias({
+				name: "AnyOurDocumentWithUID",
+				type: "OnlyDocumentsWithUID<AllDocumentTypes>",
+				isExported: true,
+			});
+			sourceFile.addTypeAlias({
+				name: "OnlyDocumentsWithoutUID",
+				typeParameters: [{ name: "DocumentTypeWithOrWithoutUID" }],
+				type: "DocumentTypeWithOrWithoutUID extends prismicT.PrismicDocumentWithoutUID ? DocumentTypeWithOrWithoutUID: never",
+			});
+			sourceFile.addTypeAlias({
+				name: "AnyOurDocumentWithoutUID",
+				type: "OnlyDocumentsWithoutUID<AllDocumentTypes>",
 				isExported: true,
 			});
 		}
@@ -130,7 +213,12 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 					// The Simplify utility type should not
 					// be exported, but it is included in
 					// `getExportSymbols()`'s result.
-					return exportSymbol.getName() !== simplifyTypeAlias.getName();
+					return (
+						exportSymbol.getName() !== simplifyTypeAlias.getName() &&
+						exportSymbol.getName() !== "isTypeCode" &&
+						exportSymbol.getName() !== "isTypeCodeForTypeWithoutUIDs" &&
+						exportSymbol.getName() !== "isTypeCodeForTypeWithUIDs"
+					);
 				});
 
 			contentNamespaceDeclaration.addExportDeclaration({
@@ -140,6 +228,14 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 						name: exportSymbol.getName(),
 					};
 				}),
+			});
+
+			contentNamespaceDeclaration.addExportDeclaration({
+				namedExports: [
+					{ name: "isTypeCode" },
+					{ name: "isTypeCodeForTypeWithoutUIDs" },
+					{ name: "isTypeCodeForTypeWithUIDs" },
+				],
 			});
 		}
 	}
