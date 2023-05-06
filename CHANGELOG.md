@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.5...v0.1.6) (2023-05-06)
+
+
+### Bug Fixes
+
+* support field names containing colons ([#40](https://github.com/prismicio/prismic-ts-codegen/issues/40)) ([3feb2b5](https://github.com/prismicio/prismic-ts-codegen/commit/3feb2b578f53dc6077b6bfe9f57a6a0e9dd7e2cf))
+
 ### [0.1.5](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.4...v0.1.5) (2022-09-07)
 
 
