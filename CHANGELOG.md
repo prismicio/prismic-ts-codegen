@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.8](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.7...v0.1.8) (2023-05-18)
+
+
+### Bug Fixes
+
+* **detectTypesProvider:** make `detectTypesProvider` actually work ([#43](https://github.com/prismicio/prismic-ts-codegen/issues/43)) ([1cc0788](https://github.com/prismicio/prismic-ts-codegen/commit/1cc0788d1ff03ea871638d65261168afb8f2fe41))
+
 ### [0.1.7](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.6...v0.1.7) (2023-05-18)
 
 
