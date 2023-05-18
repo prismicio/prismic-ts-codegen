@@ -1,5 +1,5 @@
-import _jiti from "jiti";
 import { existsSync } from "fs";
+import _jiti from "jiti";
 import { resolve as resolvePath } from "path";
 
 import type { Config } from "./types";

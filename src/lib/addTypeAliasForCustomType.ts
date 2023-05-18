@@ -1,11 +1,13 @@
-import type { CustomTypeModel, CustomTypeModelField } from "@prismicio/types";
 import type {
+	InterfaceDeclaration,
 	SourceFile,
 	TypeAliasDeclaration,
-	InterfaceDeclaration,
 } from "ts-morph";
-import { CUSTOM_TYPES_DOCUMENTATION_URL } from "../constants";
+
 import { FieldConfigs } from "../types";
+import type { CustomTypeModel, CustomTypeModelField } from "@prismicio/types";
+
+import { CUSTOM_TYPES_DOCUMENTATION_URL } from "../constants";
 
 import { addInterfacePropertiesForFields } from "./addInterfacePropertiesForFields";
 import { buildTypeName } from "./buildTypeName";

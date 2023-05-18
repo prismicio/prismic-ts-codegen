@@ -72,7 +72,6 @@ See the [`Config` TypeScript interface](./src/cli/types.ts) for a complete refer
 
 ```typescript
 // prismicCodegen.config.ts
-
 import type { Config } from "prismic-ts-codegen";
 
 const config: Config = {

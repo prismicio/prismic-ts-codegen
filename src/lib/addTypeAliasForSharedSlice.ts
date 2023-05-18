@@ -1,12 +1,13 @@
-import type { SharedSliceModel } from "@prismicio/types";
 import type {
 	InterfaceDeclaration,
 	SourceFile,
 	TypeAliasDeclaration,
 } from "ts-morph";
 
-import { SHARED_SLICES_DOCUMENTATION_URL } from "../constants";
 import { FieldConfigs } from "../types";
+import type { SharedSliceModel } from "@prismicio/types";
+
+import { SHARED_SLICES_DOCUMENTATION_URL } from "../constants";
 
 import { addInterfacePropertiesForFields } from "./addInterfacePropertiesForFields";
 import { buildSharedSliceInterfaceNamePart } from "./buildSharedSliceInterfaceNamePart";
