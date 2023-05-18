@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.7](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.6...v0.1.7) (2023-05-18)
+
+
+### Features
+
+* set the types provider using the `typesProvider` option ([#42](https://github.com/prismicio/prismic-ts-codegen/issues/42)) ([deb74c6](https://github.com/prismicio/prismic-ts-codegen/commit/deb74c69d2bb556651695a2df03a45f0d03b0dbf))
+
+
+### Chore
+
+* update package infrastructure ([#41](https://github.com/prismicio/prismic-ts-codegen/issues/41)) ([00814a9](https://github.com/prismicio/prismic-ts-codegen/commit/00814a9153ca93552a63d541a5d831b4213aee4e))
+
 ### [0.1.6](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.5...v0.1.6) (2023-05-06)
 
 
