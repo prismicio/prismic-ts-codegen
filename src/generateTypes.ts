@@ -1,3 +1,4 @@
+import type { CustomTypeModel, SharedSliceModel } from "@prismicio/client";
 import { ModuleDeclarationKind, Project } from "ts-morph";
 
 import { addTypeAliasForCustomType } from "./lib/addTypeAliasForCustomType";
@@ -6,15 +7,17 @@ import { buildTypeName } from "./lib/buildTypeName";
 import { getSourceFileText } from "./lib/getSourceFileText";
 
 import { FieldConfigs } from "./types";
-import type { CustomTypeModel, SharedSliceModel } from "@prismicio/types";
 
 import { BLANK_LINE_IDENTIFIER } from "./constants";
+
+export type TypesProvider = "@prismicio/client" | "@prismicio/types";
 
 export type GenerateTypesConfig = {
 	customTypeModels?: CustomTypeModel[];
 	sharedSliceModels?: SharedSliceModel[];
 	localeIDs?: string[];
 	fieldConfigs?: FieldConfigs;
+	typesProvider?: TypesProvider;
 	clientIntegration?: {
 		includeCreateClientInterface?: boolean;
 		includeContentNamespace?: boolean;
@@ -29,8 +32,8 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 	const sourceFile = project.createSourceFile("types.d.ts");
 
 	sourceFile.addImportDeclaration({
-		moduleSpecifier: "@prismicio/types",
-		namespaceImport: "prismicT",
+		moduleSpecifier: config.typesProvider || "@prismicio/types",
+		namespaceImport: "prismic",
 		isTypeOnly: true,
 	});
 

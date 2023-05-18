@@ -1,16 +1,16 @@
-import type { InterfaceDeclaration, SourceFile } from "ts-morph";
-
-import { FieldConfigs, PathElement } from "../types";
 import type {
 	CustomTypeModel,
 	CustomTypeModelField,
 	CustomTypeModelSlice,
 	SharedSliceModel,
-} from "@prismicio/types";
+} from "@prismicio/client";
 import {
 	CustomTypeModelLinkSelectType,
 	CustomTypeModelSliceType,
-} from "@prismicio/types";
+} from "@prismicio/client";
+import type { InterfaceDeclaration, SourceFile } from "ts-morph";
+
+import { FieldConfigs, PathElement } from "../types";
 
 import { buildFieldDocs } from "./buildFieldDocs";
 import { buildSharedSliceInterfaceNamePart } from "./buildSharedSliceInterfaceNamePart";
@@ -42,7 +42,7 @@ const addInterfacePropertyForField = (
 		case "Boolean": {
 			config.interface.addProperty({
 				name: config.id,
-				type: "prismicT.BooleanField",
+				type: "prismic.BooleanField",
 				docs: buildFieldDocs({
 					id: config.id,
 					model: config.model,
@@ -57,7 +57,7 @@ const addInterfacePropertyForField = (
 		case "Color": {
 			config.interface.addProperty({
 				name: config.id,
-				type: "prismicT.ColorField",
+				type: "prismic.ColorField",
 				docs: buildFieldDocs({
 					id: config.id,
 					model: config.model,
@@ -72,7 +72,7 @@ const addInterfacePropertyForField = (
 		case "Date": {
 			config.interface.addProperty({
 				name: config.id,
-				type: "prismicT.DateField",
+				type: "prismic.DateField",
 				docs: buildFieldDocs({
 					id: config.id,
 					model: config.model,
@@ -102,10 +102,10 @@ const addInterfacePropertyForField = (
 				name: config.id,
 				type:
 					providerTypes.length > 0
-						? `prismicT.EmbedField<prismicT.AnyOEmbed & prismicT.OEmbedExtra & (${providerTypes.join(
+						? `prismic.EmbedField<prismic.AnyOEmbed & prismic.OEmbedExtra & (${providerTypes.join(
 								" | ",
 						  )})>`
-						: "prismicT.EmbedField",
+						: "prismic.EmbedField",
 				docs: buildFieldDocs({
 					id: config.id,
 					model: config.model,
@@ -120,7 +120,7 @@ const addInterfacePropertyForField = (
 		case "GeoPoint": {
 			config.interface.addProperty({
 				name: config.id,
-				type: "prismicT.GeoPointField",
+				type: "prismic.GeoPointField",
 				docs: buildFieldDocs({
 					id: config.id,
 					model: config.model,
@@ -143,7 +143,7 @@ const addInterfacePropertyForField = (
 
 				config.interface.addProperty({
 					name: config.id,
-					type: `prismicT.ImageField<${thumbnailNames}>`,
+					type: `prismic.ImageField<${thumbnailNames}>`,
 					docs: buildFieldDocs({
 						id: config.id,
 						model: config.model,
@@ -154,7 +154,7 @@ const addInterfacePropertyForField = (
 			} else {
 				config.interface.addProperty({
 					name: config.id,
-					type: "prismicT.ImageField<never>",
+					type: "prismic.ImageField<never>",
 					docs: buildFieldDocs({
 						id: config.id,
 						model: config.model,
@@ -177,8 +177,8 @@ const addInterfacePropertyForField = (
 			config.interface.addProperty({
 				name: config.id,
 				type: catalogType
-					? `prismicT.IntegrationFields<${catalogType}>`
-					: "prismicT.IntegrationFields",
+					? `prismic.IntegrationFields<${catalogType}>`
+					: "prismic.IntegrationFields",
 				docs: buildFieldDocs({
 					id: config.id,
 					model: config.model,
@@ -200,10 +200,10 @@ const addInterfacePropertyForField = (
 							"customtypes" in config.model.config &&
 							config.model.config.customtypes &&
 							config.model.config.customtypes.length > 0
-								? `prismicT.RelationField<${config.model.config.customtypes
+								? `prismic.RelationField<${config.model.config.customtypes
 										.map((type) => `"${type}"`)
 										.join(" | ")}>`
-								: "prismicT.RelationField",
+								: "prismic.RelationField",
 						docs: buildFieldDocs({
 							id: config.id,
 							model: config.model,
@@ -218,7 +218,7 @@ const addInterfacePropertyForField = (
 				case CustomTypeModelLinkSelectType.Media: {
 					config.interface.addProperty({
 						name: config.id,
-						type: "prismicT.LinkToMediaField",
+						type: "prismic.LinkToMediaField",
 						docs: buildFieldDocs({
 							id: config.id,
 							model: config.model,
@@ -233,7 +233,7 @@ const addInterfacePropertyForField = (
 				default: {
 					config.interface.addProperty({
 						name: config.id,
-						type: "prismicT.LinkField",
+						type: "prismic.LinkField",
 						docs: buildFieldDocs({
 							id: config.id,
 							model: config.model,
@@ -250,7 +250,7 @@ const addInterfacePropertyForField = (
 		case "Number": {
 			config.interface.addProperty({
 				name: config.id,
-				type: "prismicT.NumberField",
+				type: "prismic.NumberField",
 				docs: buildFieldDocs({
 					id: config.id,
 					model: config.model,
@@ -274,7 +274,7 @@ const addInterfacePropertyForField = (
 			if (isTitleField) {
 				config.interface.addProperty({
 					name: config.id,
-					type: "prismicT.TitleField",
+					type: "prismic.TitleField",
 					docs: buildFieldDocs({
 						id: config.id,
 						model: config.model,
@@ -285,7 +285,7 @@ const addInterfacePropertyForField = (
 			} else {
 				config.interface.addProperty({
 					name: config.id,
-					type: "prismicT.RichTextField",
+					type: "prismic.RichTextField",
 					docs: buildFieldDocs({
 						id: config.id,
 						model: config.model,
@@ -307,7 +307,7 @@ const addInterfacePropertyForField = (
 			if (hasDefault) {
 				config.interface.addProperty({
 					name: config.id,
-					type: `prismicT.SelectField<${options || "string"}, "filled">`,
+					type: `prismic.SelectField<${options || "string"}, "filled">`,
 					docs: buildFieldDocs({
 						id: config.id,
 						model: config.model,
@@ -318,7 +318,7 @@ const addInterfacePropertyForField = (
 			} else {
 				config.interface.addProperty({
 					name: config.id,
-					type: `prismicT.SelectField<${options}>`,
+					type: `prismic.SelectField<${options}>`,
 					docs: buildFieldDocs({
 						id: config.id,
 						model: config.model,
@@ -334,7 +334,7 @@ const addInterfacePropertyForField = (
 		case "Text": {
 			config.interface.addProperty({
 				name: config.id,
-				type: "prismicT.KeyTextField",
+				type: "prismic.KeyTextField",
 				docs: buildFieldDocs({
 					id: config.id,
 					model: config.model,
@@ -349,7 +349,7 @@ const addInterfacePropertyForField = (
 		case "Timestamp": {
 			config.interface.addProperty({
 				name: config.id,
-				type: "prismicT.TimestampField",
+				type: "prismic.TimestampField",
 				docs: buildFieldDocs({
 					id: config.id,
 					model: config.model,
@@ -408,7 +408,7 @@ const addInterfacePropertyForField = (
 
 			config.interface.addProperty({
 				name: config.id,
-				type: `prismicT.GroupField<Simplify<${itemInterface.getName()}>>`,
+				type: `prismic.GroupField<Simplify<${itemInterface.getName()}>>`,
 				docs: buildFieldDocs({
 					id: config.id,
 					model: config.model,
@@ -569,7 +569,7 @@ const addInterfacePropertyForField = (
 								choiceId,
 								"Slice",
 							),
-							type: `prismicT.Slice<"${choiceId}", ${
+							type: `prismic.Slice<"${choiceId}", ${
 								primaryInterface
 									? `Simplify<${primaryInterface.getName()}>`
 									: "Record<string, never>"
@@ -617,7 +617,7 @@ const addInterfacePropertyForField = (
 
 			config.interface.addProperty({
 				name: config.id,
-				type: `prismicT.SliceZone<${slicesType.getName()}>`,
+				type: `prismic.SliceZone<${slicesType.getName()}>`,
 				docs: buildFieldDocs({
 					id: config.id,
 					model: config.model,

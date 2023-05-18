@@ -3,7 +3,7 @@ import { existsSync, writeFileSync } from "fs";
 import meow from "meow";
 import { resolve as resolvePath } from "path";
 
-import { generateTypes } from "../index";
+import { detectTypesProvider, generateTypes } from "../index";
 
 import { configSchema } from "./configSchema";
 import { NON_EDITABLE_FILE_HEADER } from "./constants";
@@ -101,6 +101,9 @@ const main = async () => {
 					config.locales.fetchFromRepository,
 			});
 
+			const typesProvider =
+				config.typesProvider || (await detectTypesProvider());
+
 			const hasCustomTypeModels = customTypeModels.length > 0;
 
 			if (
@@ -124,6 +127,7 @@ const main = async () => {
 					includeContentNamespace:
 						config.clientIntegration?.includeContentNamespace ?? true,
 				},
+				typesProvider,
 			});
 
 			const fileContents = `${NON_EDITABLE_FILE_HEADER}\n\n${types}`;

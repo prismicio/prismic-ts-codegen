@@ -1,3 +1,4 @@
+import type { CustomTypeModel, CustomTypeModelField } from "@prismicio/client";
 import type {
 	InterfaceDeclaration,
 	SourceFile,
@@ -5,7 +6,6 @@ import type {
 } from "ts-morph";
 
 import { FieldConfigs } from "../types";
-import type { CustomTypeModel, CustomTypeModelField } from "@prismicio/types";
 
 import { CUSTOM_TYPES_DOCUMENTATION_URL } from "../constants";
 
@@ -90,10 +90,10 @@ export const addTypeAliasForCustomType = ({
 			},
 		],
 		type: hasUIDField
-			? `prismicT.PrismicDocumentWithUID<Simplify<${dataInterface.getName()}>, "${
+			? `prismic.PrismicDocumentWithUID<Simplify<${dataInterface.getName()}>, "${
 					model.id
 			  }", Lang>`
-			: `prismicT.PrismicDocumentWithoutUID<Simplify<${dataInterface.getName()}>, "${
+			: `prismic.PrismicDocumentWithoutUID<Simplify<${dataInterface.getName()}>, "${
 					model.id
 			  }", Lang>`,
 		docs: [

@@ -1,7 +1,7 @@
 import {
 	CustomTypeModelSlice,
 	CustomTypeModelSliceType,
-} from "@prismicio/types";
+} from "@prismicio/client";
 
 import { hasOwnProperty } from "./hasOwnProperty";
 

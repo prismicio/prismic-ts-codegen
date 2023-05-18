@@ -9,7 +9,7 @@ import { parseSourceFile } from "./__testutils__/parseSourceFile";
 import * as lib from "../src";
 
 it("is correctly typed", (ctx) => {
-	expectToHaveFieldType(ctx.mock.model.embed(), "prismicT.EmbedField");
+	expectToHaveFieldType(ctx.mock.model.embed(), "prismic.EmbedField");
 });
 
 it("can be customized with provider-specific types", (ctx) => {
@@ -40,7 +40,7 @@ it("can be customized with provider-specific types", (ctx) => {
 		property.getTypeNodeOrThrow().getText({ trimLeadingIndentation: true }),
 	).toBe(
 		stripIndent`
-			prismicT.EmbedField<prismicT.AnyOEmbed & prismicT.OEmbedExtra & (({
+			prismic.EmbedField<prismic.AnyOEmbed & prismic.OEmbedExtra & (({
 			    provider_name: "YouTube";
 			} & YouTubeType) | ({
 			    provider_name: "Vimeo";

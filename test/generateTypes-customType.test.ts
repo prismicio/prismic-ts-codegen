@@ -29,7 +29,7 @@ it("generates a Custom Type type", (ctx) => {
 
 	const type = typeAlias.getTypeNodeOrThrow();
 	expect(type.getText()).toBe(
-		'prismicT.PrismicDocumentWithoutUID<Simplify<FooDocumentData>, "foo", Lang>',
+		'prismic.PrismicDocumentWithoutUID<Simplify<FooDocumentData>, "foo", Lang>',
 	);
 
 	expect(() => {
@@ -52,7 +52,7 @@ it("uses PrismicDocumentWithUID when model contains a UID field", (ctx) => {
 	const file = parseSourceFile(res);
 	const type = file.getTypeAliasOrThrow("FooDocument").getTypeNodeOrThrow();
 	expect(type.getText()).toBe(
-		'prismicT.PrismicDocumentWithUID<Simplify<FooDocumentData>, "foo", Lang>',
+		'prismic.PrismicDocumentWithUID<Simplify<FooDocumentData>, "foo", Lang>',
 	);
 });
 
@@ -147,7 +147,7 @@ it("handles hyphenated fields", (ctx) => {
 			.getPropertyOrThrow('"hyphenated-field"')
 			.getTypeNodeOrThrow()
 			.getText(),
-	).toBe("prismicT.KeyTextField");
+	).toBe("prismic.KeyTextField");
 });
 
 it("handles fields starting with a number", (ctx) => {
@@ -170,7 +170,7 @@ it("handles fields starting with a number", (ctx) => {
 			.getPropertyOrThrow('"3d_noodle"')
 			.getTypeNodeOrThrow()
 			.getText(),
-	).toBe("prismicT.KeyTextField");
+	).toBe("prismic.KeyTextField");
 });
 
 it("prefixes types starting with a number with an underscore", (ctx) => {

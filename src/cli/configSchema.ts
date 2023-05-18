@@ -17,6 +17,8 @@ export const configSchema = Joi.object<Config>({
 
 	output: Joi.string(),
 
+	typesProvider: Joi.string().allow("@prismicio/client", "@prismicio/client"),
+
 	clientIntegration: Joi.object({
 		includeCreateClientInterface: Joi.boolean(),
 		includeContentNamespace: Joi.boolean(),

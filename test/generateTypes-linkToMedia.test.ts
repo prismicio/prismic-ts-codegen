@@ -6,7 +6,7 @@ import { expectToHaveFieldType } from "./__testutils__/expectToHaveFieldType";
 it("is correctly typed", (ctx) => {
 	expectToHaveFieldType(
 		ctx.mock.model.linkToMedia(),
-		"prismicT.LinkToMediaField",
+		"prismic.LinkToMediaField",
 	);
 });
 

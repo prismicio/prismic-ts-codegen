@@ -3,7 +3,7 @@ import type {
 	CustomTypeModelField,
 	CustomTypeModelSlice,
 	SharedSliceModel,
-} from "@prismicio/types";
+} from "@prismicio/client";
 
 export type PathElement<
 	Model extends

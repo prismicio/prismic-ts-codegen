@@ -38,7 +38,7 @@ it("correctly typed", (ctx) => {
 		.getPropertyOrThrow("bar");
 
 	expect(sliceZoneProperty.getTypeNodeOrThrow().getText()).toBe(
-		"prismicT.SliceZone<FooDocumentDataBarSlice>",
+		"prismic.SliceZone<FooDocumentDataBarSlice>",
 	);
 });
 
@@ -116,11 +116,11 @@ it("creates a type alias for each Slice", (ctx) => {
 	expect(quxSliceType.isExported()).toBe(true);
 
 	expect(bazSliceType.getTypeNodeOrThrow().getText()).toBe(
-		'prismicT.Slice<"baz", Simplify<FooDocumentDataBarBazSlicePrimary>, Simplify<FooDocumentDataBarBazSliceItem>>',
+		'prismic.Slice<"baz", Simplify<FooDocumentDataBarBazSlicePrimary>, Simplify<FooDocumentDataBarBazSliceItem>>',
 	);
 
 	expect(quxSliceType.getTypeNodeOrThrow().getText()).toBe(
-		'prismicT.Slice<"qux", Simplify<FooDocumentDataBarQuxSlicePrimary>, Simplify<FooDocumentDataBarQuxSliceItem>>',
+		'prismic.Slice<"qux", Simplify<FooDocumentDataBarQuxSlicePrimary>, Simplify<FooDocumentDataBarQuxSliceItem>>',
 	);
 });
 
@@ -144,7 +144,7 @@ it("handles Slices with no fields", (ctx) => {
 			.getTypeAliasOrThrow("FooDocumentDataBarBazSlice")
 			.getTypeNodeOrThrow()
 			.getText(),
-	).toBe('prismicT.Slice<"baz", Record<string, never>, never>');
+	).toBe('prismic.Slice<"baz", Record<string, never>, never>');
 });
 
 it("handles Slices with no primary fields", (ctx) => {
@@ -172,7 +172,7 @@ it("handles Slices with no primary fields", (ctx) => {
 			.getTypeNodeOrThrow()
 			.getText(),
 	).toBe(
-		'prismicT.Slice<"baz", Record<string, never>, Simplify<FooDocumentDataBarBazSliceItem>>',
+		'prismic.Slice<"baz", Record<string, never>, Simplify<FooDocumentDataBarBazSliceItem>>',
 	);
 });
 
@@ -201,7 +201,7 @@ it("handles Slices with no item fields", (ctx) => {
 			.getTypeNodeOrThrow()
 			.getText(),
 	).toBe(
-		'prismicT.Slice<"baz", Simplify<FooDocumentDataBarBazSlicePrimary>, never>',
+		'prismic.Slice<"baz", Simplify<FooDocumentDataBarBazSlicePrimary>, never>',
 	);
 });
 
@@ -232,7 +232,7 @@ it("creates an interface for a Slice's primary fields", (ctx) => {
 	);
 	expect(
 		primaryInterface.getPropertyOrThrow("abc").getTypeNodeOrThrow().getText(),
-	).toBe("prismicT.KeyTextField");
+	).toBe("prismic.KeyTextField");
 });
 
 it("creates an interface for a Slice's items fields", (ctx) => {
@@ -265,7 +265,7 @@ it("creates an interface for a Slice's items fields", (ctx) => {
 
 	expect(
 		itemInterface.getPropertyOrThrow("def").getTypeNodeOrThrow().getText(),
-	).toBe("prismicT.SelectField");
+	).toBe("prismic.SelectField");
 });
 
 it("handles hyphenated fields", (ctx) => {
@@ -302,14 +302,14 @@ it("handles hyphenated fields", (ctx) => {
 			.getPropertyOrThrow('"hyphenated-field"')
 			.getTypeNodeOrThrow()
 			.getText(),
-	).toBe("prismicT.KeyTextField");
+	).toBe("prismic.KeyTextField");
 
 	expect(
 		itemInterface
 			.getPropertyOrThrow('"hyphenated-field"')
 			.getTypeNodeOrThrow()
 			.getText(),
-	).toBe("prismicT.SelectField");
+	).toBe("prismic.SelectField");
 });
 
 it("prefixes types starting with a number with an underscore", (ctx) => {
@@ -341,7 +341,7 @@ it("prefixes types starting with a number with an underscore", (ctx) => {
 	const sliceType = file.getTypeAliasOrThrow("_123DocumentData456789Slice");
 
 	expect(sliceZoneProperty.getTypeNodeOrThrow().getText()).toBe(
-		"prismicT.SliceZone<_123DocumentData456Slice>",
+		"prismic.SliceZone<_123DocumentData456Slice>",
 	);
 
 	expect(sliceTypeAlias.getTypeNodeOrThrow().getText()).toBe(
@@ -352,6 +352,6 @@ it("prefixes types starting with a number with an underscore", (ctx) => {
 
 	expect(
 		sliceType.getTypeNodeOrThrow().getText(),
-		'prismicT.Slice<"789", Simplify<_123DocumentData456789SlicePrimary>, Simplify<_123DocumentData456789SliceItem>>',
+		'prismic.Slice<"789", Simplify<_123DocumentData456789SlicePrimary>, Simplify<_123DocumentData456789SliceItem>>',
 	);
 });

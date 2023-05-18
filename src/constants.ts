@@ -1,4 +1,4 @@
-import type { CustomTypeModelFieldType } from "@prismicio/types";
+import type { CustomTypeModelFieldType } from "@prismicio/client";
 
 export const BLANK_LINE_IDENTIFIER = "// ___BLANK_LINE_TO_BE_REPLACED___";
 
@@ -9,7 +9,10 @@ export const SHARED_SLICES_DOCUMENTATION_URL =
 	"https://prismic.io/docs/core-concepts/reusing-slices";
 
 export const FIELD_DOCUMENTATION_URLS: Record<
-	Exclude<keyof typeof CustomTypeModelFieldType, "Range" | "Separator">,
+	Exclude<
+		(typeof CustomTypeModelFieldType)[keyof typeof CustomTypeModelFieldType],
+		"Range" | "Separator"
+	>,
 	string
 > = {
 	UID: "https://prismic.io/docs/core-concepts/uid",
@@ -28,5 +31,5 @@ export const FIELD_DOCUMENTATION_URLS: Record<
 	Group: "https://prismic.io/docs/core-concepts/group",
 	IntegrationFields: "https://prismic.io/docs/core-concepts/integration-fields",
 	Slices: "https://prismic.io/docs/core-concepts/slices",
-	LegacySlices: "https://prismic.io/docs/core-concepts/slices",
+	Choice: "https://prismic.io/docs/core-concepts/slices",
 };

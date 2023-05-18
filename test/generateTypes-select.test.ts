@@ -8,7 +8,7 @@ it("is correctly typed", (ctx) => {
 		ctx.mock.model.select({
 			options: ["foo", "bar"],
 		}),
-		'prismicT.SelectField<"foo" | "bar">',
+		'prismic.SelectField<"foo" | "bar">',
 	);
 });
 
@@ -18,7 +18,7 @@ it("is always filled if a default value is defined in the model", (ctx) => {
 			options: ["foo", "bar"],
 			defaultValue: "bar",
 		}),
-		'prismicT.SelectField<"foo" | "bar", "filled">',
+		'prismic.SelectField<"foo" | "bar", "filled">',
 	);
 });
 
