@@ -13,7 +13,7 @@ A Prismic model-to-TypeScript-type generator.
 
 - Converts custom type and shared Slice models to TypeScript types
 - Integrates with other Prismic TypeScript libraries
-- Built on the [`@prismicio/client`][prismic-client] library
+- Built upon the [`@prismicio/client`][prismic-client] library
 
 ## Install
 
