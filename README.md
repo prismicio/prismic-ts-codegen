@@ -11,14 +11,15 @@
 
 A Prismic model-to-TypeScript-type generator.
 
-- Converts Custom Type and Shared Slice models to TypeScript types
+- Converts custom type and shared Slice models to TypeScript types
 - Integrates with other Prismic TypeScript libraries
-- Built on the [`@prismicio/client`][prismic-types] library
+- Built on the [`@prismicio/client`][prismic-client] library
 
 ## Install
 
 ```bash
-npm install --save-dev prismic-ts-codegen @prismicio/client
+npm install @prismicio/client
+npm install --save-dev prismic-ts-codegen
 ```
 
 ## Usage
@@ -149,7 +150,7 @@ limitations under the License.
 <!-- Links -->
 
 [prismic]: https://prismic.io
-[prismic-types]: https://github.com/prismicio/prismic-types
+[prismic-client]: https://github.com/prismicio/prismic-client
 
 <!-- TODO: Replace link with a more useful one if available -->
 
