@@ -4,12 +4,12 @@ import { parseSourceFile } from "./__testutils__/parseSourceFile";
 
 import * as lib from "../src";
 
-it("imports @prismicio/client as prismic as the default types provider", () => {
+it("imports @prismicio/types as prismic as the default types provider", () => {
 	const res = lib.generateTypes();
 	const file = parseSourceFile(res);
 
 	const importDeclaration =
-		file.getImportDeclarationOrThrow("@prismicio/client");
+		file.getImportDeclarationOrThrow("@prismicio/types");
 
 	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe(
 		"prismic",

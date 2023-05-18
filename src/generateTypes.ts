@@ -32,7 +32,7 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 	const sourceFile = project.createSourceFile("types.d.ts");
 
 	sourceFile.addImportDeclaration({
-		moduleSpecifier: config.typesProvider || "@prismicio/client",
+		moduleSpecifier: config.typesProvider || "@prismicio/types",
 		namespaceImport: "prismic",
 		isTypeOnly: true,
 	});
