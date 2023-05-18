@@ -1,27 +1,24 @@
-import test from "ava";
-import * as prismicM from "@prismicio/mock";
+import { expect, it } from "vitest";
 
-import { macroBasicFieldType } from "./__testutils__/macroBasicFieldType";
-import { macroBasicFieldDocs } from "./__testutils__/macroBasicFieldDocs";
+import { expectToHaveDocs } from "./__testutils__/expectToHaveDocs";
+import { expectToHaveFieldType } from "./__testutils__/expectToHaveFieldType";
 import { parseSourceFile } from "./__testutils__/parseSourceFile";
 
 import * as lib from "../src";
 
-test(
-	"correctly typed",
-	macroBasicFieldType,
-	(t) => prismicM.model.integrationFields({ seed: t.title }),
-	"prismicT.IntegrationFields",
-);
+it("is correctly typed", (ctx) => {
+	expectToHaveFieldType(
+		ctx.mock.model.integrationFields(),
+		"prismicT.IntegrationFields",
+	);
+});
 
-test("can be customized with catalog-specific types", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.customType({
+it("can be customized with catalog-specific types", (ctx) => {
+	const model = ctx.mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: mock.model.integrationFields({ catalog: "abc" }),
-			baz: mock.model.integrationFields({ catalog: "def" }),
+			bar: ctx.mock.model.integrationFields({ catalog: "abc" }),
+			baz: ctx.mock.model.integrationFields({ catalog: "def" }),
 		},
 	});
 
@@ -39,16 +36,14 @@ test("can be customized with catalog-specific types", (t) => {
 	const file = parseSourceFile(types);
 	const dataInterface = file.getInterfaceOrThrow("FooDocumentData");
 
-	t.is(
+	expect(
 		dataInterface.getPropertyOrThrow("bar").getTypeNodeOrThrow().getText(),
-		"prismicT.IntegrationFields<AbcType>",
-	);
-	t.is(
+	).toBe("prismicT.IntegrationFields<AbcType>");
+	expect(
 		dataInterface.getPropertyOrThrow("baz").getTypeNodeOrThrow().getText(),
-		"prismicT.IntegrationFields<DefType>",
-	);
+	).toBe("prismicT.IntegrationFields<DefType>");
 });
 
-test("correctly documented", macroBasicFieldDocs, (t) =>
-	prismicM.model.integrationFields({ seed: t.title }),
-);
+it("is correctly documented", (ctx) => {
+	expectToHaveDocs(ctx.mock.model.integrationFields());
+});

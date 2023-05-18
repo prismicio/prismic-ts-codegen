@@ -1,32 +1,29 @@
-import test from "ava";
-import * as prismicM from "@prismicio/mock";
+import { expect, it } from "vitest";
 
 import { parseSourceFile } from "./__testutils__/parseSourceFile";
 
 import * as lib from "../src";
 
-test("correctly typed", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.customType({
+it("correctly typed", (ctx) => {
+	const model = ctx.mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: mock.model.sliceZone({
+			bar: ctx.mock.model.sliceZone({
 				choices: {
-					baz: mock.model.slice({
+					baz: ctx.mock.model.slice({
 						nonRepeatFields: {
-							abc: mock.model.keyText(),
+							abc: ctx.mock.model.keyText(),
 						},
 						repeatFields: {
-							def: mock.model.select(),
+							def: ctx.mock.model.select(),
 						},
 					}),
-					qux: mock.model.slice({
+					qux: ctx.mock.model.slice({
 						nonRepeatFields: {
-							ghi: mock.model.title(),
+							ghi: ctx.mock.model.title(),
 						},
 						repeatFields: {
-							jkl: mock.model.boolean(),
+							jkl: ctx.mock.model.boolean(),
 						},
 					}),
 				},
@@ -40,37 +37,34 @@ test("correctly typed", (t) => {
 		.getInterfaceOrThrow("FooDocumentData")
 		.getPropertyOrThrow("bar");
 
-	t.is(
-		sliceZoneProperty.getTypeNodeOrThrow().getText(),
+	expect(sliceZoneProperty.getTypeNodeOrThrow().getText()).toBe(
 		"prismicT.SliceZone<FooDocumentDataBarSlice>",
 	);
 });
 
-test("creates a type alias to a union of all Slice types", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.customType({
+it("creates a type alias to a union of all Slice types", (ctx) => {
+	const model = ctx.mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: mock.model.sliceZone({
+			bar: ctx.mock.model.sliceZone({
 				choices: {
-					baz: mock.model.slice({
+					baz: ctx.mock.model.slice({
 						nonRepeatFields: {
-							abc: mock.model.keyText(),
+							abc: ctx.mock.model.keyText(),
 						},
 						repeatFields: {
-							def: mock.model.select(),
+							def: ctx.mock.model.select(),
 						},
 					}),
-					qux: mock.model.slice({
+					qux: ctx.mock.model.slice({
 						nonRepeatFields: {
-							ghi: mock.model.title(),
+							ghi: ctx.mock.model.title(),
 						},
 						repeatFields: {
-							jkl: mock.model.boolean(),
+							jkl: ctx.mock.model.boolean(),
 						},
 					}),
-					quux: mock.model.sharedSliceChoice(),
+					quux: ctx.mock.model.sharedSliceChoice(),
 				},
 			}),
 		},
@@ -80,34 +74,31 @@ test("creates a type alias to a union of all Slice types", (t) => {
 	const file = parseSourceFile(types);
 	const sliceTypeAlias = file.getTypeAliasOrThrow("FooDocumentDataBarSlice");
 
-	t.is(
-		sliceTypeAlias.getTypeNodeOrThrow().getText(),
+	expect(sliceTypeAlias.getTypeNodeOrThrow().getText()).toBe(
 		"FooDocumentDataBarBazSlice | FooDocumentDataBarQuxSlice | QuuxSlice",
 	);
 });
 
-test("creates a type alias for each Slice", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.customType({
+it("creates a type alias for each Slice", (ctx) => {
+	const model = ctx.mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: mock.model.sliceZone({
+			bar: ctx.mock.model.sliceZone({
 				choices: {
-					baz: mock.model.slice({
+					baz: ctx.mock.model.slice({
 						nonRepeatFields: {
-							abc: mock.model.keyText(),
+							abc: ctx.mock.model.keyText(),
 						},
 						repeatFields: {
-							def: mock.model.select(),
+							def: ctx.mock.model.select(),
 						},
 					}),
-					qux: mock.model.slice({
+					qux: ctx.mock.model.slice({
 						nonRepeatFields: {
-							ghi: mock.model.title(),
+							ghi: ctx.mock.model.title(),
 						},
 						repeatFields: {
-							jkl: mock.model.boolean(),
+							jkl: ctx.mock.model.boolean(),
 						},
 					}),
 				},
@@ -121,29 +112,25 @@ test("creates a type alias for each Slice", (t) => {
 	const bazSliceType = file.getTypeAliasOrThrow("FooDocumentDataBarBazSlice");
 	const quxSliceType = file.getTypeAliasOrThrow("FooDocumentDataBarQuxSlice");
 
-	t.true(bazSliceType.isExported());
-	t.true(quxSliceType.isExported());
+	expect(bazSliceType.isExported()).toBe(true);
+	expect(quxSliceType.isExported()).toBe(true);
 
-	t.is(
-		bazSliceType.getTypeNodeOrThrow().getText(),
+	expect(bazSliceType.getTypeNodeOrThrow().getText()).toBe(
 		'prismicT.Slice<"baz", Simplify<FooDocumentDataBarBazSlicePrimary>, Simplify<FooDocumentDataBarBazSliceItem>>',
 	);
 
-	t.is(
-		quxSliceType.getTypeNodeOrThrow().getText(),
+	expect(quxSliceType.getTypeNodeOrThrow().getText()).toBe(
 		'prismicT.Slice<"qux", Simplify<FooDocumentDataBarQuxSlicePrimary>, Simplify<FooDocumentDataBarQuxSliceItem>>',
 	);
 });
 
-test("handles Slices with no fields", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.customType({
+it("handles Slices with no fields", (ctx) => {
+	const model = ctx.mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: mock.model.sliceZone({
+			bar: ctx.mock.model.sliceZone({
 				choices: {
-					baz: mock.model.slice(),
+					baz: ctx.mock.model.slice(),
 				},
 			}),
 		},
@@ -152,26 +139,23 @@ test("handles Slices with no fields", (t) => {
 	const types = lib.generateTypes({ customTypeModels: [model] });
 	const file = parseSourceFile(types);
 
-	t.is(
+	expect(
 		file
 			.getTypeAliasOrThrow("FooDocumentDataBarBazSlice")
 			.getTypeNodeOrThrow()
 			.getText(),
-		'prismicT.Slice<"baz", Record<string, never>, never>',
-	);
+	).toBe('prismicT.Slice<"baz", Record<string, never>, never>');
 });
 
-test("handles Slices with no primary fields", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.customType({
+it("handles Slices with no primary fields", (ctx) => {
+	const model = ctx.mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: mock.model.sliceZone({
+			bar: ctx.mock.model.sliceZone({
 				choices: {
-					baz: mock.model.slice({
+					baz: ctx.mock.model.slice({
 						repeatFields: {
-							def: mock.model.select(),
+							def: ctx.mock.model.select(),
 						},
 					}),
 				},
@@ -182,26 +166,25 @@ test("handles Slices with no primary fields", (t) => {
 	const types = lib.generateTypes({ customTypeModels: [model] });
 	const file = parseSourceFile(types);
 
-	t.is(
+	expect(
 		file
 			.getTypeAliasOrThrow("FooDocumentDataBarBazSlice")
 			.getTypeNodeOrThrow()
 			.getText(),
+	).toBe(
 		'prismicT.Slice<"baz", Record<string, never>, Simplify<FooDocumentDataBarBazSliceItem>>',
 	);
 });
 
-test("handles Slices with no item fields", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.customType({
+it("handles Slices with no item fields", (ctx) => {
+	const model = ctx.mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: mock.model.sliceZone({
+			bar: ctx.mock.model.sliceZone({
 				choices: {
-					baz: mock.model.slice({
+					baz: ctx.mock.model.slice({
 						nonRepeatFields: {
-							abc: mock.model.keyText(),
+							abc: ctx.mock.model.keyText(),
 						},
 					}),
 				},
@@ -212,29 +195,28 @@ test("handles Slices with no item fields", (t) => {
 	const types = lib.generateTypes({ customTypeModels: [model] });
 	const file = parseSourceFile(types);
 
-	t.is(
+	expect(
 		file
 			.getTypeAliasOrThrow("FooDocumentDataBarBazSlice")
 			.getTypeNodeOrThrow()
 			.getText(),
+	).toBe(
 		'prismicT.Slice<"baz", Simplify<FooDocumentDataBarBazSlicePrimary>, never>',
 	);
 });
 
-test("creates an interface for a Slice's primary fields", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.customType({
+it("creates an interface for a Slice's primary fields", (ctx) => {
+	const model = ctx.mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: mock.model.sliceZone({
+			bar: ctx.mock.model.sliceZone({
 				choices: {
-					baz: mock.model.slice({
+					baz: ctx.mock.model.slice({
 						nonRepeatFields: {
-							abc: mock.model.keyText(),
+							abc: ctx.mock.model.keyText(),
 						},
 						repeatFields: {
-							def: mock.model.select(),
+							def: ctx.mock.model.select(),
 						},
 					}),
 				},
@@ -248,26 +230,23 @@ test("creates an interface for a Slice's primary fields", (t) => {
 	const primaryInterface = file.getInterfaceOrThrow(
 		"FooDocumentDataBarBazSlicePrimary",
 	);
-	t.is(
+	expect(
 		primaryInterface.getPropertyOrThrow("abc").getTypeNodeOrThrow().getText(),
-		"prismicT.KeyTextField",
-	);
+	).toBe("prismicT.KeyTextField");
 });
 
-test("creates an interface for a Slice's items fields", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.customType({
+it("creates an interface for a Slice's items fields", (ctx) => {
+	const model = ctx.mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: mock.model.sliceZone({
+			bar: ctx.mock.model.sliceZone({
 				choices: {
-					baz: mock.model.slice({
+					baz: ctx.mock.model.slice({
 						nonRepeatFields: {
-							abc: mock.model.keyText(),
+							abc: ctx.mock.model.keyText(),
 						},
 						repeatFields: {
-							def: mock.model.select(),
+							def: ctx.mock.model.select(),
 						},
 					}),
 				},
@@ -282,28 +261,25 @@ test("creates an interface for a Slice's items fields", (t) => {
 		"FooDocumentDataBarBazSliceItem",
 	);
 
-	t.true(itemInterface.isExported());
+	expect(itemInterface.isExported()).toBe(true);
 
-	t.is(
+	expect(
 		itemInterface.getPropertyOrThrow("def").getTypeNodeOrThrow().getText(),
-		"prismicT.SelectField",
-	);
+	).toBe("prismicT.SelectField");
 });
 
-test("handles hyphenated fields", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.customType({
+it("handles hyphenated fields", (ctx) => {
+	const model = ctx.mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: mock.model.sliceZone({
+			bar: ctx.mock.model.sliceZone({
 				choices: {
-					baz: mock.model.slice({
+					baz: ctx.mock.model.slice({
 						nonRepeatFields: {
-							"hyphenated-field": mock.model.keyText(),
+							"hyphenated-field": ctx.mock.model.keyText(),
 						},
 						repeatFields: {
-							"hyphenated-field": mock.model.select(),
+							"hyphenated-field": ctx.mock.model.select(),
 						},
 					}),
 				},
@@ -321,37 +297,33 @@ test("handles hyphenated fields", (t) => {
 		"FooDocumentDataBarBazSliceItem",
 	);
 
-	t.is(
+	expect(
 		primaryInterface
 			.getPropertyOrThrow('"hyphenated-field"')
 			.getTypeNodeOrThrow()
 			.getText(),
-		"prismicT.KeyTextField",
-	);
+	).toBe("prismicT.KeyTextField");
 
-	t.is(
+	expect(
 		itemInterface
 			.getPropertyOrThrow('"hyphenated-field"')
 			.getTypeNodeOrThrow()
 			.getText(),
-		"prismicT.SelectField",
-	);
+	).toBe("prismicT.SelectField");
 });
 
-test("prefixes types starting with a number with an underscore", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.customType({
+it("prefixes types starting with a number with an underscore", (ctx) => {
+	const model = ctx.mock.model.customType({
 		id: "123",
 		fields: {
-			456: mock.model.sliceZone({
+			456: ctx.mock.model.sliceZone({
 				choices: {
-					789: mock.model.slice({
+					789: ctx.mock.model.slice({
 						nonRepeatFields: {
-							foo: mock.model.keyText(),
+							foo: ctx.mock.model.keyText(),
 						},
 						repeatFields: {
-							bar: mock.model.select(),
+							bar: ctx.mock.model.select(),
 						},
 					}),
 				},
@@ -368,19 +340,17 @@ test("prefixes types starting with a number with an underscore", (t) => {
 	const sliceTypeAlias = file.getTypeAliasOrThrow("_123DocumentData456Slice");
 	const sliceType = file.getTypeAliasOrThrow("_123DocumentData456789Slice");
 
-	t.is(
-		sliceZoneProperty.getTypeNodeOrThrow().getText(),
+	expect(sliceZoneProperty.getTypeNodeOrThrow().getText()).toBe(
 		"prismicT.SliceZone<_123DocumentData456Slice>",
 	);
 
-	t.is(
-		sliceTypeAlias.getTypeNodeOrThrow().getText(),
+	expect(sliceTypeAlias.getTypeNodeOrThrow().getText()).toBe(
 		"_123DocumentData456789Slice",
 	);
 
-	t.true(sliceType.isExported());
+	expect(sliceType.isExported()).toBe(true);
 
-	t.is(
+	expect(
 		sliceType.getTypeNodeOrThrow().getText(),
 		'prismicT.Slice<"789", Simplify<_123DocumentData456789SlicePrimary>, Simplify<_123DocumentData456789SliceItem>>',
 	);

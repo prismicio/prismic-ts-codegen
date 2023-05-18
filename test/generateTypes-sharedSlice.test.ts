@@ -1,32 +1,29 @@
-import test from "ava";
-import * as prismicM from "@prismicio/mock";
+import { expect, it } from "vitest";
 
 import { parseSourceFile } from "./__testutils__/parseSourceFile";
 
 import * as lib from "../src";
 
-test("correctly typed", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.sharedSlice({
+it("correctly typed", (ctx) => {
+	const model = ctx.mock.model.sharedSlice({
 		id: "foo",
 		variations: [
-			mock.model.sharedSliceVariation({
+			ctx.mock.model.sharedSliceVariation({
 				id: "bar",
 				primaryFields: {
-					abc: mock.model.keyText(),
+					abc: ctx.mock.model.keyText(),
 				},
 				itemsFields: {
-					def: mock.model.select(),
+					def: ctx.mock.model.select(),
 				},
 			}),
-			mock.model.sharedSliceVariation({
+			ctx.mock.model.sharedSliceVariation({
 				id: "baz",
 				primaryFields: {
-					ghi: mock.model.keyText(),
+					ghi: ctx.mock.model.keyText(),
 				},
 				itemsFields: {
-					jkl: mock.model.select(),
+					jkl: ctx.mock.model.select(),
 				},
 			}),
 		],
@@ -36,36 +33,33 @@ test("correctly typed", (t) => {
 	const file = parseSourceFile(types);
 	const sliceTypeAlias = file.getTypeAliasOrThrow("FooSlice");
 
-	t.true(sliceTypeAlias.isExported());
+	expect(sliceTypeAlias.isExported()).toBe(true);
 
-	t.is(
-		sliceTypeAlias.getTypeNodeOrThrow().getText(),
+	expect(sliceTypeAlias.getTypeNodeOrThrow().getText()).toBe(
 		'prismicT.SharedSlice<"foo", FooSliceVariation>',
 	);
 });
 
-test("creates a type alias to a union of all Slice variation types", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.sharedSlice({
+it("creates a type alias to a union of all Slice variation types", (ctx) => {
+	const model = ctx.mock.model.sharedSlice({
 		id: "foo",
 		variations: [
-			mock.model.sharedSliceVariation({
+			ctx.mock.model.sharedSliceVariation({
 				id: "bar",
 				primaryFields: {
-					abc: mock.model.keyText(),
+					abc: ctx.mock.model.keyText(),
 				},
 				itemsFields: {
-					def: mock.model.select(),
+					def: ctx.mock.model.select(),
 				},
 			}),
-			mock.model.sharedSliceVariation({
+			ctx.mock.model.sharedSliceVariation({
 				id: "baz",
 				primaryFields: {
-					ghi: mock.model.keyText(),
+					ghi: ctx.mock.model.keyText(),
 				},
 				itemsFields: {
-					jkl: mock.model.select(),
+					jkl: ctx.mock.model.select(),
 				},
 			}),
 		],
@@ -75,34 +69,31 @@ test("creates a type alias to a union of all Slice variation types", (t) => {
 	const file = parseSourceFile(types);
 	const sliceTypeAlias = file.getTypeAliasOrThrow("FooSliceVariation");
 
-	t.is(
-		sliceTypeAlias.getTypeNodeOrThrow().getText(),
+	expect(sliceTypeAlias.getTypeNodeOrThrow().getText()).toBe(
 		"FooSliceBar | FooSliceBaz",
 	);
 });
 
-test("creates a type alias for each Slice variation", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.sharedSlice({
+it("creates a type alias for each Slice variation", (ctx) => {
+	const model = ctx.mock.model.sharedSlice({
 		id: "foo",
 		variations: [
-			mock.model.sharedSliceVariation({
+			ctx.mock.model.sharedSliceVariation({
 				id: "bar",
 				primaryFields: {
-					abc: mock.model.keyText(),
+					abc: ctx.mock.model.keyText(),
 				},
 				itemsFields: {
-					def: mock.model.select(),
+					def: ctx.mock.model.select(),
 				},
 			}),
-			mock.model.sharedSliceVariation({
+			ctx.mock.model.sharedSliceVariation({
 				id: "baz",
 				primaryFields: {
-					ghi: mock.model.keyText(),
+					ghi: ctx.mock.model.keyText(),
 				},
 				itemsFields: {
-					jkl: mock.model.select(),
+					jkl: ctx.mock.model.select(),
 				},
 			}),
 		],
@@ -114,47 +105,40 @@ test("creates a type alias for each Slice variation", (t) => {
 	const barType = file.getTypeAliasOrThrow("FooSliceBar");
 	const bazType = file.getTypeAliasOrThrow("FooSliceBaz");
 
-	t.true(barType.isExported());
-	t.true(bazType.isExported());
+	expect(barType.isExported()).toBe(true);
+	expect(bazType.isExported()).toBe(true);
 
-	t.is(
-		barType.getTypeNodeOrThrow().getText(),
+	expect(barType.getTypeNodeOrThrow().getText()).toBe(
 		'prismicT.SharedSliceVariation<"bar", Simplify<FooSliceBarPrimary>, Simplify<FooSliceBarItem>>',
 	);
 
-	t.is(
-		bazType.getTypeNodeOrThrow().getText(),
+	expect(bazType.getTypeNodeOrThrow().getText()).toBe(
 		'prismicT.SharedSliceVariation<"baz", Simplify<FooSliceBazPrimary>, Simplify<FooSliceBazItem>>',
 	);
 });
 
-test("handles Slice variations with no fields", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.sharedSlice({
+it("handles Slice variations with no fields", (ctx) => {
+	const model = ctx.mock.model.sharedSlice({
 		id: "foo",
-		variations: [mock.model.sharedSliceVariation({ id: "bar" })],
+		variations: [ctx.mock.model.sharedSliceVariation({ id: "bar" })],
 	});
 
 	const types = lib.generateTypes({ sharedSliceModels: [model] });
 	const file = parseSourceFile(types);
 
-	t.is(
+	expect(
 		file.getTypeAliasOrThrow("FooSliceBar").getTypeNodeOrThrow().getText(),
-		'prismicT.SharedSliceVariation<"bar", Record<string, never>, never>',
-	);
+	).toBe('prismicT.SharedSliceVariation<"bar", Record<string, never>, never>');
 });
 
-test("handles Slice variations with no primary fields", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.sharedSlice({
+it("handles Slice variations with no primary fields", (ctx) => {
+	const model = ctx.mock.model.sharedSlice({
 		id: "foo",
 		variations: [
-			mock.model.sharedSliceVariation({
+			ctx.mock.model.sharedSliceVariation({
 				id: "bar",
 				itemsFields: {
-					def: mock.model.select(),
+					def: ctx.mock.model.select(),
 				},
 			}),
 		],
@@ -163,22 +147,21 @@ test("handles Slice variations with no primary fields", (t) => {
 	const types = lib.generateTypes({ sharedSliceModels: [model] });
 	const file = parseSourceFile(types);
 
-	t.is(
+	expect(
 		file.getTypeAliasOrThrow("FooSliceBar").getTypeNodeOrThrow().getText(),
+	).toBe(
 		'prismicT.SharedSliceVariation<"bar", Record<string, never>, Simplify<FooSliceBarItem>>',
 	);
 });
 
-test("handles Slice variations with no item fields", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.sharedSlice({
+it("handles Slice variations with no item fields", (ctx) => {
+	const model = ctx.mock.model.sharedSlice({
 		id: "foo",
 		variations: [
-			mock.model.sharedSliceVariation({
+			ctx.mock.model.sharedSliceVariation({
 				id: "bar",
 				primaryFields: {
-					abc: mock.model.keyText(),
+					abc: ctx.mock.model.keyText(),
 				},
 			}),
 		],
@@ -187,25 +170,24 @@ test("handles Slice variations with no item fields", (t) => {
 	const types = lib.generateTypes({ sharedSliceModels: [model] });
 	const file = parseSourceFile(types);
 
-	t.is(
+	expect(
 		file.getTypeAliasOrThrow("FooSliceBar").getTypeNodeOrThrow().getText(),
+	).toBe(
 		'prismicT.SharedSliceVariation<"bar", Simplify<FooSliceBarPrimary>, never>',
 	);
 });
 
-test("creates an interface for a Slice variation's primary fields", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.sharedSlice({
+it("creates an interface for a Slice variation's primary fields", (ctx) => {
+	const model = ctx.mock.model.sharedSlice({
 		id: "foo",
 		variations: [
-			mock.model.sharedSliceVariation({
+			ctx.mock.model.sharedSliceVariation({
 				id: "bar",
 				primaryFields: {
-					abc: mock.model.keyText(),
+					abc: ctx.mock.model.keyText(),
 				},
 				itemsFields: {
-					def: mock.model.select(),
+					def: ctx.mock.model.select(),
 				},
 			}),
 		],
@@ -215,25 +197,22 @@ test("creates an interface for a Slice variation's primary fields", (t) => {
 	const file = parseSourceFile(types);
 
 	const primaryInterface = file.getInterfaceOrThrow("FooSliceBarPrimary");
-	t.is(
+	expect(
 		primaryInterface.getPropertyOrThrow("abc").getTypeNodeOrThrow().getText(),
-		"prismicT.KeyTextField",
-	);
+	).toBe("prismicT.KeyTextField");
 });
 
-test("creates an interface for a Slice variation's items fields", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.sharedSlice({
+it("creates an interface for a Slice variation's items fields", (ctx) => {
+	const model = ctx.mock.model.sharedSlice({
 		id: "foo",
 		variations: [
-			mock.model.sharedSliceVariation({
+			ctx.mock.model.sharedSliceVariation({
 				id: "bar",
 				primaryFields: {
-					abc: mock.model.keyText(),
+					abc: ctx.mock.model.keyText(),
 				},
 				itemsFields: {
-					def: mock.model.select(),
+					def: ctx.mock.model.select(),
 				},
 			}),
 		],
@@ -244,17 +223,15 @@ test("creates an interface for a Slice variation's items fields", (t) => {
 
 	const itemInterface = file.getInterfaceOrThrow("FooSliceBarItem");
 
-	t.true(itemInterface.isExported());
+	expect(itemInterface.isExported()).toBe(true);
 
-	t.is(
+	expect(
 		itemInterface.getPropertyOrThrow("def").getTypeNodeOrThrow().getText(),
-		"prismicT.SelectField",
-	);
+	).toBe("prismicT.SelectField");
 });
 
-test("handles Shared Slice with no variations", (t) => {
-	const model = prismicM.model.sharedSlice({
-		seed: t.title,
+it("handles Shared Slice with no variations", (ctx) => {
+	const model = ctx.mock.model.sharedSlice({
 		id: "foo",
 		variations: [],
 	});
@@ -262,33 +239,29 @@ test("handles Shared Slice with no variations", (t) => {
 	const types = lib.generateTypes({ sharedSliceModels: [model] });
 	const file = parseSourceFile(types);
 
-	t.is(
+	expect(
 		file.getTypeAliasOrThrow("FooSlice").getTypeNodeOrThrow().getText(),
-		'prismicT.SharedSlice<"foo", FooSliceVariation>',
-	);
+	).toBe('prismicT.SharedSlice<"foo", FooSliceVariation>');
 
-	t.is(
+	expect(
 		file
 			.getTypeAliasOrThrow("FooSliceVariation")
 			.getTypeNodeOrThrow()
 			.getText(),
-		"never",
-	);
+	).toBe("never");
 });
 
-test("handles hyphenated fields", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.sharedSlice({
+it("handles hyphenated fields", (ctx) => {
+	const model = ctx.mock.model.sharedSlice({
 		id: "foo",
 		variations: [
-			mock.model.sharedSliceVariation({
+			ctx.mock.model.sharedSliceVariation({
 				id: "bar",
 				primaryFields: {
-					"hyphenated-field": mock.model.keyText(),
+					"hyphenated-field": ctx.mock.model.keyText(),
 				},
 				itemsFields: {
-					"hyphenated-field": mock.model.select(),
+					"hyphenated-field": ctx.mock.model.select(),
 				},
 			}),
 		],
@@ -300,39 +273,35 @@ test("handles hyphenated fields", (t) => {
 	const primaryInterface = file.getInterfaceOrThrow("FooSliceBarPrimary");
 	const itemInterface = file.getInterfaceOrThrow("FooSliceBarItem");
 
-	t.is(
+	expect(
 		primaryInterface
 			.getPropertyOrThrow('"hyphenated-field"')
 			.getTypeNodeOrThrow()
 			.getText(),
-		"prismicT.KeyTextField",
-	);
+	).toBe("prismicT.KeyTextField");
 
-	t.is(
+	expect(
 		itemInterface
 			.getPropertyOrThrow('"hyphenated-field"')
 			.getTypeNodeOrThrow()
 			.getText(),
-		"prismicT.SelectField",
-	);
+	).toBe("prismicT.SelectField");
 });
 
-test("prefixes types starting with a number with an underscore", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.sharedSlice({
+it("prefixes types starting with a number with an underscore", (ctx) => {
+	const model = ctx.mock.model.sharedSlice({
 		id: "123",
 		variations: [
-			mock.model.sharedSliceVariation({
+			ctx.mock.model.sharedSliceVariation({
 				id: "456",
 				primaryFields: {
-					foo: mock.model.keyText(),
+					foo: ctx.mock.model.keyText(),
 				},
 			}),
-			mock.model.sharedSliceVariation({
+			ctx.mock.model.sharedSliceVariation({
 				id: "789",
 				primaryFields: {
-					bar: mock.model.keyText(),
+					bar: ctx.mock.model.keyText(),
 				},
 			}),
 		],
@@ -345,13 +314,11 @@ test("prefixes types starting with a number with an underscore", (t) => {
 	const sliceVariationTypeAlias =
 		file.getTypeAliasOrThrow("_123SliceVariation");
 
-	t.is(
-		sliceTypeAlias.getTypeNodeOrThrow().getText(),
+	expect(sliceTypeAlias.getTypeNodeOrThrow().getText()).toBe(
 		'prismicT.SharedSlice<"123", _123SliceVariation>',
 	);
 
-	t.is(
-		sliceVariationTypeAlias.getTypeNodeOrThrow().getText(),
+	expect(sliceVariationTypeAlias.getTypeNodeOrThrow().getText()).toBe(
 		"_123Slice456 | _123Slice789",
 	);
 });
