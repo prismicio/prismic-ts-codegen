@@ -19,14 +19,23 @@ export const detectTypesProvider = async (
 ): Promise<TypesProvider | undefined> => {
 	const require = createRequire(config.cwd || process.cwd());
 
-	if (
-		// Only @prismicio/client >= v7 exports types.
-		Number.parseInt(
-			require("@prismicio/client/package.json").version.split(".")[0],
-		) >= 7
-	) {
-		return "@prismicio/client";
-	} else if (require.resolve("@prismicio/types")) {
+	try {
+		if (
+			Number.parseInt(
+				require("@prismicio/client/package.json").version.split(".")[0],
+			) >= 7
+		) {
+			return "@prismicio/client";
+		}
+	} catch {
+		// noop
+	}
+
+	try {
+		require.resolve("@prismicio/types");
+
 		return "@prismicio/types";
+	} catch {
+		// noop
 	}
 };
