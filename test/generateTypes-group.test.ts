@@ -1,21 +1,18 @@
-import test from "ava";
-import * as prismicM from "@prismicio/mock";
+import { expect, it } from "vitest";
 
-import { macroBasicFieldDocs } from "./__testutils__/macroBasicFieldDocs";
+import { expectToHaveDocs } from "./__testutils__/expectToHaveDocs";
 import { parseSourceFile } from "./__testutils__/parseSourceFile";
 
 import * as lib from "../src";
 
-test("correctly typed", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.customType({
+it("correctly typed", (ctx) => {
+	const model = ctx.mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: mock.model.group({
+			bar: ctx.mock.model.group({
 				fields: {
-					baz: mock.model.keyText(),
-					qux: mock.model.select(),
+					baz: ctx.mock.model.keyText(),
+					qux: ctx.mock.model.select(),
 				},
 			}),
 		},
@@ -27,22 +24,19 @@ test("correctly typed", (t) => {
 		.getInterfaceOrThrow("FooDocumentData")
 		.getPropertyOrThrow("bar");
 
-	t.is(
-		groupProperty.getTypeNodeOrThrow().getText(),
+	expect(groupProperty.getTypeNodeOrThrow().getText()).toBe(
 		"prismicT.GroupField<Simplify<FooDocumentDataBarItem>>",
 	);
 });
 
-test("creates an interface for a group item containing its fields", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.customType({
+it("creates an interface for a group item containing its fields", (ctx) => {
+	const model = ctx.mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: mock.model.group({
+			bar: ctx.mock.model.group({
 				fields: {
-					baz: mock.model.keyText(),
-					qux: mock.model.select(),
+					baz: ctx.mock.model.keyText(),
+					qux: ctx.mock.model.select(),
 				},
 			}),
 		},
@@ -52,31 +46,23 @@ test("creates an interface for a group item containing its fields", (t) => {
 	const file = parseSourceFile(types);
 	const itemInterface = file.getInterfaceOrThrow("FooDocumentDataBarItem");
 
-	t.true(itemInterface.isExported());
+	expect(itemInterface.isExported()).toBe(true);
 
-	t.is(
+	expect(
 		itemInterface.getPropertyOrThrow("baz").getTypeNodeOrThrow().getText(),
-		"prismicT.KeyTextField",
-	);
-	t.is(
+	).toBe("prismicT.KeyTextField");
+	expect(
 		itemInterface.getPropertyOrThrow("qux").getTypeNodeOrThrow().getText(),
-		"prismicT.SelectField",
-	);
+	).toBe("prismicT.SelectField");
 });
 
-test("correctly documented", macroBasicFieldDocs, (t) =>
-	prismicM.model.boolean({ seed: t.title }),
-);
-
-test("prefixes Group types starting with a number using an underscore prefix", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.customType({
+it("prefixes Group types starting with a number using an underscore prefix", (ctx) => {
+	const model = ctx.mock.model.customType({
 		id: "123",
 		fields: {
-			456: mock.model.group({
+			456: ctx.mock.model.group({
 				fields: {
-					bar: mock.model.keyText(),
+					bar: ctx.mock.model.keyText(),
 				},
 			}),
 		},
@@ -89,21 +75,18 @@ test("prefixes Group types starting with a number using an underscore prefix", (
 		.getInterfaceOrThrow("_123DocumentData")
 		.getPropertyOrThrow('"456"');
 
-	t.is(
-		groupProperty.getTypeNodeOrThrow().getText(),
+	expect(groupProperty.getTypeNodeOrThrow().getText()).toBe(
 		"prismicT.GroupField<Simplify<_123DocumentData456Item>>",
 	);
 });
 
-test("handles hyphenated fields", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.customType({
+it("handles hyphenated fields", (ctx) => {
+	const model = ctx.mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: mock.model.group({
+			bar: ctx.mock.model.group({
 				fields: {
-					"hyphenated-field": mock.model.keyText(),
+					"hyphenated-field": ctx.mock.model.keyText(),
 				},
 			}),
 		},
@@ -113,11 +96,15 @@ test("handles hyphenated fields", (t) => {
 	const file = parseSourceFile(types);
 	const itemInterface = file.getInterfaceOrThrow("FooDocumentDataBarItem");
 
-	t.is(
+	expect(
 		itemInterface
 			.getPropertyOrThrow('"hyphenated-field"')
 			.getTypeNodeOrThrow()
 			.getText(),
-		"prismicT.KeyTextField",
-	);
+	).toBe("prismicT.KeyTextField");
+});
+
+it.todo("is correctly documented", (ctx) => {
+	// TODO
+	expectToHaveDocs(ctx.mock.model.boolean());
 });

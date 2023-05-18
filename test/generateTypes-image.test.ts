@@ -1,27 +1,21 @@
-import test from "ava";
-import * as prismicM from "@prismicio/mock";
+import { it } from "vitest";
 
-import { macroBasicFieldType } from "./__testutils__/macroBasicFieldType";
-import { macroBasicFieldDocs } from "./__testutils__/macroBasicFieldDocs";
+import { expectToHaveDocs } from "./__testutils__/expectToHaveDocs";
+import { expectToHaveFieldType } from "./__testutils__/expectToHaveFieldType";
 
-test(
-	"correctly typed",
-	macroBasicFieldType,
-	(t) => prismicM.model.image({ seed: t.title }),
-	"prismicT.ImageField<never>",
-);
+it("is correctly typed", (ctx) => {
+	expectToHaveFieldType(ctx.mock.model.image(), "prismicT.ImageField<never>");
+});
 
-test(
-	"includes thumbnail names if defined in the model",
-	macroBasicFieldType,
-	(t) =>
-		prismicM.model.image({
-			seed: t.title,
+it("is correctly typed", (ctx) => {
+	expectToHaveFieldType(
+		ctx.mock.model.image({
 			thumbnailNames: ["foo", "bar"],
 		}),
-	'prismicT.ImageField<"foo" | "bar">',
-);
+		'prismicT.ImageField<"foo" | "bar">',
+	);
+});
 
-test("correctly documented", macroBasicFieldDocs, (t) =>
-	prismicM.model.image({ seed: t.title }),
-);
+it("is correctly documented", (ctx) => {
+	expectToHaveDocs(ctx.mock.model.image());
+});

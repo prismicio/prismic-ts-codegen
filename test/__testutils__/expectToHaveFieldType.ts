@@ -1,25 +1,24 @@
-import { ExecutionContext } from "ava";
+import { expect } from "vitest";
+
 import * as prismicM from "@prismicio/mock";
+
 import * as prismicT from "@prismicio/types";
 
 import { parseSourceFile } from "./parseSourceFile";
 
 import * as lib from "../../src";
 
-export const macroBasicFieldType = <
-	FieldModel extends prismicT.CustomTypeModelField,
->(
-	t: ExecutionContext,
-	fieldModel: FieldModel | ((t: ExecutionContext) => FieldModel),
+export function expectToHaveFieldType(
+	model: prismicT.CustomTypeModelField,
 	expectedFieldType: string,
-): void => {
+) {
 	const res = lib.generateTypes({
 		customTypeModels: [
 			prismicM.model.customType({
-				seed: t.title,
+				seed: "expectToHaveFieldType",
 				id: "foo",
 				fields: {
-					bar: typeof fieldModel === "function" ? fieldModel(t) : fieldModel,
+					bar: model,
 				},
 			}),
 		],
@@ -30,5 +29,7 @@ export const macroBasicFieldType = <
 		.getInterfaceOrThrow("FooDocumentData")
 		.getPropertyOrThrow("bar");
 
-	t.is(property.getTypeNodeOrThrow().getText(), expectedFieldType);
-};
+	expect(property.getTypeNodeOrThrow().getText(), expectedFieldType).toBe(
+		expectedFieldType,
+	);
+}

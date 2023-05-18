@@ -1,16 +1,15 @@
-import test from "ava";
-import * as prismicM from "@prismicio/mock";
+import { it } from "vitest";
 
-import { macroBasicFieldType } from "./__testutils__/macroBasicFieldType";
-import { macroBasicFieldDocs } from "./__testutils__/macroBasicFieldDocs";
+import { expectToHaveDocs } from "./__testutils__/expectToHaveDocs";
+import { expectToHaveFieldType } from "./__testutils__/expectToHaveFieldType";
 
-test(
-	"correctly typed",
-	macroBasicFieldType,
-	(t) => prismicM.model.linkToMedia({ seed: t.title }),
-	"prismicT.LinkToMediaField",
-);
+it("is correctly typed", (ctx) => {
+	expectToHaveFieldType(
+		ctx.mock.model.linkToMedia(),
+		"prismicT.LinkToMediaField",
+	);
+});
 
-test("correctly documented", macroBasicFieldDocs, (t) =>
-	prismicM.model.linkToMedia({ seed: t.title }),
-);
+it("is correctly documented", (ctx) => {
+	expectToHaveDocs(ctx.mock.model.linkToMedia());
+});

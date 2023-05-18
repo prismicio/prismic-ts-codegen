@@ -1,27 +1,24 @@
-import test from "ava";
-import * as prismicM from "@prismicio/mock";
+import { it } from "vitest";
 
-import { macroBasicFieldType } from "./__testutils__/macroBasicFieldType";
-import { macroBasicFieldDocs } from "./__testutils__/macroBasicFieldDocs";
+import { expectToHaveDocs } from "./__testutils__/expectToHaveDocs";
+import { expectToHaveFieldType } from "./__testutils__/expectToHaveFieldType";
 
-test(
-	"correctly typed",
-	macroBasicFieldType,
-	(t) => prismicM.model.contentRelationship({ seed: t.title }),
-	"prismicT.RelationField",
-);
+it("is correctly typed", (ctx) => {
+	const model = ctx.mock.model.contentRelationship();
 
-test(
-	"scopes document types if defined in the model",
-	macroBasicFieldType,
-	(t) =>
-		prismicM.model.contentRelationship({
-			seed: t.title,
-			customTypeIDs: ["foo", "bar"],
-		}),
-	'prismicT.RelationField<"foo" | "bar">',
-);
+	expectToHaveFieldType(model, "prismicT.RelationField");
+});
 
-test("correctly documented", macroBasicFieldDocs, (t) =>
-	prismicM.model.contentRelationship({ seed: t.title }),
-);
+it("is correctly typed", (ctx) => {
+	const model = ctx.mock.model.contentRelationship({
+		customTypeIDs: ["foo", "bar"],
+	});
+
+	expectToHaveFieldType(model, 'prismicT.RelationField<"foo" | "bar">');
+});
+
+it("is correctly documented", (ctx) => {
+	const model = ctx.mock.model.contentRelationship();
+
+	expectToHaveDocs(model);
+});

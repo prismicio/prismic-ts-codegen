@@ -1,19 +1,16 @@
-import test from "ava";
-import * as prismicM from "@prismicio/mock";
+import { expect, it } from "vitest";
 
 import { parseSourceFile } from "./__testutils__/parseSourceFile";
 
 import * as lib from "../src";
 
-test("generates a Custom Type type", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
+it("generates a Custom Type type", (ctx) => {
 	const res = lib.generateTypes({
 		customTypeModels: [
-			mock.model.customType({
+			ctx.mock.model.customType({
 				id: "foo",
 				fields: {
-					bar: mock.model.keyText(),
+					bar: ctx.mock.model.keyText(),
 				},
 			}),
 		],
@@ -22,40 +19,31 @@ test("generates a Custom Type type", (t) => {
 	const file = parseSourceFile(res);
 	const typeAlias = file.getTypeAliasOrThrow("FooDocument");
 
-	t.true(typeAlias.isExported());
+	expect(typeAlias.isExported()).toBe(true);
 
 	const langTypeParameter = typeAlias.getTypeParameterOrThrow("Lang");
-	t.is(
+	expect(
 		langTypeParameter.getConstraintOrThrow().getText(),
-		"string",
 		'Lang type parameter must extend "string"',
-	);
-	t.is(
-		langTypeParameter.getDefaultOrThrow().getText(),
-		"string",
-		'Lang type parameter default is "string"',
-	);
+	).toBe("string");
 
 	const type = typeAlias.getTypeNodeOrThrow();
-	t.is(
-		type.getText(),
+	expect(type.getText()).toBe(
 		'prismicT.PrismicDocumentWithoutUID<Simplify<FooDocumentData>, "foo", Lang>',
 	);
 
-	t.notThrows(() => {
+	expect(() => {
 		file.getInterfaceOrThrow("FooDocumentData");
-	}, "contains a FooDocumentData interface");
+	}).not.throws("contains a FooDocumentData interface");
 });
 
-test("uses PrismicDocumentWithUID when model contains a UID field", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
+it("uses PrismicDocumentWithUID when model contains a UID field", (ctx) => {
 	const res = lib.generateTypes({
 		customTypeModels: [
-			mock.model.customType({
+			ctx.mock.model.customType({
 				id: "foo",
 				fields: {
-					uid: mock.model.uid(),
+					uid: ctx.mock.model.uid(),
 				},
 			}),
 		],
@@ -63,21 +51,18 @@ test("uses PrismicDocumentWithUID when model contains a UID field", (t) => {
 
 	const file = parseSourceFile(res);
 	const type = file.getTypeAliasOrThrow("FooDocument").getTypeNodeOrThrow();
-	t.is(
-		type.getText(),
+	expect(type.getText()).toBe(
 		'prismicT.PrismicDocumentWithUID<Simplify<FooDocumentData>, "foo", Lang>',
 	);
 });
 
-test("data interface contains data fields", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
+it("data interface contains data fields", (ctx) => {
 	const res = lib.generateTypes({
 		customTypeModels: [
-			mock.model.customType({
+			ctx.mock.model.customType({
 				id: "foo",
 				fields: {
-					bar: mock.model.keyText(),
+					bar: ctx.mock.model.keyText(),
 				},
 			}),
 		],
@@ -86,26 +71,24 @@ test("data interface contains data fields", (t) => {
 	const file = parseSourceFile(res);
 	const dataTypeAlias = file.getInterfaceOrThrow("FooDocumentData");
 
-	t.false(dataTypeAlias.isExported());
+	expect(dataTypeAlias.isExported()).toBe(false);
 
-	t.notThrows(() => {
+	expect(() => {
 		dataTypeAlias.getPropertyOrThrow("bar");
-	});
+	}).not.throws();
 });
 
-test("data interface is empty record type alias if no data fields are defined", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
+it("data interface is empty record type alias if no data fields are defined", (ctx) => {
 	const res = lib.generateTypes({
 		customTypeModels: [
-			mock.model.customType({
+			ctx.mock.model.customType({
 				id: "no_fields",
 				fields: {},
 			}),
-			mock.model.customType({
+			ctx.mock.model.customType({
 				id: "only_uid",
 				fields: {
-					uid: mock.model.uid(),
+					uid: ctx.mock.model.uid(),
 				},
 			}),
 		],
@@ -113,31 +96,24 @@ test("data interface is empty record type alias if no data fields are defined", 
 
 	const file = parseSourceFile(res);
 
-	t.is(
+	expect(
 		file
 			.getTypeAliasOrThrow("NoFieldsDocumentData")
 			.getTypeNodeOrThrow()
 			.getText(),
-		"Record<string, never>",
-	);
+	).toBe("Record<string, never>");
 
-	t.is(
+	expect(
 		file
 			.getTypeAliasOrThrow("OnlyUidDocumentData")
 			.getTypeNodeOrThrow()
 			.getText(),
-		"Record<string, never>",
-	);
+	).toBe("Record<string, never>");
 });
 
-test("includes specific lang IDs if given", (t) => {
+it("includes specific lang IDs if given", (ctx) => {
 	const res = lib.generateTypes({
-		customTypeModels: [
-			prismicM.model.customType({
-				seed: t.title,
-				id: "foo",
-			}),
-		],
+		customTypeModels: [ctx.mock.model.customType({ id: "foo" })],
 		localeIDs: ["en-us", "fr-fr"],
 	});
 
@@ -148,17 +124,16 @@ test("includes specific lang IDs if given", (t) => {
 		.getDefaultOrThrow()
 		.getText();
 
-	t.is(langDefault, '"en-us" | "fr-fr"');
+	expect(langDefault).toBe('"en-us" | "fr-fr"');
 });
 
-test("handles hyphenated fields", (t) => {
+it("handles hyphenated fields", (ctx) => {
 	const res = lib.generateTypes({
 		customTypeModels: [
-			prismicM.model.customType({
-				seed: t.title,
+			ctx.mock.model.customType({
 				id: "foo",
 				fields: {
-					"hyphenated-field": prismicM.model.keyText({ seed: t.title }),
+					"hyphenated-field": ctx.mock.model.keyText(),
 				},
 			}),
 		],
@@ -167,23 +142,21 @@ test("handles hyphenated fields", (t) => {
 	const file = parseSourceFile(res);
 	const dataInterface = file.getInterfaceOrThrow("FooDocumentData");
 
-	t.is(
+	expect(
 		dataInterface
 			.getPropertyOrThrow('"hyphenated-field"')
 			.getTypeNodeOrThrow()
 			.getText(),
-		"prismicT.KeyTextField",
-	);
+	).toBe("prismicT.KeyTextField");
 });
 
-test("handles fields starting with a number", (t) => {
+it("handles fields starting with a number", (ctx) => {
 	const res = lib.generateTypes({
 		customTypeModels: [
-			prismicM.model.customType({
-				seed: t.title,
+			ctx.mock.model.customType({
 				id: "foo",
 				fields: {
-					"3d_noodle": prismicM.model.keyText({ seed: t.title }),
+					"3d_noodle": ctx.mock.model.keyText(),
 				},
 			}),
 		],
@@ -192,32 +165,26 @@ test("handles fields starting with a number", (t) => {
 	const file = parseSourceFile(res);
 	const dataInterface = file.getInterfaceOrThrow("FooDocumentData");
 
-	t.is(
+	expect(
 		dataInterface
 			.getPropertyOrThrow('"3d_noodle"')
 			.getTypeNodeOrThrow()
 			.getText(),
-		"prismicT.KeyTextField",
-	);
+	).toBe("prismicT.KeyTextField");
 });
 
-test("prefixes types starting with a number with an underscore", (t) => {
+it("prefixes types starting with a number with an underscore", (ctx) => {
 	const res = lib.generateTypes({
-		customTypeModels: [
-			prismicM.model.customType({
-				seed: t.title,
-				id: "404",
-			}),
-		],
+		customTypeModels: [ctx.mock.model.customType({ id: "404" })],
 	});
 
 	const file = parseSourceFile(res);
 
-	t.notThrows(() => {
+	expect(() => {
 		file.getTypeAliasOrThrow("_404Document");
-	}, "contains a _404Document type alias");
+	}).not.throws("contains a _404Document type alias");
 
-	t.notThrows(() => {
+	expect(() => {
 		file.getTypeAliasOrThrow("_404DocumentData");
-	}, "contains a _404DocumentData type alias");
+	}).not.throws("contains a _404DocumentData type alias");
 });

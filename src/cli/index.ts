@@ -1,15 +1,15 @@
-import { existsSync, writeFileSync } from "fs";
-import { resolve as resolvePath } from "path";
-import meow from "meow";
 import { stripIndent } from "common-tags";
+import { existsSync, writeFileSync } from "fs";
+import meow from "meow";
+import { resolve as resolvePath } from "path";
 
 import { generateTypes } from "../index";
 
 import { configSchema } from "./configSchema";
+import { NON_EDITABLE_FILE_HEADER } from "./constants";
+import { loadConfig } from "./loadConfig";
 import { loadLocaleIDs } from "./loadLocaleIDs";
 import { loadModels } from "./loadModels";
-import { loadConfig } from "./loadConfig";
-import { NON_EDITABLE_FILE_HEADER } from "./constants";
 
 const cli = meow(
 	`

@@ -1,27 +1,22 @@
-import test from "ava";
-import * as prismicM from "@prismicio/mock";
+import { expect, it } from "vitest";
+
 import { stripIndent } from "common-tags";
 
-import { macroBasicFieldType } from "./__testutils__/macroBasicFieldType";
-import { macroBasicFieldDocs } from "./__testutils__/macroBasicFieldDocs";
+import { expectToHaveDocs } from "./__testutils__/expectToHaveDocs";
+import { expectToHaveFieldType } from "./__testutils__/expectToHaveFieldType";
 import { parseSourceFile } from "./__testutils__/parseSourceFile";
 
 import * as lib from "../src";
 
-test(
-	"correctly typed",
-	macroBasicFieldType,
-	(t) => prismicM.model.embed({ seed: t.title }),
-	"prismicT.EmbedField",
-);
+it("is correctly typed", (ctx) => {
+	expectToHaveFieldType(ctx.mock.model.embed(), "prismicT.EmbedField");
+});
 
-test("can be customized with provider-specific types", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
-	const model = mock.model.customType({
+it("can be customized with provider-specific types", (ctx) => {
+	const model = ctx.mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: mock.model.embed(),
+			bar: ctx.mock.model.embed(),
 		},
 	});
 
@@ -41,8 +36,9 @@ test("can be customized with provider-specific types", (t) => {
 		.getInterfaceOrThrow("FooDocumentData")
 		.getPropertyOrThrow("bar");
 
-	t.is(
+	expect(
 		property.getTypeNodeOrThrow().getText({ trimLeadingIndentation: true }),
+	).toBe(
 		stripIndent`
 			prismicT.EmbedField<prismicT.AnyOEmbed & prismicT.OEmbedExtra & (({
 			    provider_name: "YouTube";
@@ -53,6 +49,6 @@ test("can be customized with provider-specific types", (t) => {
 	);
 });
 
-test("correctly documented", macroBasicFieldDocs, (t) =>
-	prismicM.model.embed({ seed: t.title }),
-);
+it("is correctly documented", (ctx) => {
+	expectToHaveDocs(ctx.mock.model.embed());
+});

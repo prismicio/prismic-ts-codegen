@@ -1,12 +1,14 @@
-import { Project, ModuleDeclarationKind } from "ts-morph";
+import { ModuleDeclarationKind, Project } from "ts-morph";
+
+import { addTypeAliasForCustomType } from "./lib/addTypeAliasForCustomType";
+import { addTypeAliasForSharedSlice } from "./lib/addTypeAliasForSharedSlice";
+import { buildTypeName } from "./lib/buildTypeName";
+import { getSourceFileText } from "./lib/getSourceFileText";
+
+import { FieldConfigs } from "./types";
 import type { CustomTypeModel, SharedSliceModel } from "@prismicio/types";
 
 import { BLANK_LINE_IDENTIFIER } from "./constants";
-import { addTypeAliasForCustomType } from "./lib/addTypeAliasForCustomType";
-import { addTypeAliasForSharedSlice } from "./lib/addTypeAliasForSharedSlice";
-import { getSourceFileText } from "./lib/getSourceFileText";
-import { FieldConfigs } from "./types";
-import { buildTypeName } from "./lib/buildTypeName";
 
 export type GenerateTypesConfig = {
 	customTypeModels?: CustomTypeModel[];

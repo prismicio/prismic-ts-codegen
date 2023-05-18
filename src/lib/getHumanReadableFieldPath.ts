@@ -1,3 +1,4 @@
+import { PathElement } from "../types";
 import type {
 	CustomTypeModel,
 	CustomTypeModelField,
@@ -5,7 +6,6 @@ import type {
 	SharedSliceModel,
 } from "@prismicio/types";
 
-import { PathElement } from "../types";
 import { getHumanReadableModelName } from "./getHumanReadableModelName";
 
 type GetHumanReadableFieldPathConfig = {

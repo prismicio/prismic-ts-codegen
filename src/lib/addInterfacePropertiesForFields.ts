@@ -1,3 +1,6 @@
+import type { InterfaceDeclaration, SourceFile } from "ts-morph";
+
+import { FieldConfigs, PathElement } from "../types";
 import type {
 	CustomTypeModel,
 	CustomTypeModelField,
@@ -5,12 +8,9 @@ import type {
 	SharedSliceModel,
 } from "@prismicio/types";
 import {
-	CustomTypeModelSliceType,
 	CustomTypeModelLinkSelectType,
+	CustomTypeModelSliceType,
 } from "@prismicio/types";
-import type { InterfaceDeclaration, SourceFile } from "ts-morph";
-
-import { FieldConfigs, PathElement } from "../types";
 
 import { buildFieldDocs } from "./buildFieldDocs";
 import { buildSharedSliceInterfaceNamePart } from "./buildSharedSliceInterfaceNamePart";

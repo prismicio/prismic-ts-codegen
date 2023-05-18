@@ -1,44 +1,45 @@
-import test from "ava";
-import * as prismicM from "@prismicio/mock";
+import { expect, it } from "vitest";
 
 import { parseSourceFile } from "./__testutils__/parseSourceFile";
 
 import * as lib from "../src";
 
-test("imports @prismicio/types as prismicT", (t) => {
+it("imports @prismicio/types as prismicT", () => {
 	const res = lib.generateTypes();
 	const file = parseSourceFile(res);
 
 	const importDeclaration =
 		file.getImportDeclarationOrThrow("@prismicio/types");
 
-	t.is(importDeclaration.getNamespaceImportOrThrow().getText(), "prismicT");
-	t.true(importDeclaration.isTypeOnly());
+	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe(
+		"prismicT",
+	);
+	expect(importDeclaration.isTypeOnly()).toBe(true);
 });
 
-test("includes AllDocumentTypes type alias if Custom Types are provided", (t) => {
-	const mock = prismicM.createMockFactory({ seed: t.title });
-
+it("includes AllDocumentTypes type alias if Custom Types are provided", (ctx) => {
 	const res = lib.generateTypes({
 		customTypeModels: [
-			mock.model.customType({ id: "foo" }),
-			mock.model.customType({ id: "bar" }),
+			ctx.mock.model.customType({ id: "foo" }),
+			ctx.mock.model.customType({ id: "bar" }),
 		],
 	});
 
 	const file = parseSourceFile(res);
 	const typeAlias = file.getTypeAliasOrThrow("AllDocumentTypes");
 
-	t.is(typeAlias.getTypeNodeOrThrow().getText(), "FooDocument | BarDocument");
-	t.true(typeAlias.isExported());
+	expect(typeAlias.getTypeNodeOrThrow().getText()).toBe(
+		"FooDocument | BarDocument",
+	);
+	expect(typeAlias.isExported()).toBe(true);
 });
 
-test("includes @prismicio/client module declaration including a CreateClient interface if configured", (t) => {
+it("includes @prismicio/client module declaration including a CreateClient interface if configured", (ctx) => {
 	const res = lib.generateTypes({
 		clientIntegration: {
 			includeCreateClientInterface: true,
 		},
-		customTypeModels: [prismicM.model.customType({ seed: t.title, id: "foo" })],
+		customTypeModels: [ctx.mock.model.customType({ id: "foo" })],
 	});
 
 	const file = parseSourceFile(res);
@@ -48,36 +49,35 @@ test("includes @prismicio/client module declaration including a CreateClient int
 	const callSignatures = createClientInterface.getCallSignatures();
 	const firstCallSignature = callSignatures[0];
 
-	t.is(callSignatures.length, 1);
+	expect(callSignatures.length).toBe(1);
 
-	t.is(
+	expect(
 		firstCallSignature
 			.getParameterOrThrow("repositoryNameOrEndpoint")
 			.getTypeNodeOrThrow()
 			.getText(),
-		`string`,
-	);
+	).toBe(`string`);
 
-	t.is(
+	expect(
 		firstCallSignature
 			.getParameterOrThrow("options")
 			.getTypeNodeOrThrow()
 			.getText(),
-		`prismic.ClientConfig`,
+	).toBe(`prismic.ClientConfig`);
+	expect(firstCallSignature.getParameterOrThrow("options").isOptional()).toBe(
+		true,
 	);
-	t.true(firstCallSignature.getParameterOrThrow("options").isOptional());
 
-	t.is(
-		firstCallSignature.getReturnTypeNodeOrThrow().getText(),
+	expect(firstCallSignature.getReturnTypeNodeOrThrow().getText()).toBe(
 		"prismic.Client<AllDocumentTypes>",
 	);
 
-	t.notThrows(() => {
+	expect(() => {
 		file.getImportDeclarationOrThrow("@prismicio/client");
-	}, "imports `@prismicio/client`");
+	}).not.throws("imports `@prismicio/client`");
 });
 
-test("includes untyped `@prismicio/client` in CreateClient interface if no Custom Type models are provided", (t) => {
+it("includes untyped `@prismicio/client` in CreateClient interface if no Custom Type models are provided", () => {
 	const res = lib.generateTypes({
 		clientIntegration: {
 			includeCreateClientInterface: true,
@@ -91,25 +91,21 @@ test("includes untyped `@prismicio/client` in CreateClient interface if no Custo
 		.getInterfaceOrThrow("CreateClient");
 	const callSignatures = createClientInterface.getCallSignatures();
 
-	t.is(
-		callSignatures[0].getReturnTypeNodeOrThrow().getText(),
+	expect(callSignatures[0].getReturnTypeNodeOrThrow().getText()).toBe(
 		"prismic.Client",
 	);
 });
 
-test("includes @prismicio/client Content namespace containing all document and Slice types if configured", (t) => {
+it("includes @prismicio/client Content namespace containing all document and Slice types if configured", (ctx) => {
 	const res = lib.generateTypes({
 		clientIntegration: {
 			includeContentNamespace: true,
 		},
-		customTypeModels: [prismicM.model.customType({ seed: t.title, id: "foo" })],
+		customTypeModels: [ctx.mock.model.customType({ id: "foo" })],
 		sharedSliceModels: [
-			prismicM.model.sharedSlice({
-				seed: t.title,
+			ctx.mock.model.sharedSlice({
 				id: "bar",
-				variations: [
-					prismicM.model.sharedSliceVariation({ seed: t.title, id: "baz" }),
-				],
+				variations: [ctx.mock.model.sharedSliceVariation({ id: "baz" })],
 			}),
 		],
 	});
@@ -126,17 +122,17 @@ test("includes @prismicio/client Content namespace containing all document and S
 		});
 
 	// Documents
-	t.true(exportSymbolNames.includes("FooDocument"));
-	t.true(exportSymbolNames.includes("FooDocumentData"));
-	t.true(exportSymbolNames.includes("AllDocumentTypes"));
+	expect(exportSymbolNames.includes("FooDocument")).toBe(true);
+	expect(exportSymbolNames.includes("FooDocumentData")).toBe(true);
+	expect(exportSymbolNames.includes("AllDocumentTypes")).toBe(true);
 
 	// Slices
-	t.true(exportSymbolNames.includes("BarSliceBaz"));
-	t.true(exportSymbolNames.includes("BarSliceVariation"));
-	t.true(exportSymbolNames.includes("BarSlice"));
+	expect(exportSymbolNames.includes("BarSliceBaz")).toBe(true);
+	expect(exportSymbolNames.includes("BarSliceVariation")).toBe(true);
+	expect(exportSymbolNames.includes("BarSlice")).toBe(true);
 });
 
-test("includes empty @prismicio/client Content namespace if configured and no models are provided", (t) => {
+it("includes empty @prismicio/client Content namespace if configured and no models are provided", () => {
 	const res = lib.generateTypes({
 		clientIntegration: {
 			includeContentNamespace: true,
@@ -154,5 +150,5 @@ test("includes empty @prismicio/client Content namespace if configured and no mo
 			return exportSymbol.getName();
 		});
 
-	t.is(exportSymbolNames.length, 0);
+	expect(exportSymbolNames.length).toBe(0);
 });

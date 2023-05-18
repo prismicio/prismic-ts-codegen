@@ -1,3 +1,4 @@
+import { PathElement } from "../types";
 import type {
 	CustomTypeModel,
 	CustomTypeModelField,
@@ -6,7 +7,6 @@ import type {
 } from "@prismicio/types";
 import { CustomTypeModelFieldType } from "@prismicio/types";
 
-import { PathElement } from "../types";
 import { isCustomTypeModelField } from "./isCustomTypeModelField";
 import { isCustomTypeModelSlice } from "./isCustomTypeModelSlice";
 import { isSharedSliceModel } from "./isSharedSliceModel";
