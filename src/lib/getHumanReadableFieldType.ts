@@ -1,5 +1,5 @@
-import type { CustomTypeModelField } from "@prismicio/types";
-import { CustomTypeModelLinkSelectType } from "@prismicio/types";
+import type { CustomTypeModelField } from "@prismicio/client";
+import { CustomTypeModelLinkSelectType } from "@prismicio/client";
 
 type GetFieldHumanReadableTypeConfig = {
 	model: CustomTypeModelField;

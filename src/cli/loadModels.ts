@@ -1,9 +1,8 @@
 import * as prismicCT from "@prismicio/custom-types-client";
+import type { CustomTypeModel, SharedSliceModel } from "@prismicio/client";
 import fg from "fast-glob";
 import { readFileSync } from "fs";
 import fetch from "node-fetch";
-
-import type { CustomTypeModel, SharedSliceModel } from "@prismicio/types";
 
 const isCustomTypeModel = (input: unknown): input is CustomTypeModel => {
 	return typeof input === "object" && input !== null && "json" in input;

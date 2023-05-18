@@ -48,6 +48,7 @@
 	},
 	"dependencies": {
 		"@prismicio/custom-types-client": "^1.1.0",
+		"@prismicio/client": "^7.0.0",
 		"common-tags": "^1.8.2",
 		"fast-glob": "^3.2.12",
 		"jiti": "^1.18.2",
@@ -81,10 +82,16 @@
 		"vitest": "^0.31.1"
 	},
 	"peerDependencies": {
+		"@prismicio/client": "^6.6 || ^7",
 		"@prismicio/types": "^0.2"
 	},
-	"optionalDependencies": {
-		"@prismicio/client": "^6.6"
+	"peerDependenciesMeta": {
+		"@prismicio/client": {
+			"optional": true
+		},
+		"@prismicio/types": {
+			"optional": true
+		}
 	},
 	"engines": {
 		"node": ">=12.7.0"

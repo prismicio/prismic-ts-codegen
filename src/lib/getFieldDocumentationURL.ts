@@ -1,4 +1,4 @@
-import type { CustomTypeModelField } from "@prismicio/types";
+import type { CustomTypeModelField } from "@prismicio/client";
 
 import { FIELD_DOCUMENTATION_URLS } from "../constants";
 

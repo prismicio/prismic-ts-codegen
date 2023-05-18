@@ -4,7 +4,7 @@ import { expectToHaveDocs } from "./__testutils__/expectToHaveDocs";
 import { expectToHaveFieldType } from "./__testutils__/expectToHaveFieldType";
 
 it("is correctly typed", (ctx) => {
-	expectToHaveFieldType(ctx.mock.model.boolean(), "prismicT.BooleanField");
+	expectToHaveFieldType(ctx.mock.model.boolean(), "prismic.BooleanField");
 });
 
 it("is correctly documented", (ctx) => {

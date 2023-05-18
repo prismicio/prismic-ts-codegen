@@ -1,3 +1,5 @@
+import { TypesProvider } from "../generateTypes";
+
 /**
  * Configuration to control the generated types.
  */
@@ -25,6 +27,14 @@ export type Config = {
 	 * relative to where the command is called.
 	 */
 	output?: string;
+
+	/**
+	 * The package that provides TypeScript types for Prismic data. Most projects
+	 * will not need to configure this option.
+	 *
+	 * @defaultValue Automatically detected using the project's `package.json`.
+	 */
+	typesProvider?: TypesProvider;
 
 	/**
 	 * Configuration for automatic `@prismicio/client` integration.

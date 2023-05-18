@@ -25,7 +25,7 @@ it("correctly typed", (ctx) => {
 		.getPropertyOrThrow("bar");
 
 	expect(groupProperty.getTypeNodeOrThrow().getText()).toBe(
-		"prismicT.GroupField<Simplify<FooDocumentDataBarItem>>",
+		"prismic.GroupField<Simplify<FooDocumentDataBarItem>>",
 	);
 });
 
@@ -50,10 +50,10 @@ it("creates an interface for a group item containing its fields", (ctx) => {
 
 	expect(
 		itemInterface.getPropertyOrThrow("baz").getTypeNodeOrThrow().getText(),
-	).toBe("prismicT.KeyTextField");
+	).toBe("prismic.KeyTextField");
 	expect(
 		itemInterface.getPropertyOrThrow("qux").getTypeNodeOrThrow().getText(),
-	).toBe("prismicT.SelectField");
+	).toBe("prismic.SelectField");
 });
 
 it("prefixes Group types starting with a number using an underscore prefix", (ctx) => {
@@ -76,7 +76,7 @@ it("prefixes Group types starting with a number using an underscore prefix", (ct
 		.getPropertyOrThrow('"456"');
 
 	expect(groupProperty.getTypeNodeOrThrow().getText()).toBe(
-		"prismicT.GroupField<Simplify<_123DocumentData456Item>>",
+		"prismic.GroupField<Simplify<_123DocumentData456Item>>",
 	);
 });
 
@@ -101,7 +101,7 @@ it("handles hyphenated fields", (ctx) => {
 			.getPropertyOrThrow('"hyphenated-field"')
 			.getTypeNodeOrThrow()
 			.getText(),
-	).toBe("prismicT.KeyTextField");
+	).toBe("prismic.KeyTextField");
 });
 
 it.todo("is correctly documented", (ctx) => {

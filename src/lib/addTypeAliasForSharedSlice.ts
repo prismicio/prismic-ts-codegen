@@ -1,3 +1,4 @@
+import type { SharedSliceModel } from "@prismicio/client";
 import type {
 	InterfaceDeclaration,
 	SourceFile,
@@ -5,7 +6,6 @@ import type {
 } from "ts-morph";
 
 import { FieldConfigs } from "../types";
-import type { SharedSliceModel } from "@prismicio/types";
 
 import { SHARED_SLICES_DOCUMENTATION_URL } from "../constants";
 
@@ -126,7 +126,7 @@ export const addTypeAliasForSharedSlice = (
 				buildSharedSliceInterfaceNamePart({ id: config.model.id }),
 				variation.id,
 			),
-			type: `prismicT.SharedSliceVariation<"${variation.id}", ${
+			type: `prismic.SharedSliceVariation<"${variation.id}", ${
 				primaryInterface
 					? `Simplify<${primaryInterface.getName()}>`
 					: "Record<string, never>"
@@ -178,7 +178,7 @@ export const addTypeAliasForSharedSlice = (
 		name: buildTypeName(
 			buildSharedSliceInterfaceNamePart({ id: config.model.id }),
 		),
-		type: `prismicT.SharedSlice<"${
+		type: `prismic.SharedSlice<"${
 			config.model.id
 		}", ${variationsType.getName()}>`,
 		docs: [

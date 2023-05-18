@@ -4,7 +4,7 @@ import { expectToHaveDocs } from "./__testutils__/expectToHaveDocs";
 import { expectToHaveFieldType } from "./__testutils__/expectToHaveFieldType";
 
 it("is correctly typed", (ctx) => {
-	expectToHaveFieldType(ctx.mock.model.richText(), "prismicT.RichTextField");
+	expectToHaveFieldType(ctx.mock.model.richText(), "prismic.RichTextField");
 });
 
 it("is correctly documented", (ctx) => {

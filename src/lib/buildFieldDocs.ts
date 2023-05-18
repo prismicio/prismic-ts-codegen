@@ -1,12 +1,12 @@
-import type { JSDocableNodeStructure } from "ts-morph";
-
-import { PathElement } from "../types";
 import type {
 	CustomTypeModel,
 	CustomTypeModelField,
 	CustomTypeModelSlice,
 	SharedSliceModel,
-} from "@prismicio/types";
+} from "@prismicio/client";
+import type { JSDocableNodeStructure } from "ts-morph";
+
+import { PathElement } from "../types";
 
 import { getAPIIDPath } from "./getAPIIDPath";
 import { getFieldDocumentationURL } from "./getFieldDocumentationURL";

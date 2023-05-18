@@ -1,15 +1,14 @@
 import { expect } from "vitest";
 
+import * as prismic from "@prismicio/client";
 import * as prismicM from "@prismicio/mock";
-
-import * as prismicT from "@prismicio/types";
 
 import { parseSourceFile } from "./parseSourceFile";
 
 import * as lib from "../../src";
 
 export function expectToHaveFieldType(
-	model: prismicT.CustomTypeModelField,
+	model: prismic.CustomTypeModelField,
 	expectedFieldType: string,
 ) {
 	const res = lib.generateTypes({

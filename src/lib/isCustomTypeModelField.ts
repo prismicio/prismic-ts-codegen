@@ -1,4 +1,4 @@
-import type { CustomTypeModelField } from "@prismicio/types";
+import type { CustomTypeModelField } from "@prismicio/client";
 
 export const isCustomTypeModelField = (
 	model: unknown,

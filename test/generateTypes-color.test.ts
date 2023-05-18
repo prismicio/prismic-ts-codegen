@@ -4,7 +4,7 @@ import { expectToHaveDocs } from "./__testutils__/expectToHaveDocs";
 import { expectToHaveFieldType } from "./__testutils__/expectToHaveFieldType";
 
 it("is correctly typed", (ctx) => {
-	expectToHaveFieldType(ctx.mock.model.color(), "prismicT.ColorField");
+	expectToHaveFieldType(ctx.mock.model.color(), "prismic.ColorField");
 });
 
 it("is correctly documented", (ctx) => {

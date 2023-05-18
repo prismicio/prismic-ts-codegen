@@ -4,7 +4,7 @@ import { expectToHaveDocs } from "./__testutils__/expectToHaveDocs";
 import { expectToHaveFieldType } from "./__testutils__/expectToHaveFieldType";
 
 it("is correctly typed", (ctx) => {
-	expectToHaveFieldType(ctx.mock.model.image(), "prismicT.ImageField<never>");
+	expectToHaveFieldType(ctx.mock.model.image(), "prismic.ImageField<never>");
 });
 
 it("is correctly typed", (ctx) => {
@@ -12,7 +12,7 @@ it("is correctly typed", (ctx) => {
 		ctx.mock.model.image({
 			thumbnailNames: ["foo", "bar"],
 		}),
-		'prismicT.ImageField<"foo" | "bar">',
+		'prismic.ImageField<"foo" | "bar">',
 	);
 });
 

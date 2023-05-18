@@ -1,4 +1,4 @@
-import { CustomTypeModelSliceType, SharedSliceModel } from "@prismicio/types";
+import { CustomTypeModelSliceType, SharedSliceModel } from "@prismicio/client";
 
 import { hasOwnProperty } from "./hasOwnProperty";
 

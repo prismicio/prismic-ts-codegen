@@ -4,15 +4,41 @@ import { parseSourceFile } from "./__testutils__/parseSourceFile";
 
 import * as lib from "../src";
 
-it("imports @prismicio/types as prismicT", () => {
+it("imports @prismicio/client as prismic as the default types provider", () => {
 	const res = lib.generateTypes();
+	const file = parseSourceFile(res);
+
+	const importDeclaration =
+		file.getImportDeclarationOrThrow("@prismicio/client");
+
+	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe(
+		"prismic",
+	);
+	expect(importDeclaration.isTypeOnly()).toBe(true);
+});
+
+it("imports @prismicio/client as prismic if the `@prismicio/client` types provider is used", () => {
+	const res = lib.generateTypes({ typesProvider: "@prismicio/client" });
+	const file = parseSourceFile(res);
+
+	const importDeclaration =
+		file.getImportDeclarationOrThrow("@prismicio/client");
+
+	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe(
+		"prismic",
+	);
+	expect(importDeclaration.isTypeOnly()).toBe(true);
+});
+
+it("imports @prismicio/types as prismic if the `@prismicio/types` types provider is used", () => {
+	const res = lib.generateTypes({ typesProvider: "@prismicio/types" });
 	const file = parseSourceFile(res);
 
 	const importDeclaration =
 		file.getImportDeclarationOrThrow("@prismicio/types");
 
 	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe(
-		"prismicT",
+		"prismic",
 	);
 	expect(importDeclaration.isTypeOnly()).toBe(true);
 });
