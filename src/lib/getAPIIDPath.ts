@@ -4,7 +4,6 @@ import type {
 	CustomTypeModelSlice,
 	SharedSliceModel,
 } from "@prismicio/client";
-import { CustomTypeModelFieldType } from "@prismicio/client";
 
 import { PathElement } from "../types";
 
@@ -24,8 +23,7 @@ export const getAPIIDPath = (config: GetAPIIDPathConfig): string => {
 		.map((element, i) => {
 			if (
 				isCustomTypeModelField(element.model) &&
-				(element.model.type === CustomTypeModelFieldType.Group ||
-					element.model.type === CustomTypeModelFieldType.Slices)
+				(element.model.type === "Group" || element.model.type === "Slices")
 			) {
 				return `${element.id}[]`;
 			} else {

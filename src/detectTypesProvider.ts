@@ -17,7 +17,9 @@ export type DetectTypesProviderConfig = {
 export const detectTypesProvider = async (
 	config: DetectTypesProviderConfig = {},
 ): Promise<TypesProvider | undefined> => {
-	const require = createRequire(config.cwd || process.cwd());
+	const cwd = config.cwd || process.cwd();
+
+	const require = createRequire(cwd.endsWith("/") ? cwd : cwd + "/");
 
 	try {
 		if (

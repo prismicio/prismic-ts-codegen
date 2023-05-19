@@ -1,5 +1,4 @@
 import type { CustomTypeModelField } from "@prismicio/client";
-import { CustomTypeModelLinkSelectType } from "@prismicio/client";
 
 type GetFieldHumanReadableTypeConfig = {
 	model: CustomTypeModelField;
@@ -31,11 +30,11 @@ export const getHumanReadableFieldType = (
 
 		case "Link": {
 			switch (config.model.config?.select) {
-				case CustomTypeModelLinkSelectType.Document: {
+				case "document": {
 					return "Content Relationship";
 				}
 
-				case CustomTypeModelLinkSelectType.Media: {
+				case "media": {
 					return "Link to Media";
 				}
 

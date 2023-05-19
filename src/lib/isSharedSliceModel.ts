@@ -1,4 +1,4 @@
-import { CustomTypeModelSliceType, SharedSliceModel } from "@prismicio/client";
+import type { SharedSliceModel } from "@prismicio/client";
 
 import { hasOwnProperty } from "./hasOwnProperty";
 
@@ -9,6 +9,6 @@ export const isSharedSliceModel = (
 		typeof model === "object" &&
 		model !== null &&
 		hasOwnProperty(model, "type") &&
-		model.type === CustomTypeModelSliceType.SharedSlice
+		model.type === "SharedSlice"
 	);
 };
