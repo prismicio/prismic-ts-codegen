@@ -88,12 +88,13 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 		config.clientIntegration?.includeCreateClientInterface ||
 		config.clientIntegration?.includeContentNamespace
 	) {
-		const clientNamespaceImportName =
-			typesProvider === "@prismicio/client" ? "prismicClient" : "prismic";
+		let clientNamespaceImportName = "prismic";
 
-		// This import declaration would be a duplicate if the types
-		// provider is @prismicio/client.
 		if (typesProvider !== "@prismicio/client") {
+			clientNamespaceImportName = "prismicClient";
+
+			// This import declaration would be a duplicate if the types
+			// provider is @prismicio/client.
 			sourceFile.addImportDeclaration({
 				moduleSpecifier: "@prismicio/client",
 				namespaceImport: clientNamespaceImportName,

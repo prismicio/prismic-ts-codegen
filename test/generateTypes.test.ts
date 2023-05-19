@@ -74,7 +74,7 @@ it("includes @prismicio/client module declaration including a CreateClient inter
 		file.getImportDeclarationOrThrow("@prismicio/client");
 
 	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe(
-		"prismic",
+		"prismicClient",
 	);
 	expect(importDeclaration.isTypeOnly()).toBe(true);
 
@@ -98,13 +98,13 @@ it("includes @prismicio/client module declaration including a CreateClient inter
 			.getParameterOrThrow("options")
 			.getTypeNodeOrThrow()
 			.getText(),
-	).toBe(`prismic.ClientConfig`);
+	).toBe(`prismicClient.ClientConfig`);
 	expect(firstCallSignature.getParameterOrThrow("options").isOptional()).toBe(
 		true,
 	);
 
 	expect(firstCallSignature.getReturnTypeNodeOrThrow().getText()).toBe(
-		"prismic.Client<AllDocumentTypes>",
+		"prismicClient.Client<AllDocumentTypes>",
 	);
 
 	expect(() => {
@@ -127,7 +127,7 @@ it("includes untyped `@prismicio/client` in CreateClient interface if no Custom 
 	const callSignatures = createClientInterface.getCallSignatures();
 
 	expect(callSignatures[0].getReturnTypeNodeOrThrow().getText()).toBe(
-		"prismic.Client",
+		"prismicClient.Client",
 	);
 });
 
@@ -188,12 +188,55 @@ it("includes empty @prismicio/client Content namespace if configured and no mode
 	expect(exportSymbolNames.length).toBe(0);
 });
 
-it("imports @prismicio/client as `prismic` if the `@prismicio/types` types provider is used with the CreateClient interface", (ctx) => {
+it("imports @prismicio/client as `prismicClient` if the `@prismicio/types` types provider is used with the CreateClient interface", (ctx) => {
 	const res = lib.generateTypes({
 		clientIntegration: {
 			includeCreateClientInterface: true,
 		},
 		typesProvider: "@prismicio/types",
+		customTypeModels: [ctx.mock.model.customType({ id: "foo" })],
+	});
+
+	const file = parseSourceFile(res);
+
+	const importDeclaration =
+		file.getImportDeclarationOrThrow("@prismicio/client");
+
+	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe(
+		"prismicClient",
+	);
+	expect(importDeclaration.isTypeOnly()).toBe(true);
+
+	const createClientInterface = file
+		.getModuleOrThrow('"@prismicio/client"')
+		.getInterfaceOrThrow("CreateClient");
+	const callSignatures = createClientInterface.getCallSignatures();
+	const firstCallSignature = callSignatures[0];
+
+	expect(callSignatures.length).toBe(1);
+
+	expect(
+		firstCallSignature
+			.getParameterOrThrow("options")
+			.getTypeNodeOrThrow()
+			.getText(),
+	).toBe(`prismicClient.ClientConfig`);
+
+	expect(firstCallSignature.getReturnTypeNodeOrThrow().getText()).toBe(
+		"prismicClient.Client<AllDocumentTypes>",
+	);
+
+	expect(() => {
+		file.getImportDeclarationOrThrow("@prismicio/client");
+	}).not.throws("imports `@prismicio/client`");
+});
+
+it("uses the existing prismic import if the `@prismicio/client` types provider is used with the CreateClient interface", (ctx) => {
+	const res = lib.generateTypes({
+		clientIntegration: {
+			includeCreateClientInterface: true,
+		},
+		typesProvider: "@prismicio/client",
 		customTypeModels: [ctx.mock.model.customType({ id: "foo" })],
 	});
 
