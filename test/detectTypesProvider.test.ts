@@ -93,5 +93,5 @@ it("can be configured with a cwd to set `require`'s base path", async () => {
 
 	await detectTypesProvider({ cwd });
 
-	expect(createRequire).toHaveBeenCalledWith(cwd);
+	expect(createRequire).toHaveBeenCalledWith(cwd + "/");
 });
