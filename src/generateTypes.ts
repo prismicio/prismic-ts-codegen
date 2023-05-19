@@ -31,8 +31,10 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 
 	const sourceFile = project.createSourceFile("types.d.ts");
 
+	const typesProvider = config.typesProvider || "@prismicio/types";
+
 	sourceFile.addImportDeclaration({
-		moduleSpecifier: config.typesProvider || "@prismicio/types",
+		moduleSpecifier: typesProvider,
 		namespaceImport: "prismic",
 		isTypeOnly: true,
 	});
@@ -86,12 +88,15 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 		config.clientIntegration?.includeCreateClientInterface ||
 		config.clientIntegration?.includeContentNamespace
 	) {
+		const clientNamespaceImportName =
+			typesProvider === "@prismicio/client" ? "prismicClient" : "prismic";
+
 		// This import declaration would be a duplicate if the types
 		// provider is @prismicio/client.
-		if (config.typesProvider !== "@prismicio/client") {
+		if (typesProvider !== "@prismicio/client") {
 			sourceFile.addImportDeclaration({
 				moduleSpecifier: "@prismicio/client",
-				namespaceImport: "prismic",
+				namespaceImport: clientNamespaceImportName,
 				isTypeOnly: true,
 			});
 		}
@@ -114,14 +119,14 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 							},
 							{
 								name: "options",
-								type: "prismic.ClientConfig",
+								type: `${clientNamespaceImportName}.ClientConfig`,
 								hasQuestionToken: true,
 							},
 						],
 						returnType:
 							(config.customTypeModels?.length || 0) > 0
-								? "prismic.Client<AllDocumentTypes>"
-								: "prismic.Client",
+								? `${clientNamespaceImportName}.Client<AllDocumentTypes>`
+								: `${clientNamespaceImportName}.Client`,
 					},
 				],
 			});
