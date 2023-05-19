@@ -4,10 +4,6 @@ import type {
 	CustomTypeModelSlice,
 	SharedSliceModel,
 } from "@prismicio/client";
-import {
-	CustomTypeModelLinkSelectType,
-	CustomTypeModelSliceType,
-} from "@prismicio/client";
 import type { InterfaceDeclaration, SourceFile } from "ts-morph";
 
 import { FieldConfigs, PathElement } from "../types";
@@ -192,7 +188,7 @@ const addInterfacePropertyForField = (
 
 		case "Link": {
 			switch (config.model.config?.select) {
-				case CustomTypeModelLinkSelectType.Document: {
+				case "document": {
 					config.model.config;
 					config.interface.addProperty({
 						name: config.id,
@@ -215,7 +211,7 @@ const addInterfacePropertyForField = (
 					break;
 				}
 
-				case CustomTypeModelLinkSelectType.Media: {
+				case "media": {
 					config.interface.addProperty({
 						name: config.id,
 						type: "prismic.LinkToMediaField",
@@ -427,11 +423,11 @@ const addInterfacePropertyForField = (
 				for (const choiceId in config.model.config.choices) {
 					const choice = config.model.config.choices[choiceId];
 
-					if (choice.type === CustomTypeModelSliceType.SharedSlice) {
+					if (choice.type === "SharedSlice") {
 						choiceInterfaceNames.push(
 							buildSharedSliceInterfaceNamePart({ id: choiceId }),
 						);
-					} else if (choice.type === CustomTypeModelSliceType.Slice) {
+					} else if (choice.type === "Slice") {
 						let primaryInterface: InterfaceDeclaration | undefined;
 						if (
 							choice["non-repeat"] &&

@@ -28,7 +28,7 @@ const cli = meow(
 		flags: {
 			config: {
 				type: "string",
-				alias: "c",
+				shortFlag: "c",
 				isRequired: false,
 			},
 		},
@@ -44,7 +44,7 @@ const main = async () => {
 		} else {
 			let contents = "";
 
-			if (existsSync("sm.json")) {
+			if (existsSync("slicemachine.config.json") || existsSync("sm.json")) {
 				contents = stripIndent`
 					import type { Config } from "prismic-ts-codegen";
 

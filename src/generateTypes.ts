@@ -86,11 +86,15 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 		config.clientIntegration?.includeCreateClientInterface ||
 		config.clientIntegration?.includeContentNamespace
 	) {
-		sourceFile.addImportDeclaration({
-			moduleSpecifier: "@prismicio/client",
-			namespaceImport: "prismic",
-			isTypeOnly: true,
-		});
+		// This import declaration would be a duplicate if the types
+		// provider is @prismicio/client.
+		if (config.typesProvider !== "@prismicio/client") {
+			sourceFile.addImportDeclaration({
+				moduleSpecifier: "@prismicio/client",
+				namespaceImport: "prismic",
+				isTypeOnly: true,
+			});
+		}
 
 		const clientModuleDeclaration = sourceFile.addModule({
 			name: '"@prismicio/client"',
