@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.10](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.9...v0.1.10) (2023-05-23)
+
+
+### Bug Fixes
+
+* restore `@prismicio/client` integration ([#46](https://github.com/prismicio/prismic-ts-codegen/issues/46)) ([b6780cb](https://github.com/prismicio/prismic-ts-codegen/commit/b6780cb736c62bd2a5b8813f3e0737a583d9cf12))
+* use the correct `@prismicio/client` import name when using the client integration ([12f0f45](https://github.com/prismicio/prismic-ts-codegen/commit/12f0f45461553586641fb62d42f580a92e482938))
+
 ### [0.1.9](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.8...v0.1.9) (2023-05-19)
 
 
