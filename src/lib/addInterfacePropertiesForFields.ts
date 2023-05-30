@@ -173,8 +173,8 @@ const addInterfacePropertyForField = (
 			config.interface.addProperty({
 				name: config.id,
 				type: catalogType
-					? `prismic.IntegrationFields<${catalogType}>`
-					: "prismic.IntegrationFields",
+					? `prismic.IntegrationField<${catalogType}>`
+					: "prismic.IntegrationField",
 				docs: buildFieldDocs({
 					id: config.id,
 					model: config.model,
