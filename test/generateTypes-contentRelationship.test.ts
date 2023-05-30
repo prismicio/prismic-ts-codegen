@@ -6,7 +6,7 @@ import { expectToHaveFieldType } from "./__testutils__/expectToHaveFieldType";
 it("is correctly typed", (ctx) => {
 	const model = ctx.mock.model.contentRelationship();
 
-	expectToHaveFieldType(model, "prismic.RelationField");
+	expectToHaveFieldType(model, "prismic.ContentRelationshipField");
 });
 
 it("is correctly typed", (ctx) => {
@@ -14,7 +14,10 @@ it("is correctly typed", (ctx) => {
 		customTypeIDs: ["foo", "bar"],
 	});
 
-	expectToHaveFieldType(model, 'prismic.RelationField<"foo" | "bar">');
+	expectToHaveFieldType(
+		model,
+		'prismic.ContentRelationshipField<"foo" | "bar">',
+	);
 });
 
 it("is correctly documented", (ctx) => {
