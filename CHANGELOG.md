@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.11](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.10...v0.1.11) (2023-05-31)
+
+
+### Bug Fixes
+
+* replace deprecated `IntegrationFields` type with `IntegrationField` type ([#48](https://github.com/prismicio/prismic-ts-codegen/issues/48)) ([2870a9f](https://github.com/prismicio/prismic-ts-codegen/commit/2870a9f4cf5765aceec9a480e8096464565dbdaf))
+* update content relationship field type from the deprecated `RelationField` to `ContentRelationshipField` ([#47](https://github.com/prismicio/prismic-ts-codegen/issues/47)) ([aabce18](https://github.com/prismicio/prismic-ts-codegen/commit/aabce18abc9f13a6cd4fc64d6663115c479898e7))
+
 ### [0.1.10](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.9...v0.1.10) (2023-05-23)
 
 
