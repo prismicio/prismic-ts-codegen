@@ -9,7 +9,7 @@ import * as lib from "../src";
 it("is correctly typed", (ctx) => {
 	expectToHaveFieldType(
 		ctx.mock.model.integrationFields(),
-		"prismic.IntegrationFields",
+		"prismic.IntegrationField",
 	);
 });
 
@@ -38,10 +38,10 @@ it("can be customized with catalog-specific types", (ctx) => {
 
 	expect(
 		dataInterface.getPropertyOrThrow("bar").getTypeNodeOrThrow().getText(),
-	).toBe("prismic.IntegrationFields<AbcType>");
+	).toBe("prismic.IntegrationField<AbcType>");
 	expect(
 		dataInterface.getPropertyOrThrow("baz").getTypeNodeOrThrow().getText(),
-	).toBe("prismic.IntegrationFields<DefType>");
+	).toBe("prismic.IntegrationField<DefType>");
 });
 
 it("is correctly documented", (ctx) => {
