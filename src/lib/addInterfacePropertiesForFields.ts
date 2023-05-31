@@ -196,10 +196,10 @@ const addInterfacePropertyForField = (
 							"customtypes" in config.model.config &&
 							config.model.config.customtypes &&
 							config.model.config.customtypes.length > 0
-								? `prismic.RelationField<${config.model.config.customtypes
+								? `prismic.ContentRelationshipField<${config.model.config.customtypes
 										.map((type) => `"${type}"`)
 										.join(" | ")}>`
-								: "prismic.RelationField",
+								: "prismic.ContentRelationshipField",
 						docs: buildFieldDocs({
 							id: config.id,
 							model: config.model,
