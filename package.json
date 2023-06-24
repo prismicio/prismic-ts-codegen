@@ -44,7 +44,9 @@
 		"unit": "vitest run --coverage",
 		"unit:watch": "vitest watch",
 		"size": "size-limit",
-		"test": "npm run lint && npm run types && npm run unit && npm run build && npm run size"
+		"test": "npm run lint && npm run types && npm run unit && npm run build && npm run size",
+		"bench": "vitest bench --watch=false",
+		"bench:watch": "vitest bench"
 	},
 	"dependencies": {
 		"@prismicio/custom-types-client": "^1.1.0",
@@ -74,6 +76,7 @@
 		"eslint-plugin-prettier": "^4.2.1",
 		"eslint-plugin-tsdoc": "^0.2.17",
 		"prettier-plugin-jsdoc": "^0.4.2",
+		"prismic-ts-codegen-latest": "npm:prismic-ts-codegen@latest",
 		"size-limit": "^8.2.4",
 		"standard-version": "^9.5.0",
 		"typescript": "^5.0.4",
