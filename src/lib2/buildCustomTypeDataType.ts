@@ -24,7 +24,6 @@ export function buildCustomTypeDataType(
 	let code = "";
 
 	const fields = collectCustomTypeFields(args.model);
-
 	// UID fields are top-level document properties, not data properties.
 	delete fields.uid;
 

@@ -14,6 +14,8 @@ import { getSourceFileText } from "./lib/getSourceFileText";
 
 import { FieldConfigs } from "./types";
 
+import { addSection } from "./lib2/addSection";
+
 import { BLANK_LINE_IDENTIFIER } from "./constants";
 
 export type TypesProvider = "@prismicio/client" | "@prismicio/types";
@@ -70,42 +72,7 @@ export function generateTypes(config: GenerateTypesConfig = {}): string {
 
 	if (config.customTypeModels) {
 		for (const model of config.customTypeModels) {
-			const { uid: uidField, ...fields } = collectCustomTypeFields(model);
-			const hasDataFields = Object.keys(fields).length > 0;
-			const hasUIDField = Boolean(uidField);
-
-			const typeName = buildTypeName(model.id, "Document");
-			const dataTypeName = buildTypeName(typeName, "Data");
-			const langDefault =
-				config.localeIDs && config.localeIDs.length > 0
-					? config.localeIDs.map((localeID) => `"${localeID}"`).join(" | ")
-					: "string";
-			const baseDocumentType = hasUIDField
-				? "PrismicDocumentWithUID"
-				: "PrismicDocumentWithoutUID";
-
-			if (hasDataFields) {
-				result += "\n\n";
-				// TODO: Generate the real type
-				result += typescript`
-					interface ${dataTypeName} {}
-				`;
-			} else {
-				result += "\n\n";
-				result += typescript`
-					type ${dataTypeName} = Record<string, never>
-				`;
-			}
-
-			result += "\n\n";
-			result += typescript`
-				export type ${typeName}<Lang extends string = ${langDefault}> =
-					prismic.${baseDocumentType}<
-						Simplify<${dataTypeName}>,
-						"${model.id}",
-						Lang
-					>;
-			`;
+			result = addSection(buildCustomTypeTypes);
 		}
 
 		if (config.customTypeModels.length > 0) {
