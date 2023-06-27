@@ -356,125 +356,127 @@ function buildFieldProperty(
 		case CustomTypeModelFieldType.Slices: {
 			const choiceNames: string[] = [];
 
-			for (const choiceID in args.field.config?.choices) {
-				const choice = args.field.config.choices[choiceID];
+			if (args.field.config?.choices) {
+				for (const choiceID in args.field.config.choices) {
+					const choice = args.field.config.choices[choiceID];
 
-				if (choice.type === "SharedSlice") {
-					// TODO: Verify that the Shared Slice
-					// is provided to the global
-					// `sharedSlices` array. If it is not,
-					// the type won't exist, so we can't
-					// add it to the union. We should
-					// probably throw an error if we reach
-					// that state, or maybe the input can
-					// be validated early so we don't
-					// generate any code using invalid
-					// models.
-					choiceNames.push(buildTypeName(choiceID, "Slice"));
-				} else if (choice.type === "Slice") {
-					const sliceName = buildTypeName(
-						args.path[0].id,
-						"Document",
-						"Data",
-						args.name,
-						choiceID,
-						"Slice",
-					);
+					if (choice.type === "SharedSlice") {
+						// TODO: Verify that the Shared Slice
+						// is provided to the global
+						// `sharedSlices` array. If it is not,
+						// the type won't exist, so we can't
+						// add it to the union. We should
+						// probably throw an error if we reach
+						// that state, or maybe the input can
+						// be validated early so we don't
+						// generate any code using invalid
+						// models.
+						choiceNames.push(buildTypeName(choiceID, "Slice"));
+					} else if (choice.type === "Slice") {
+						const sliceName = buildTypeName(
+							args.path[0].id,
+							"Document",
+							"Data",
+							args.name,
+							choiceID,
+							"Slice",
+						);
 
-					let primaryInterfaceName: string | undefined;
-					if (
-						choice["non-repeat"] &&
-						Object.keys(choice["non-repeat"]).length > 0
-					) {
-						primaryInterfaceName = buildTypeName(sliceName, "Primary");
-						const primaryFieldProperties = buildFieldProperties({
-							fields: choice["non-repeat"],
-							fieldConfigs: args.fieldConfigs,
-							path: [
-								...args.path,
-								{
-									id: args.name,
-									model: args.field,
-								},
-								{
-									id: choiceID,
-									model: choice,
-								},
-								{
-									id: "primary",
-									label: "Primary",
-								},
-							],
-						});
+						let primaryInterfaceName: string | undefined;
+						if (
+							choice["non-repeat"] &&
+							Object.keys(choice["non-repeat"]).length > 0
+						) {
+							primaryInterfaceName = buildTypeName(sliceName, "Primary");
+							const primaryFieldProperties = buildFieldProperties({
+								fields: choice["non-repeat"],
+								fieldConfigs: args.fieldConfigs,
+								path: [
+									...args.path,
+									{
+										id: args.name,
+										model: args.field,
+									},
+									{
+										id: choiceID,
+										model: choice,
+									},
+									{
+										id: "primary",
+										label: "Primary",
+									},
+								],
+							});
 
-						auxiliaryTypes.push({
-							name: primaryInterfaceName,
-							code: primaryFieldProperties.code
-								? typescript`
+							auxiliaryTypes.push({
+								name: primaryInterfaceName,
+								code: primaryFieldProperties.code
+									? typescript`
 									export interface ${primaryInterfaceName} {
 										${primaryFieldProperties.code}
 									}
 								`
-								: typescript`
+									: typescript`
 									export interface ${primaryInterfaceName} {}
 								`,
-						});
-					}
+							});
+						}
 
-					let itemInterfaceName: string | undefined;
-					if (choice.repeat && Object.keys(choice.repeat).length > 0) {
-						itemInterfaceName = buildTypeName(sliceName, "Item");
+						let itemInterfaceName: string | undefined;
+						if (choice.repeat && Object.keys(choice.repeat).length > 0) {
+							itemInterfaceName = buildTypeName(sliceName, "Item");
 
-						const itemFieldProperties = buildFieldProperties({
-							fields: choice.repeat,
-							fieldConfigs: args.fieldConfigs,
-							path: [
-								...args.path,
-								{
-									id: args.name,
-									model: args.field,
-								},
-								{
-									id: choiceID,
-									model: choice,
-								},
-								{
-									id: "items",
-									label: "Items",
-								},
-							],
-						});
+							const itemFieldProperties = buildFieldProperties({
+								fields: choice.repeat,
+								fieldConfigs: args.fieldConfigs,
+								path: [
+									...args.path,
+									{
+										id: args.name,
+										model: args.field,
+									},
+									{
+										id: choiceID,
+										model: choice,
+									},
+									{
+										id: "items",
+										label: "Items",
+									},
+								],
+							});
 
-						auxiliaryTypes.push({
-							name: itemInterfaceName,
-							code: itemFieldProperties.code
-								? typescript`
+							auxiliaryTypes.push({
+								name: itemInterfaceName,
+								code: itemFieldProperties.code
+									? typescript`
 									export interface ${itemInterfaceName} {
 										${itemFieldProperties.code}
 									}
 								`
-								: typescript`
+									: typescript`
 									export interface ${itemInterfaceName} {}
 								`,
-						});
-					}
+							});
+						}
 
-					auxiliaryTypes.push({
-						name: sliceName,
-						code: typescript`
+						auxiliaryTypes.push({
+							name: sliceName,
+							code: typescript`
 							export type ${sliceName} = prismic.Slice<"${choiceID}", ${
-							primaryInterfaceName
-								? typescript`Simplify<${primaryInterfaceName}>`
-								: typescript`Record<string, never>`
-						}, ${
-							itemInterfaceName
-								? typescript`Simplify<${itemInterfaceName}>`
-								: typescript`never`
-						}>
+								primaryInterfaceName
+									? typescript`Simplify<${primaryInterfaceName}>`
+									: typescript`Record<string, never>`
+							}, ${
+								itemInterfaceName
+									? typescript`Simplify<${itemInterfaceName}>`
+									: typescript`never`
+							}>
 						`,
-					});
+						});
 
-					choiceNames.push(sliceName);
+						choiceNames.push(sliceName);
+					}
 				}
 			}
 
