@@ -40,11 +40,7 @@ it("can be customized with provider-specific types", (ctx) => {
 		property.getTypeNodeOrThrow().getText({ trimLeadingIndentation: true }),
 	).toBe(
 		stripIndent`
-			prismic.EmbedField<prismic.AnyOEmbed & prismic.OEmbedExtra & (({
-			    provider_name: "YouTube";
-			} & YouTubeType) | ({
-			    provider_name: "Vimeo";
-			} & VimeoType))>
+			prismic.EmbedField<prismic.AnyOEmbed & prismic.OEmbedExtra & (({ provider_name: "YouTube" } & YouTubeType) | ({ provider_name: "Vimeo" } & VimeoType))>
 		`,
 	);
 });

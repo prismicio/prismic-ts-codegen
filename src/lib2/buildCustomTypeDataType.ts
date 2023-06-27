@@ -3,6 +3,10 @@ import { source as typescript } from "common-tags";
 
 import { buildTypeName } from "../lib/buildTypeName";
 
+import { AuxiliaryType, FieldConfigs } from "../types";
+
+import { buildFieldProperties } from "./buildFieldProperties";
+
 function collectCustomTypeFields(
 	model: CustomTypeModel,
 ): Record<string, CustomTypeModelField> {
@@ -11,11 +15,13 @@ function collectCustomTypeFields(
 
 type BuildCustomTypeDataTypeArgs = {
 	model: CustomTypeModel;
+	fieldConfigs: FieldConfigs;
 };
 
 type BuildCustomTypeDataTypeReturnValue = {
 	name: string;
 	code: string;
+	auxiliaryTypes: AuxiliaryType[];
 };
 
 export function buildCustomTypeDataType(
@@ -27,13 +33,23 @@ export function buildCustomTypeDataType(
 	// UID fields are top-level document properties, not data properties.
 	delete fields.uid;
 
-	const hasDataFields = Object.keys(fields).length > 0;
-
 	const name = buildTypeName(args.model.id, "Document", "Data");
+	const fieldProperties = buildFieldProperties({
+		fields,
+		fieldConfigs: args.fieldConfigs,
+		path: [
+			{
+				id: args.model.id,
+				model: args.model,
+			},
+		],
+	});
 
-	if (hasDataFields) {
+	if (fieldProperties.code) {
 		code = typescript`
-			interface ${name} {}
+			interface ${name} {
+				${fieldProperties.code}
+			}
 		`;
 	} else {
 		code = typescript`
@@ -44,5 +60,6 @@ export function buildCustomTypeDataType(
 	return {
 		name,
 		code,
+		auxiliaryTypes: fieldProperties.auxiliaryTypes,
 	};
 }

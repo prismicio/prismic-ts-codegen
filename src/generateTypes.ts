@@ -1,30 +1,15 @@
-import type {
-	CustomTypeModel,
-	CustomTypeModelField,
-	SharedSliceModel,
-} from "@prismicio/client";
+import type { CustomTypeModel, SharedSliceModel } from "@prismicio/client";
 import { source as typescript } from "common-tags";
-import { ModuleDeclarationKind, Project } from "ts-morph";
-
-import { addTypeAliasForCustomType } from "./lib/addTypeAliasForCustomType";
-import { addTypeAliasForSharedSlice } from "./lib/addTypeAliasForSharedSlice";
-import { buildSharedSliceInterfaceNamePart } from "./lib/buildSharedSliceInterfaceNamePart";
-import { buildTypeName } from "./lib/buildTypeName";
-import { getSourceFileText } from "./lib/getSourceFileText";
 
 import { FieldConfigs } from "./types";
 
+import { addLine } from "./lib2/addLine";
 import { addSection } from "./lib2/addSection";
-
-import { BLANK_LINE_IDENTIFIER } from "./constants";
+import { buildCustomTypeType } from "./lib2/buildCustomTypeType";
+import { buildSharedSliceType } from "./lib2/buildSharedSliceType";
+import { buildUnion } from "./lib2/buildUnion";
 
 export type TypesProvider = "@prismicio/client" | "@prismicio/types";
-
-function collectCustomTypeFields(
-	model: CustomTypeModel,
-): Record<string, CustomTypeModelField> {
-	return Object.assign({}, ...Object.values(model.json));
-}
 
 export type GenerateTypesConfig = {
 	customTypeModels?: CustomTypeModel[];
@@ -39,101 +24,96 @@ export type GenerateTypesConfig = {
 };
 
 export function generateTypes(config: GenerateTypesConfig = {}): string {
-	let result = "";
+	const fieldConfigs = config.fieldConfigs || {};
+
+	let code = "";
 
 	const typesProvider = config.typesProvider || "@prismicio/types";
-	let clientNamespaceImportName = "prismic";
+	let clientImportName = "prismic";
 
-	result += typescript`
-		import type * as prismic from "${typesProvider}";
-	`;
+	code = addLine(
+		typescript`
+			import type * as prismic from "${typesProvider}";
+		`,
+		code,
+	);
 
 	if (
 		config.clientIntegration?.includeCreateClientInterface ||
 		config.clientIntegration?.includeContentNamespace
 	) {
 		if (typesProvider !== "@prismicio/client") {
-			clientNamespaceImportName = "prismicClient";
+			clientImportName = "prismicClient";
 
 			// This import declaration would be a duplicate if the types
 			// provider is @prismicio/client.
-			result += "\n";
-			result += typescript`
-				import type * as ${clientNamespaceImportName} from "@prismicio/client";
-			`;
+			code = addLine(
+				typescript`
+					import type * as ${clientImportName} from "@prismicio/client";
+				`,
+				code,
+			);
 		}
 	}
 
-	result += "\n\n";
-	result += typescript`
-		type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
-	`;
-	result += "\n\n";
+	code = addSection(
+		typescript`
+			type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
+		`,
+		code,
+	);
+
+	const contentTypeNames: string[] = [];
 
 	if (config.customTypeModels) {
+		const allDocumentTypesTypeNames: string[] = [];
+
 		for (const model of config.customTypeModels) {
-			result = addSection(buildCustomTypeTypes);
+			const customTypeType = buildCustomTypeType({
+				model,
+				localeIDs: config.localeIDs,
+				fieldConfigs,
+			});
+
+			for (const auxiliaryType of customTypeType.auxiliaryTypes) {
+				code = addSection(auxiliaryType.code, code);
+			}
+
+			code = addSection(customTypeType.code, code);
+
+			allDocumentTypesTypeNames.push(customTypeType.name);
+
+			contentTypeNames.push(customTypeType.name);
+			contentTypeNames.push(customTypeType.dataName);
 		}
 
 		if (config.customTypeModels.length > 0) {
-			const allCustomTypesUnion = config.customTypeModels
-				.map((customTypeModel) => buildTypeName(customTypeModel.id, "Document"))
-				.join(" | ");
+			const allDocumentTypesUnionName = "AllDocumentTypes";
+			const allDocumentTypesUnion = buildUnion(allDocumentTypesTypeNames);
 
-			result += "\n\n";
-			result += typescript`
-				export type AllDocumentTypes = ${allCustomTypesUnion};
-			`;
+			code = addSection(
+				typescript`
+					export type ${allDocumentTypesUnionName} = ${allDocumentTypesUnion};
+				`,
+				code,
+			);
+
+			contentTypeNames.push(allDocumentTypesUnionName);
 		}
 	}
 
 	if (config.sharedSliceModels) {
 		for (const model of config.sharedSliceModels) {
-			const typeName = buildTypeName(
-				buildSharedSliceInterfaceNamePart({ id: model.id }),
-			);
-
-			for (const variation of model.variations) {
-				const typeName = buildTypeName(
-					buildSharedSliceInterfaceNamePart({ id: model.id }),
-					variation.id,
-				);
-
-				result += "\n\n";
-				result += typescript`
-					export type ${typeName} = prismic.SharedSliceVariation<
-						"${variation.id}",
-						Record<string, never>,
-						never
-					>;
-				`;
-			}
-
-			const variationsTypeName = buildTypeName(
-				buildSharedSliceInterfaceNamePart({ id: model.id }),
-				"Variation",
-			);
-			const variationTypeNames = model.variations.map((variation) => {
-				return buildTypeName(
-					buildSharedSliceInterfaceNamePart({ id: model.id }),
-					variation.id,
-				);
+			const sharedSliceType = buildSharedSliceType({
+				model,
+				fieldConfigs,
 			});
 
-			result += "\n\n";
-			result += typescript`
-				type ${variationsTypeName} = ${
-				variationTypeNames.length > 0 ? variationTypeNames.join(" | ") : "never"
-			};
-			`;
+			code = addSection(sharedSliceType.code, code);
 
-			result += "\n\n";
-			result += typescript`
-				export type ${typeName} = prismic.SharedSlice<
-					"${model.id}",
-					${variationsTypeName}
-				>;
-			`;
+			contentTypeNames.push(sharedSliceType.name);
+			contentTypeNames.push(sharedSliceType.variationUnionName);
+			contentTypeNames.push(...sharedSliceType.variationNames);
 		}
 	}
 
@@ -141,216 +121,58 @@ export function generateTypes(config: GenerateTypesConfig = {}): string {
 		config.clientIntegration?.includeCreateClientInterface ||
 		config.clientIntegration?.includeContentNamespace
 	) {
-		result += typescript`
-			declare module "@prismicio/client" {
-		`;
+		let clientModuleCode = "";
 
 		if (config.clientIntegration.includeCreateClientInterface) {
-			result += `\n`;
-
 			if ((config.customTypeModels?.length || 0) > 0) {
-				result += typescript`
-					interface CreateClient {
-						(
-							repositoryNameOrEndpoint: string,
-							options?: ${clientNamespaceImportName}.ClientConfig
-						): ${clientNamespaceImportName}.Client<AllDocumentTypes>;
-					}
-				`;
+				clientModuleCode = addSection(
+					typescript`
+						interface CreateClient {
+							(
+								repositoryNameOrEndpoint: string,
+								options?: ${clientImportName}.ClientConfig
+							): ${clientImportName}.Client<AllDocumentTypes>;
+						}
+					`,
+					clientModuleCode,
+				);
 			} else {
-				result += typescript`
-					interface CreateClient {
-						(
-							repositoryNameOrEndpoint: string,
-							options?: ${clientNamespaceImportName}.ClientConfig
-						): ${clientNamespaceImportName}.Client;
-					}
-				`;
+				clientModuleCode = addSection(
+					typescript`
+						interface CreateClient {
+							(
+								repositoryNameOrEndpoint: string,
+								options?: ${clientImportName}.ClientConfig
+							): ${clientImportName}.Client;
+						}
+					`,
+					clientModuleCode,
+				);
 			}
 		}
 
 		if (config.clientIntegration.includeContentNamespace) {
-			const customTypeTypeNames = (config.customTypeModels || []).flatMap(
-				(model) => {
-					const documentTypeName = buildTypeName(model.id, "Document");
-
-					return [documentTypeName, buildTypeName(documentTypeName, "Data")];
-				},
-			);
-
-			const sharedSliceTypeNames = (config.sharedSliceModels || []).flatMap(
-				(model) => {
-					return [
-						...model.variations.map((variation) => {
-							return buildTypeName(
-								buildSharedSliceInterfaceNamePart({ id: model.id }),
-								variation.id,
-							);
-						}),
-						buildTypeName(
-							buildSharedSliceInterfaceNamePart({ id: model.id }),
-							"Variation",
-						),
-						buildTypeName(buildSharedSliceInterfaceNamePart({ id: model.id })),
-					];
-				},
-			);
-
-			result += `\n`;
-			result += typescript`
-				namespace Content {
-					export type {
-						${(config.customTypeModels?.length || 0) > 0 ? "AllDocumentTypes\n" : ""}
-						${customTypeTypeNames.join(",\n")}
-						${sharedSliceTypeNames.join(",\n")}
+			clientModuleCode = addSection(
+				typescript`
+					namespace Content {
+						export type {
+							${contentTypeNames.join(",\n")}
+						}
 					}
+				`,
+				clientModuleCode,
+			);
+		}
+
+		code = addSection(
+			typescript`
+				declare module "@prismicio/client" {
+					${clientModuleCode}
 				}
-			`;
-		}
-
-		result += `\n`;
-		result += typescript`
-			}
-		`;
+			`,
+			code,
+		);
 	}
 
-	return result;
+	return code;
 }
-
-export const _generateTypes = (config: GenerateTypesConfig = {}) => {
-	const project = new Project({
-		useInMemoryFileSystem: true,
-	});
-
-	const sourceFile = project.createSourceFile("types.d.ts");
-
-	const typesProvider = config.typesProvider || "@prismicio/types";
-
-	sourceFile.addImportDeclaration({
-		moduleSpecifier: typesProvider,
-		namespaceImport: "prismic",
-		isTypeOnly: true,
-	});
-
-	sourceFile.addStatements(BLANK_LINE_IDENTIFIER);
-
-	const simplifyTypeAlias = sourceFile.addTypeAlias({
-		name: "Simplify",
-		typeParameters: [
-			{
-				name: "T",
-			},
-		],
-		type: `{ [KeyType in keyof T]: T[KeyType] }`,
-	});
-
-	if (config.customTypeModels) {
-		for (const model of config.customTypeModels) {
-			addTypeAliasForCustomType({
-				model,
-				sourceFile,
-				localeIDs: config.localeIDs || [],
-				fieldConfigs: config.fieldConfigs || {},
-			});
-		}
-
-		if (config.customTypeModels.length > 0) {
-			sourceFile.addTypeAlias({
-				name: "AllDocumentTypes",
-				type: config.customTypeModels
-					.map((customTypeModel) =>
-						buildTypeName(customTypeModel.id, "Document"),
-					)
-					.join(" | "),
-				isExported: true,
-			});
-		}
-	}
-
-	if (config.sharedSliceModels) {
-		for (const model of config.sharedSliceModels) {
-			addTypeAliasForSharedSlice({
-				model,
-				sourceFile,
-				fieldConfigs: config.fieldConfigs || {},
-			});
-		}
-	}
-
-	if (
-		config.clientIntegration?.includeCreateClientInterface ||
-		config.clientIntegration?.includeContentNamespace
-	) {
-		let clientNamespaceImportName = "prismic";
-
-		if (typesProvider !== "@prismicio/client") {
-			clientNamespaceImportName = "prismicClient";
-
-			// This import declaration would be a duplicate if the types
-			// provider is @prismicio/client.
-			sourceFile.addImportDeclaration({
-				moduleSpecifier: "@prismicio/client",
-				namespaceImport: clientNamespaceImportName,
-				isTypeOnly: true,
-			});
-		}
-
-		const clientModuleDeclaration = sourceFile.addModule({
-			name: '"@prismicio/client"',
-			hasDeclareKeyword: true,
-			declarationKind: ModuleDeclarationKind.Module,
-		});
-
-		if (config.clientIntegration.includeCreateClientInterface) {
-			clientModuleDeclaration.addInterface({
-				name: "CreateClient",
-				callSignatures: [
-					{
-						parameters: [
-							{
-								name: "repositoryNameOrEndpoint",
-								type: "string",
-							},
-							{
-								name: "options",
-								type: `${clientNamespaceImportName}.ClientConfig`,
-								hasQuestionToken: true,
-							},
-						],
-						returnType:
-							(config.customTypeModels?.length || 0) > 0
-								? `${clientNamespaceImportName}.Client<AllDocumentTypes>`
-								: `${clientNamespaceImportName}.Client`,
-					},
-				],
-			});
-		}
-
-		if (config.clientIntegration.includeContentNamespace) {
-			const contentNamespaceDeclaration = clientModuleDeclaration.addModule({
-				name: "Content",
-				declarationKind: ModuleDeclarationKind.Namespace,
-			});
-
-			const exportSymbols = sourceFile
-				.getExportSymbols()
-				.filter((exportSymbol) => {
-					// The Simplify utility type should not
-					// be exported, but it is included in
-					// `getExportSymbols()`'s result.
-					return exportSymbol.getName() !== simplifyTypeAlias.getName();
-				});
-
-			contentNamespaceDeclaration.addExportDeclaration({
-				isTypeOnly: true,
-				namedExports: exportSymbols.map((exportSymbol) => {
-					return {
-						name: exportSymbol.getName(),
-					};
-				}),
-			});
-		}
-	}
-
-	return getSourceFileText(sourceFile);
-};

@@ -1,0 +1,19 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`outputs correct code style 1`] = `
+"import type * as prismic from \\"@prismicio/types\\";
+
+type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
+
+interface FooDocumentData {}
+
+export type FooDocument<Lang extends string = string> =
+	prismic.PrismicDocumentWithoutUID<Simplify<FooDocumentData>, \\"foo\\", Lang>;
+
+interface BarDocumentData {}
+
+export type BarDocument<Lang extends string = string> =
+	prismic.PrismicDocumentWithoutUID<Simplify<BarDocumentData>, \\"bar\\", Lang>;
+
+export type AllDocumentTypes = FooDocument | BarDocument;"
+`;

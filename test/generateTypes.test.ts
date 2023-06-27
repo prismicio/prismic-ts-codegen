@@ -273,3 +273,14 @@ it("uses the existing prismic import if the `@prismicio/client` types provider i
 		file.getImportDeclarationOrThrow("@prismicio/client");
 	}).not.throws("imports `@prismicio/client`");
 });
+
+it("outputs correct code style", (ctx) => {
+	const res = lib.generateTypes({
+		customTypeModels: [
+			ctx.mock.model.customType({ id: "foo" }),
+			ctx.mock.model.customType({ id: "bar" }),
+		],
+	});
+
+	expect(res).toMatchSnapshot();
+});

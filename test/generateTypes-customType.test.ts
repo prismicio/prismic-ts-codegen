@@ -97,18 +97,12 @@ it("data interface is empty record type alias if no data fields are defined", (c
 	const file = parseSourceFile(res);
 
 	expect(
-		file
-			.getTypeAliasOrThrow("NoFieldsDocumentData")
-			.getTypeNodeOrThrow()
-			.getText(),
-	).toBe("Record<string, never>");
+		file.getInterfaceOrThrow("NoFieldsDocumentData").getMembers(),
+	).toStrictEqual([]);
 
 	expect(
-		file
-			.getTypeAliasOrThrow("OnlyUidDocumentData")
-			.getTypeNodeOrThrow()
-			.getText(),
-	).toBe("Record<string, never>");
+		file.getInterfaceOrThrow("OnlyUidDocumentData").getMembers(),
+	).toStrictEqual([]);
 });
 
 it("includes specific lang IDs if given", (ctx) => {

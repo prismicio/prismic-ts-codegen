@@ -17,6 +17,11 @@ export type PathElement<
 	label?: string;
 };
 
+export type AuxiliaryType = {
+	code: string;
+	name: string;
+};
+
 export type FieldConfigs = {
 	embed?: {
 		providerTypes?: Record<string, string>;
