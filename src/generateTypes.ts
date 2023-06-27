@@ -1,13 +1,13 @@
 import type { CustomTypeModel, SharedSliceModel } from "@prismicio/client";
 import { source as typescript } from "common-tags";
 
-import { FieldConfigs } from "./types";
+import { addLine } from "./lib/addLine";
+import { addSection } from "./lib/addSection";
+import { buildCustomTypeType } from "./lib/buildCustomTypeType";
+import { buildSharedSliceType } from "./lib/buildSharedSliceType";
+import { buildUnion } from "./lib/buildUnion";
 
-import { addLine } from "./lib2/addLine";
-import { addSection } from "./lib2/addSection";
-import { buildCustomTypeType } from "./lib2/buildCustomTypeType";
-import { buildSharedSliceType } from "./lib2/buildSharedSliceType";
-import { buildUnion } from "./lib2/buildUnion";
+import { FieldConfigs } from "./types";
 
 export type TypesProvider = "@prismicio/client" | "@prismicio/types";
 
