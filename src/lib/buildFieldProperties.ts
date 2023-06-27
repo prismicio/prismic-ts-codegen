@@ -8,8 +8,7 @@ import {
 } from "@prismicio/client";
 import { source as typescript } from "common-tags";
 
-import { AuxiliaryType, FieldConfigs } from "../types";
-import { PathElement } from "prismic-ts-codegen-latest/dist/types";
+import { AuxiliaryType, FieldConfigs, PathElement } from "../types";
 
 import { addSection } from "./addSection";
 import { buildPropertyName } from "./buildPropertyName";

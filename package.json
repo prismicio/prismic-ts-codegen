@@ -73,7 +73,7 @@
 		"eslint-plugin-tsdoc": "^0.2.17",
 		"prettier": "^2.8.8",
 		"prettier-plugin-jsdoc": "^0.4.2",
-		"prismic-ts-codegen-latest": "npm:prismic-ts-codegen@latest",
+		"prismic-ts-codegen-v0-1-11": "npm:prismic-ts-codegen@0.1.11",
 		"size-limit": "^8.2.6",
 		"standard-version": "^9.5.0",
 		"typescript": "^5.1.3",

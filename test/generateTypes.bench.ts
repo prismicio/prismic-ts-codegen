@@ -1,6 +1,6 @@
 import { bench } from "vitest";
 
-import * as latest from "prismic-ts-codegen-latest";
+import * as v0_1_11 from "prismic-ts-codegen-v0-1-11";
 import { createMockFactory } from "@prismicio/mock";
 
 import * as src from "../src";
@@ -27,5 +27,5 @@ bench("generate types (src)", () => {
 });
 
 bench("generate types (latest)", () => {
-	latest.generateTypes({ customTypeModels, sharedSliceModels });
+	v0_1_11.generateTypes({ customTypeModels, sharedSliceModels });
 });
