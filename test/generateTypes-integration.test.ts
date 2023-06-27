@@ -8,7 +8,7 @@ import * as lib from "../src";
 
 it("is correctly typed", (ctx) => {
 	expectToHaveFieldType(
-		ctx.mock.model.integrationFields(),
+		ctx.mock.model.integration(),
 		"prismic.IntegrationField",
 	);
 });
@@ -17,8 +17,8 @@ it("can be customized with catalog-specific types", (ctx) => {
 	const model = ctx.mock.model.customType({
 		id: "foo",
 		fields: {
-			bar: ctx.mock.model.integrationFields({ catalog: "abc" }),
-			baz: ctx.mock.model.integrationFields({ catalog: "def" }),
+			bar: ctx.mock.model.integration({ catalog: "abc" }),
+			baz: ctx.mock.model.integration({ catalog: "def" }),
 		},
 	});
 
@@ -45,5 +45,5 @@ it("can be customized with catalog-specific types", (ctx) => {
 });
 
 it("is correctly documented", (ctx) => {
-	expectToHaveDocs(ctx.mock.model.integrationFields());
+	expectToHaveDocs(ctx.mock.model.integration());
 });
