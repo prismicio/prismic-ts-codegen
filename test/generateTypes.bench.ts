@@ -22,10 +22,10 @@ const sharedSliceModels = Array.from({ length: 5 }, () =>
 	}),
 );
 
-bench("generate types (src)", () => {
-	src.generateTypes({ customTypeModels, sharedSliceModels });
+bench("generate types (src)", async () => {
+	await src.generateTypes({ customTypeModels, sharedSliceModels });
 });
 
-bench("generate types (latest)", () => {
+bench("generate types (latest)", async () => {
 	v0_1_11.generateTypes({ customTypeModels, sharedSliceModels });
 });

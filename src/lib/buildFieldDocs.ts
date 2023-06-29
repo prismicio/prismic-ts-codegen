@@ -1,5 +1,4 @@
 import { CustomTypeModelField } from "@prismicio/client";
-import { source as typescript } from "common-tags";
 
 import { FieldPath } from "../types";
 
@@ -72,7 +71,7 @@ type BuildFieldDocsArgs = {
 };
 
 export function buildFieldDocs(args: BuildFieldDocsArgs): string {
-	let result = "";
+	let result = "/**";
 
 	const humanReadableName = getHumanReadableModelName({
 		model: args.field,
@@ -93,18 +92,21 @@ export function buildFieldDocs(args: BuildFieldDocsArgs): string {
 		field: args.field,
 	});
 
-	result += `${humanReadableName} field in ${humanReadablePath}`;
+	result = addLine(
+		` * ${humanReadableName} field in ${humanReadablePath}`,
+		result,
+	);
 
 	result = addBlankLine(result, { force: true });
 
-	result = addLine(`- **Field Type**: ${humanReadableFieldType}`, result);
+	result = addLine(` * - **Field Type**: ${humanReadableFieldType}`, result);
 
 	const placeholder =
 		(args.field.config &&
 			"placeholder" in args.field.config &&
 			args.field.config.placeholder) ||
 		`*None*`;
-	result = addLine(`- **Placeholder**: ${placeholder}`, result);
+	result = addLine(` * - **Placeholder**: ${placeholder}`, result);
 
 	const defaultValue =
 		args.field.config && "default_value" in args.field.config
@@ -114,16 +116,19 @@ export function buildFieldDocs(args: BuildFieldDocsArgs): string {
 		const stringifiedDefaultValue =
 			typeof defaultValue === "boolean" ? `${defaultValue}` : defaultValue;
 
-		result = addLine(`- **Default Value**: ${stringifiedDefaultValue}`, result);
+		result = addLine(
+			` * - **Default Value**: ${stringifiedDefaultValue}`,
+			result,
+		);
 	}
 
 	const apiIDPath = getAPIIDPath({
 		path: [...args.path, { id: args.name, model: args.field }],
 	});
-	result = addLine(`- **API ID Path**: ${apiIDPath}`, result);
+	result = addLine(` * - **API ID Path**: ${apiIDPath}`, result);
 
 	if (args.tabName) {
-		result = addLine(`- **Tab**: ${args.tabName}`, result);
+		result = addLine(` * - **Tab**: ${args.tabName}`, result);
 	}
 
 	const documentationURL =
@@ -131,15 +136,10 @@ export function buildFieldDocs(args: BuildFieldDocsArgs): string {
 			args.field.type as keyof typeof FIELD_DOCUMENTATION_URLS
 		];
 	if (documentationURL) {
-		result = addLine(`- **Documentation**: ${documentationURL}`, result);
+		result = addLine(` * - **Documentation**: ${documentationURL}`, result);
 	}
 
-	return typescript`
-		/**
-		 ${result
-				.split("\n")
-				.map((line) => "* " + line)
-				.join("\n")}
-		 */
-	`;
+	result = addLine(" */", result);
+
+	return result;
 }

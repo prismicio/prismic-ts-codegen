@@ -13,7 +13,7 @@ export default defineConfig({
 	},
 	test: {
 		coverage: {
-			provider: "v8",
+			provider: "c8",
 			reporter: ["lcovonly", "text"],
 		},
 		setupFiles: ["./test/__setup__"],

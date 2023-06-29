@@ -9,7 +9,6 @@ import { AuxiliaryType, FieldConfigs, FieldPath } from "../types";
 
 import { addSection } from "./addSection";
 import { buildFieldDocs } from "./buildFieldDocs";
-import { buildPropertyName } from "./buildPropertyName";
 import { buildTypeName } from "./buildTypeName";
 import { buildUnion } from "./buildUnion";
 
@@ -33,7 +32,12 @@ function buildFieldProperty(
 
 	const auxiliaryTypes: AuxiliaryType[] = [];
 
-	const name = buildPropertyName(args.name);
+	const name =
+		args.name.includes("-") ||
+		args.name.includes(":") ||
+		/^[0-9]/.test(args.name)
+			? `"${args.name}"`
+			: args.name;
 	const docs = buildFieldDocs({
 		name: args.name,
 		field: args.field,

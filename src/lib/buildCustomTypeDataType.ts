@@ -24,10 +24,6 @@ export function buildCustomTypeDataType(
 	let code = "";
 	const auxiliaryTypes: AuxiliaryType[] = [];
 
-	// const fields = collectCustomTypeFields(args.model);
-	// // UID fields are top-level document properties, not data properties.
-	// delete fields.uid;
-
 	const name = buildTypeName(args.model.id, "Document", "Data");
 
 	let fieldProperties = "";
