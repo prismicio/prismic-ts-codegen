@@ -275,11 +275,29 @@ it("uses the existing prismic import if the `@prismicio/client` types provider i
 });
 
 it("outputs correct code style", (ctx) => {
+	const customTypeModels = Array.from({ length: 5 }, () =>
+		ctx.mock.model.customType({
+			fields: ctx.mock.model.buildMockGroupFieldMap(),
+		}),
+	);
+	const sharedSliceModels = Array.from({ length: 5 }, () =>
+		ctx.mock.model.sharedSlice({
+			variations: [
+				ctx.mock.model.sharedSliceVariation({
+					primaryFields: ctx.mock.model.buildMockGroupFieldMap(),
+					itemsFields: ctx.mock.model.buildMockGroupFieldMap(),
+				}),
+			],
+		}),
+	);
+
 	const res = lib.generateTypes({
-		customTypeModels: [
-			ctx.mock.model.customType({ id: "foo" }),
-			ctx.mock.model.customType({ id: "bar" }),
-		],
+		customTypeModels,
+		sharedSliceModels,
+		clientIntegration: {
+			includeContentNamespace: true,
+			includeCreateClientInterface: true,
+		},
 	});
 
 	expect(res).toMatchSnapshot();

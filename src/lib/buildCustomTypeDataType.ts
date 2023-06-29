@@ -1,4 +1,4 @@
-import { CustomTypeModel, CustomTypeModelField } from "@prismicio/client";
+import { CustomTypeModel } from "@prismicio/client";
 import { source as typescript } from "common-tags";
 
 import { buildTypeName } from "../lib/buildTypeName";
@@ -6,12 +6,6 @@ import { buildTypeName } from "../lib/buildTypeName";
 import { AuxiliaryType, FieldConfigs } from "../types";
 
 import { buildFieldProperties } from "./buildFieldProperties";
-
-function collectCustomTypeFields(
-	model: CustomTypeModel,
-): Record<string, CustomTypeModelField> {
-	return Object.assign({}, ...Object.values(model.json));
-}
 
 type BuildCustomTypeDataTypeArgs = {
 	model: CustomTypeModel;
@@ -28,27 +22,40 @@ export function buildCustomTypeDataType(
 	args: BuildCustomTypeDataTypeArgs,
 ): BuildCustomTypeDataTypeReturnValue {
 	let code = "";
+	const auxiliaryTypes: AuxiliaryType[] = [];
 
-	const fields = collectCustomTypeFields(args.model);
-	// UID fields are top-level document properties, not data properties.
-	delete fields.uid;
+	// const fields = collectCustomTypeFields(args.model);
+	// // UID fields are top-level document properties, not data properties.
+	// delete fields.uid;
 
 	const name = buildTypeName(args.model.id, "Document", "Data");
-	const fieldProperties = buildFieldProperties({
-		fields,
-		fieldConfigs: args.fieldConfigs,
-		path: [
-			{
-				id: args.model.id,
-				model: args.model,
-			},
-		],
-	});
 
-	if (fieldProperties.code) {
+	let fieldProperties = "";
+
+	for (const tabName in args.model.json) {
+		const { uid: _uid, ...fields } = args.model.json[tabName];
+
+		const tabFieldProperties = buildFieldProperties({
+			fields,
+			fieldConfigs: args.fieldConfigs,
+			path: [
+				{
+					id: args.model.id,
+					model: args.model,
+				},
+			],
+			tabName,
+		});
+
+		fieldProperties += tabFieldProperties.code;
+
+		auxiliaryTypes.push(...tabFieldProperties.auxiliaryTypes);
+	}
+
+	if (fieldProperties) {
 		code = typescript`
 			interface ${name} {
-				${fieldProperties.code}
+				${fieldProperties}
 			}
 		`;
 	} else {
@@ -60,6 +67,6 @@ export function buildCustomTypeDataType(
 	return {
 		name,
 		code,
-		auxiliaryTypes: fieldProperties.auxiliaryTypes,
+		auxiliaryTypes,
 	};
 }

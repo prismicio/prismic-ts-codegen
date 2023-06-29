@@ -1,23 +1,21 @@
 import {
-	CustomTypeModel,
 	CustomTypeModelField,
 	CustomTypeModelFieldType,
 	CustomTypeModelLinkSelectType,
-	CustomTypeModelSlice,
-	SharedSliceModel,
 } from "@prismicio/client";
 import { source as typescript } from "common-tags";
 
-import { AuxiliaryType, FieldConfigs, PathElement } from "../types";
+import { AuxiliaryType, FieldConfigs, FieldPath } from "../types";
 
 import { addSection } from "./addSection";
+import { buildFieldDocs } from "./buildFieldDocs";
 import { buildPropertyName } from "./buildPropertyName";
 import { buildTypeName } from "./buildTypeName";
 import { buildUnion } from "./buildUnion";
 
 type BuildFieldPropertyArgs = Pick<
 	BuildFieldPropertiesArgs,
-	"path" | "fieldConfigs"
+	"path" | "fieldConfigs" | "tabName"
 > & {
 	name: string;
 	field: CustomTypeModelField;
@@ -36,6 +34,12 @@ function buildFieldProperty(
 	const auxiliaryTypes: AuxiliaryType[] = [];
 
 	const name = buildPropertyName(args.name);
+	const docs = buildFieldDocs({
+		name: args.name,
+		field: args.field,
+		path: args.path,
+		tabName: args.tabName,
+	});
 
 	switch (args.field.type) {
 		case CustomTypeModelFieldType.UID: {
@@ -46,6 +50,7 @@ function buildFieldProperty(
 		case CustomTypeModelFieldType.Boolean: {
 			code = addSection(
 				typescript`
+					${docs}
 					${name}: prismic.BooleanField;
 				`,
 				code,
@@ -57,6 +62,7 @@ function buildFieldProperty(
 		case CustomTypeModelFieldType.Color: {
 			code = addSection(
 				typescript`
+					${docs}
 					${name}: prismic.ColorField;
 				`,
 				code,
@@ -68,6 +74,7 @@ function buildFieldProperty(
 		case CustomTypeModelFieldType.Date: {
 			code = addSection(
 				typescript`
+					${docs}
 					${name}: prismic.DateField;
 				`,
 				code,
@@ -97,9 +104,11 @@ function buildFieldProperty(
 			code = addSection(
 				providerTypes.length > 0
 					? typescript`
+						${docs}
 						${name}: prismic.EmbedField<prismic.AnyOEmbed & prismic.OEmbedExtra & (${providerTypesUnion})>
 					`
 					: typescript`
+						${docs}
 						${name}: prismic.EmbedField
 					`,
 				code,
@@ -111,6 +120,7 @@ function buildFieldProperty(
 		case CustomTypeModelFieldType.GeoPoint: {
 			code = addSection(
 				typescript`
+					${docs}
 					${name}: prismic.GeoPointField;
 				`,
 				code,
@@ -130,6 +140,7 @@ function buildFieldProperty(
 
 				code = addSection(
 					typescript`
+						${docs}
 						${name}: prismic.ImageField<${thumbnailNames}>;
 					`,
 					code,
@@ -137,6 +148,7 @@ function buildFieldProperty(
 			} else {
 				code = addSection(
 					typescript`
+						${docs}
 						${name}: prismic.ImageField<never>;
 					`,
 					code,
@@ -156,6 +168,7 @@ function buildFieldProperty(
 			if (catalogType) {
 				code = addSection(
 					typescript`
+						${docs}
 						${name}: prismic.IntegrationField<${catalogType}>;
 					`,
 					code,
@@ -163,6 +176,7 @@ function buildFieldProperty(
 			} else {
 				code = addSection(
 					typescript`
+						${docs}
 						${name}: prismic.IntegrationField;
 					`,
 					code,
@@ -186,6 +200,7 @@ function buildFieldProperty(
 
 						code = addSection(
 							typescript`
+							${docs}
 							${name}: prismic.ContentRelationshipField<${customTypeIDsUnion}>;
 						`,
 							code,
@@ -193,6 +208,7 @@ function buildFieldProperty(
 					} else {
 						code = addSection(
 							typescript`
+							${docs}
 							${name}: prismic.ContentRelationshipField;
 						`,
 							code,
@@ -205,6 +221,7 @@ function buildFieldProperty(
 				case CustomTypeModelLinkSelectType.Media: {
 					code = addSection(
 						typescript`
+							${docs}
 							${name}: prismic.LinkToMediaField;
 						`,
 						code,
@@ -216,6 +233,7 @@ function buildFieldProperty(
 				default: {
 					code = addSection(
 						typescript`
+							${docs}
 							${name}: prismic.LinkField;
 						`,
 						code,
@@ -229,6 +247,7 @@ function buildFieldProperty(
 		case CustomTypeModelFieldType.Number: {
 			code = addSection(
 				typescript`
+					${docs}
 					${name}: prismic.NumberField;
 				`,
 				code,
@@ -249,6 +268,7 @@ function buildFieldProperty(
 			if (isTitleField) {
 				code = addSection(
 					typescript`
+						${docs}
 						${name}: prismic.TitleField;
 					`,
 					code,
@@ -256,6 +276,7 @@ function buildFieldProperty(
 			} else {
 				code = addSection(
 					typescript`
+						${docs}
 						${name}: prismic.RichTextField;
 					`,
 					code,
@@ -275,6 +296,7 @@ function buildFieldProperty(
 			if (hasDefault) {
 				code = addSection(
 					typescript`
+						${docs}
 						${name}: prismic.SelectField<${optionsType}, "filled">;
 					`,
 					code,
@@ -282,6 +304,7 @@ function buildFieldProperty(
 			} else {
 				code = addSection(
 					typescript`
+						${docs}
 						${name}: prismic.SelectField${options.length > 0 ? `<${optionsType}>` : ""};
 					`,
 					code,
@@ -294,6 +317,7 @@ function buildFieldProperty(
 		case CustomTypeModelFieldType.Text: {
 			code = addSection(
 				typescript`
+					${docs}
 					${name}: prismic.KeyTextField;
 				`,
 				code,
@@ -305,6 +329,7 @@ function buildFieldProperty(
 		case CustomTypeModelFieldType.Timestamp: {
 			code = addSection(
 				typescript`
+					${docs}
 					${name}: prismic.TimestampField;
 				`,
 				code,
@@ -345,6 +370,7 @@ function buildFieldProperty(
 
 			code = addSection(
 				typescript`
+					${docs}
 					${name}: prismic.GroupField<Simplify<${itemName}>>;
 				`,
 				code,
@@ -497,6 +523,7 @@ function buildFieldProperty(
 
 			code = addSection(
 				typescript`
+					${docs}
 					${name}: prismic.SliceZone<${choiceUnionName}>;
 				`,
 				code,
@@ -508,6 +535,7 @@ function buildFieldProperty(
 		default: {
 			code = addSection(
 				typescript`
+					${docs}
 					${name}: unknown;
 				`,
 				code,
@@ -523,11 +551,9 @@ function buildFieldProperty(
 
 type BuildFieldPropertiesArgs = {
 	fields: Record<string, CustomTypeModelField>;
-	path: [
-		PathElement<CustomTypeModel | SharedSliceModel>,
-		...PathElement<CustomTypeModelField | CustomTypeModelSlice>[],
-	];
+	path: FieldPath;
 	fieldConfigs: FieldConfigs;
+	tabName?: string;
 };
 
 type BuildFieldPropertiesReturnType = {
@@ -550,6 +576,7 @@ export function buildFieldProperties(
 			field,
 			path: args.path,
 			fieldConfigs: args.fieldConfigs,
+			tabName: args.tabName,
 		});
 
 		code = addSection(fieldProperty.code, code);

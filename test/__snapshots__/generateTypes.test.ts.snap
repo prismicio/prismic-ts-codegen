@@ -2,18 +2,1334 @@
 
 exports[`outputs correct code style 1`] = `
 "import type * as prismic from \\"@prismicio/types\\";
+import type * as prismicClient from \\"@prismicio/client\\";
 
 type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
 
-interface FooDocumentData {}
+interface TinciduntDocumentData {
+	/**
+	 * Cras field in Cras
+	 * 
+	 * - **Field Type**: Color
+	 * - **Placeholder**: Turpis egestas sed
+	 * - **API ID Path**: tincidunt.ut_eu
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#color
+	 */
+	ut_eu: prismic.ColorField;
+	
+	/**
+	 * Sed field in Sed
+	 * 
+	 * - **Field Type**: Content Relationship
+	 * - **Placeholder**: Scelerisque felis imperdiet
+	 * - **API ID Path**: tincidunt.dictum
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+	 */
+	dictum: prismic.ContentRelationshipField;
+	
+	/**
+	 * Magna field in Magna
+	 * 
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: tincidunt.maecenas_sed
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#image
+	 */
+	maecenas_sed: prismic.ImageField<never>;
+	
+	/**
+	 * Vulputate field in Vulputate
+	 * 
+	 * - **Field Type**: Integration Fields (Catalog: \`gravida_cum\`)
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: tincidunt.nisl
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#integration
+	 */
+	nisl: prismic.IntegrationField;
+	
+	/**
+	 * Nisl field in Nisl
+	 * 
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Natoque penatibus et
+	 * - **API ID Path**: tincidunt.mauris_ultrices
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#key-text
+	 */
+	mauris_ultrices: prismic.KeyTextField;
+	
+	/**
+	 * Nulla field in Nulla
+	 * 
+	 * - **Field Type**: Link
+	 * - **Placeholder**: Dignissim cras tincidunt
+	 * - **API ID Path**: tincidunt.aliquam_sem
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+	 */
+	aliquam_sem: prismic.LinkField;
+	
+	/**
+	 * Luctus field in Luctus
+	 * 
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Imperdiet dui accumsan
+	 * - **API ID Path**: tincidunt.ut
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#select
+	 */
+	ut: prismic.SelectField;
+	
+	/**
+	 * Tellus field in Tellus
+	 * 
+	 * - **Field Type**: Timestamp
+	 * - **Placeholder**: Sagittis vitae et
+	 * - **API ID Path**: tincidunt.vitae_proin
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#timestamp
+	 */
+	vitae_proin: prismic.TimestampField;
+	
+	/**
+	 * Eu field in Eu
+	 * 
+	 * - **Field Type**: Title
+	 * - **Placeholder**: Adipiscing enim eu
+	 * - **API ID Path**: tincidunt.dignissim
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+	 */
+	dignissim: prismic.TitleField;
+}
 
-export type FooDocument<Lang extends string = string> =
-	prismic.PrismicDocumentWithoutUID<Simplify<FooDocumentData>, \\"foo\\", Lang>;
+export type TinciduntDocument<Lang extends string = string> =
+	prismic.PrismicDocumentWithoutUID<Simplify<TinciduntDocumentData>, \\"tincidunt\\", Lang>;
 
-interface BarDocumentData {}
+interface TempusDocumentData {
+	/**
+	 * Habitasse field in Habitasse
+	 * 
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: tempus.orci_porta
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#boolean
+	 */
+	orci_porta: prismic.BooleanField;
+	
+	/**
+	 * Risus field in Risus
+	 * 
+	 * - **Field Type**: Color
+	 * - **Placeholder**: Maecenas sed enim
+	 * - **API ID Path**: tempus.diam
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#color
+	 */
+	diam: prismic.ColorField;
+	
+	/**
+	 * Urna field in Urna
+	 * 
+	 * - **Field Type**: Content Relationship
+	 * - **Placeholder**: Nulla porttitor massa
+	 * - **API ID Path**: tempus.platea
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+	 */
+	platea: prismic.ContentRelationshipField;
+	
+	/**
+	 * Ultrices field in Ultrices
+	 * 
+	 * - **Field Type**: GeoPoint
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: tempus.ut
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#geopoint
+	 */
+	ut: prismic.GeoPointField;
+	
+	/**
+	 * Metus field in Metus
+	 * 
+	 * - **Field Type**: Link
+	 * - **Placeholder**: Odio aenean sed
+	 * - **API ID Path**: tempus.nunc_sed
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+	 */
+	nunc_sed: prismic.LinkField;
+	
+	/**
+	 * Sit field in Sit
+	 * 
+	 * - **Field Type**: Link to Media
+	 * - **Placeholder**: Ut tellus elementum
+	 * - **API ID Path**: tempus.in
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+	 */
+	in: prismic.LinkToMediaField;
+	
+	/**
+	 * Nam field in Nam
+	 * 
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Lobortis feugiat vivamus
+	 * - **API ID Path**: tempus.et_magnis
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#select
+	 */
+	et_magnis: prismic.SelectField;
+}
 
-export type BarDocument<Lang extends string = string> =
-	prismic.PrismicDocumentWithoutUID<Simplify<BarDocumentData>, \\"bar\\", Lang>;
+export type TempusDocument<Lang extends string = string> =
+	prismic.PrismicDocumentWithoutUID<Simplify<TempusDocumentData>, \\"tempus\\", Lang>;
 
-export type AllDocumentTypes = FooDocument | BarDocument;"
+interface AtDocumentData {
+	/**
+	 * Facilisi field in Facilisi
+	 * 
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: at.aliquet
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#boolean
+	 */
+	aliquet: prismic.BooleanField;
+	
+	/**
+	 * Lacus field in Lacus
+	 * 
+	 * - **Field Type**: Content Relationship
+	 * - **Placeholder**: Suscipit tellus mauris
+	 * - **API ID Path**: at.ultricies
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+	 */
+	ultricies: prismic.ContentRelationshipField;
+	
+	/**
+	 * Tempor field in Tempor
+	 * 
+	 * - **Field Type**: Date
+	 * - **Placeholder**: Sed tempus urna
+	 * - **API ID Path**: at.sed
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#date
+	 */
+	sed: prismic.DateField;
+	
+	/**
+	 * Arcu field in Arcu
+	 * 
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: at.nisl
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#image
+	 */
+	nisl: prismic.ImageField<never>;
+	
+	/**
+	 * Id field in Id
+	 * 
+	 * - **Field Type**: Integration Fields (Catalog: \`accumsan_sit\`)
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: at.viverra_orci
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#integration
+	 */
+	viverra_orci: prismic.IntegrationField;
+	
+	/**
+	 * Gravida field in Gravida
+	 * 
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Amet aliquam id
+	 * - **API ID Path**: at.pellentesque_id
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#key-text
+	 */
+	pellentesque_id: prismic.KeyTextField;
+}
+
+export type AtDocument<Lang extends string = string> =
+	prismic.PrismicDocumentWithoutUID<Simplify<AtDocumentData>, \\"at\\", Lang>;
+
+interface AcDocumentData {
+	/**
+	 * Gravida field in Gravida
+	 * 
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: ac.a
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#boolean
+	 */
+	a: prismic.BooleanField;
+	
+	/**
+	 * Dolor field in Dolor
+	 * 
+	 * - **Field Type**: Color
+	 * - **Placeholder**: Nisl suscipit adipiscing
+	 * - **API ID Path**: ac.et
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#color
+	 */
+	et: prismic.ColorField;
+	
+	/**
+	 * Tristique field in Tristique
+	 * 
+	 * - **Field Type**: Date
+	 * - **Placeholder**: Venenatis a condimentum
+	 * - **API ID Path**: ac.metus
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#date
+	 */
+	metus: prismic.DateField;
+	
+	/**
+	 * Aliquet field in Aliquet
+	 * 
+	 * - **Field Type**: GeoPoint
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: ac.risus
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#geopoint
+	 */
+	risus: prismic.GeoPointField;
+	
+	/**
+	 * Ullamcorper field in Ullamcorper
+	 * 
+	 * - **Field Type**: Link to Media
+	 * - **Placeholder**: Diam maecenas sed
+	 * - **API ID Path**: ac.viverra
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+	 */
+	viverra: prismic.LinkToMediaField;
+	
+	/**
+	 * Pretium field in Pretium
+	 * 
+	 * - **Field Type**: Number
+	 * - **Placeholder**: Ipsum nunc aliquet
+	 * - **API ID Path**: ac.quam_vulputate
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#number
+	 */
+	quam_vulputate: prismic.NumberField;
+	
+	/**
+	 * Augue field in Augue
+	 * 
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Proin sed libero
+	 * - **API ID Path**: ac.nunc
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+	 */
+	nunc: prismic.RichTextField;
+	
+	/**
+	 * Id field in Id
+	 * 
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Nisl tincidunt eget
+	 * - **API ID Path**: ac.lacinia
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#select
+	 */
+	lacinia: prismic.SelectField;
+	
+	/**
+	 * Urna field in Urna
+	 * 
+	 * - **Field Type**: Timestamp
+	 * - **Placeholder**: Pellentesque habitant morbi
+	 * - **API ID Path**: ac.et_ligula
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#timestamp
+	 */
+	et_ligula: prismic.TimestampField;
+	
+	/**
+	 * At field in At
+	 * 
+	 * - **Field Type**: Title
+	 * - **Placeholder**: Volutpat ac tincidunt
+	 * - **API ID Path**: ac.faucibus_turpis
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+	 */
+	faucibus_turpis: prismic.TitleField;
+}
+
+export type AcDocument<Lang extends string = string> =
+	prismic.PrismicDocumentWithoutUID<Simplify<AcDocumentData>, \\"ac\\", Lang>;
+
+interface ImperdietDocumentData {
+	/**
+	 * Sapien field in Sapien
+	 * 
+	 * - **Field Type**: Color
+	 * - **Placeholder**: Est velit egestas
+	 * - **API ID Path**: imperdiet.in_ante
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#color
+	 */
+	in_ante: prismic.ColorField;
+	
+	/**
+	 * Neque field in Neque
+	 * 
+	 * - **Field Type**: Content Relationship
+	 * - **Placeholder**: Mi bibendum neque
+	 * - **API ID Path**: imperdiet.a_cras
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+	 */
+	a_cras: prismic.ContentRelationshipField;
+	
+	/**
+	 * Ipsum field in Ipsum
+	 * 
+	 * - **Field Type**: Date
+	 * - **Placeholder**: Nisl vel pretium
+	 * - **API ID Path**: imperdiet.ut
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#date
+	 */
+	ut: prismic.DateField;
+	
+	/**
+	 * Integer field in Integer
+	 * 
+	 * - **Field Type**: Embed
+	 * - **Placeholder**: Orci sagittis eu
+	 * - **API ID Path**: imperdiet.at_urna
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#embed
+	 */
+	at_urna: prismic.EmbedField
+	
+	/**
+	 * Aliquet field in Aliquet
+	 * 
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Mauris rhoncus aenean
+	 * - **API ID Path**: imperdiet.suspendisse
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#key-text
+	 */
+	suspendisse: prismic.KeyTextField;
+	
+	/**
+	 * Natoque field in Natoque
+	 * 
+	 * - **Field Type**: Number
+	 * - **Placeholder**: Adipiscing elit ut
+	 * - **API ID Path**: imperdiet.egestas_purus
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#number
+	 */
+	egestas_purus: prismic.NumberField;
+	
+	/**
+	 * Nibh field in Nibh
+	 * 
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Bibendum ut tristique
+	 * - **API ID Path**: imperdiet.commodo
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#select
+	 */
+	commodo: prismic.SelectField;
+	
+	/**
+	 * At field in At
+	 * 
+	 * - **Field Type**: Title
+	 * - **Placeholder**: Quis ipsum suspendisse
+	 * - **API ID Path**: imperdiet.etiam_erat
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+	 */
+	etiam_erat: prismic.TitleField;
+}
+
+export type ImperdietDocument<Lang extends string = string> =
+	prismic.PrismicDocumentWithoutUID<Simplify<ImperdietDocumentData>, \\"imperdiet\\", Lang>;
+
+export type AllDocumentTypes = TinciduntDocument | TempusDocument | AtDocument | AcDocument | ImperdietDocument;
+
+export interface SedSliceMolestiePrimary {
+	/**
+	 * Et field in Et → Primary
+	 * 
+	 * - **Field Type**: Color
+	 * - **Placeholder**: Molestie at elementum
+	 * - **API ID Path**: sed.primary.est_ullamcorper
+	 * - **Documentation**: https://prismic.io/docs/field#color
+	 */
+	est_ullamcorper: prismic.ColorField;
+	
+	/**
+	 * Egestas field in Egestas → Primary
+	 * 
+	 * - **Field Type**: Integration Fields (Catalog: \`vestibulum_morbi\`)
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: sed.primary.orci_ac
+	 * - **Documentation**: https://prismic.io/docs/field#integration
+	 */
+	orci_ac: prismic.IntegrationField;
+	
+	/**
+	 * Tellus field in Tellus → Primary
+	 * 
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Dui vivamus arcu
+	 * - **API ID Path**: sed.primary.varius_sit
+	 * - **Documentation**: https://prismic.io/docs/field#key-text
+	 */
+	varius_sit: prismic.KeyTextField;
+	
+	/**
+	 * Eget field in Eget → Primary
+	 * 
+	 * - **Field Type**: Link
+	 * - **Placeholder**: Placerat in egestas
+	 * - **API ID Path**: sed.primary.congue
+	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+	 */
+	congue: prismic.LinkField;
+	
+	/**
+	 * Sed field in Sed → Primary
+	 * 
+	 * - **Field Type**: Link to Media
+	 * - **Placeholder**: Parturient montes nascetur
+	 * - **API ID Path**: sed.primary.ut
+	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+	 */
+	ut: prismic.LinkToMediaField;
+	
+	/**
+	 * Pellentesque field in Pellentesque → Primary
+	 * 
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Elementum tempus egestas
+	 * - **API ID Path**: sed.primary.donec
+	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+	 */
+	donec: prismic.RichTextField;
+	
+	/**
+	 * Facilisis field in Facilisis → Primary
+	 * 
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Tempor orci dapibus
+	 * - **API ID Path**: sed.primary.a
+	 * - **Documentation**: https://prismic.io/docs/field#select
+	 */
+	a: prismic.SelectField;
+	
+	/**
+	 * Habitant field in Habitant → Primary
+	 * 
+	 * - **Field Type**: Timestamp
+	 * - **Placeholder**: Et malesuada fames
+	 * - **API ID Path**: sed.primary.id_faucibus
+	 * - **Documentation**: https://prismic.io/docs/field#timestamp
+	 */
+	id_faucibus: prismic.TimestampField;
+}
+
+export interface SedSliceMolestieItem {
+	/**
+	 * Amet field in Amet → Items
+	 * 
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: sed.items[].id_ornare
+	 * - **Documentation**: https://prismic.io/docs/field#boolean
+	 */
+	id_ornare: prismic.BooleanField;
+	
+	/**
+	 * Sed field in Sed → Items
+	 * 
+	 * - **Field Type**: Color
+	 * - **Placeholder**: Nisi est sit
+	 * - **API ID Path**: sed.items[].a
+	 * - **Documentation**: https://prismic.io/docs/field#color
+	 */
+	a: prismic.ColorField;
+	
+	/**
+	 * Diam field in Diam → Items
+	 * 
+	 * - **Field Type**: Content Relationship
+	 * - **Placeholder**: Mauris cursus mattis
+	 * - **API ID Path**: sed.items[].lacus_vestibulum
+	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+	 */
+	lacus_vestibulum: prismic.ContentRelationshipField;
+	
+	/**
+	 * Amet field in Amet → Items
+	 * 
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: sed.items[].tempor
+	 * - **Documentation**: https://prismic.io/docs/field#image
+	 */
+	tempor: prismic.ImageField<never>;
+	
+	/**
+	 * Lacus field in Lacus → Items
+	 * 
+	 * - **Field Type**: Link to Media
+	 * - **Placeholder**: Aenean et tortor
+	 * - **API ID Path**: sed.items[].mauris
+	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+	 */
+	mauris: prismic.LinkToMediaField;
+	
+	/**
+	 * Vitae field in Vitae → Items
+	 * 
+	 * - **Field Type**: Number
+	 * - **Placeholder**: Turpis nunc eget
+	 * - **API ID Path**: sed.items[].blandit_cursus
+	 * - **Documentation**: https://prismic.io/docs/field#number
+	 */
+	blandit_cursus: prismic.NumberField;
+	
+	/**
+	 * Egestas field in Egestas → Items
+	 * 
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Bibendum enim facilisis
+	 * - **API ID Path**: sed.items[].tellus
+	 * - **Documentation**: https://prismic.io/docs/field#select
+	 */
+	tellus: prismic.SelectField;
+	
+	/**
+	 * Eu field in Eu → Items
+	 * 
+	 * - **Field Type**: Timestamp
+	 * - **Placeholder**: Elementum nisi quis
+	 * - **API ID Path**: sed.items[].sit
+	 * - **Documentation**: https://prismic.io/docs/field#timestamp
+	 */
+	sit: prismic.TimestampField;
+}
+
+export type SedSliceMolestie = prismic.SharedSliceVariation<\\"molestie\\", Simplify<SedSliceMolestiePrimary>, Simplify<SedSliceMolestieItem>>;
+
+type SedSliceVariation = SedSliceMolestie
+
+export type SedSlice = prismic.SharedSlice<\\"sed\\", SedSliceVariation>;
+
+export interface CondimentumSliceTortorPrimary {
+	/**
+	 * Eget field in Eget → Primary
+	 * 
+	 * - **Field Type**: Content Relationship
+	 * - **Placeholder**: Enim facilisis gravida
+	 * - **API ID Path**: condimentum.primary.auctor
+	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+	 */
+	auctor: prismic.ContentRelationshipField;
+	
+	/**
+	 * Quam field in Quam → Primary
+	 * 
+	 * - **Field Type**: Embed
+	 * - **Placeholder**: Amet tellus cras
+	 * - **API ID Path**: condimentum.primary.massa_ultricies
+	 * - **Documentation**: https://prismic.io/docs/field#embed
+	 */
+	massa_ultricies: prismic.EmbedField
+	
+	/**
+	 * Nisl field in Nisl → Primary
+	 * 
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: condimentum.primary.aliquam
+	 * - **Documentation**: https://prismic.io/docs/field#image
+	 */
+	aliquam: prismic.ImageField<never>;
+	
+	/**
+	 * Volutpat field in Volutpat → Primary
+	 * 
+	 * - **Field Type**: Integration Fields (Catalog: \`purus_semper\`)
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: condimentum.primary.sit_amet
+	 * - **Documentation**: https://prismic.io/docs/field#integration
+	 */
+	sit_amet: prismic.IntegrationField;
+	
+	/**
+	 * Egestas field in Egestas → Primary
+	 * 
+	 * - **Field Type**: Link to Media
+	 * - **Placeholder**: Nullam eget felis
+	 * - **API ID Path**: condimentum.primary.volutpat
+	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+	 */
+	volutpat: prismic.LinkToMediaField;
+	
+	/**
+	 * Scelerisque field in Scelerisque → Primary
+	 * 
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Justo donec enim
+	 * - **API ID Path**: condimentum.primary.orci_porta
+	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+	 */
+	orci_porta: prismic.RichTextField;
+	
+	/**
+	 * Mi field in Mi → Primary
+	 * 
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Interdum consectetur libero
+	 * - **API ID Path**: condimentum.primary.rhoncus_est
+	 * - **Documentation**: https://prismic.io/docs/field#select
+	 */
+	rhoncus_est: prismic.SelectField;
+	
+	/**
+	 * Auctor field in Auctor → Primary
+	 * 
+	 * - **Field Type**: Timestamp
+	 * - **Placeholder**: Nulla pharetra diam
+	 * - **API ID Path**: condimentum.primary.donec
+	 * - **Documentation**: https://prismic.io/docs/field#timestamp
+	 */
+	donec: prismic.TimestampField;
+}
+
+export interface CondimentumSliceTortorItem {
+	/**
+	 * Eu field in Eu → Items
+	 * 
+	 * - **Field Type**: Content Relationship
+	 * - **Placeholder**: Aliquam etiam erat
+	 * - **API ID Path**: condimentum.items[].sapien_pellentesque
+	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+	 */
+	sapien_pellentesque: prismic.ContentRelationshipField;
+	
+	/**
+	 * Sagittis field in Sagittis → Items
+	 * 
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: condimentum.items[].enim_praesent
+	 * - **Documentation**: https://prismic.io/docs/field#image
+	 */
+	enim_praesent: prismic.ImageField<never>;
+	
+	/**
+	 * Faucibus field in Faucibus → Items
+	 * 
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Facilisis gravida neque
+	 * - **API ID Path**: condimentum.items[].eget
+	 * - **Documentation**: https://prismic.io/docs/field#key-text
+	 */
+	eget: prismic.KeyTextField;
+	
+	/**
+	 * At field in At → Items
+	 * 
+	 * - **Field Type**: Link
+	 * - **Placeholder**: Arcu cursus vitae
+	 * - **API ID Path**: condimentum.items[].adipiscing_elit
+	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+	 */
+	adipiscing_elit: prismic.LinkField;
+}
+
+export type CondimentumSliceTortor = prismic.SharedSliceVariation<\\"tortor\\", Simplify<CondimentumSliceTortorPrimary>, Simplify<CondimentumSliceTortorItem>>;
+
+type CondimentumSliceVariation = CondimentumSliceTortor
+
+export type CondimentumSlice = prismic.SharedSlice<\\"condimentum\\", CondimentumSliceVariation>;
+
+export interface VenenatisSliceTristiquePrimary {
+	/**
+	 * Turpis field in Turpis → Primary
+	 * 
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: venenatis.primary.dui_ut
+	 * - **Documentation**: https://prismic.io/docs/field#boolean
+	 */
+	dui_ut: prismic.BooleanField;
+	
+	/**
+	 * Cras field in Cras → Primary
+	 * 
+	 * - **Field Type**: Content Relationship
+	 * - **Placeholder**: Nibh tellus molestie
+	 * - **API ID Path**: venenatis.primary.dignissim
+	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+	 */
+	dignissim: prismic.ContentRelationshipField;
+	
+	/**
+	 * Mauris field in Mauris → Primary
+	 * 
+	 * - **Field Type**: Date
+	 * - **Placeholder**: Arcu bibendum at
+	 * - **API ID Path**: venenatis.primary.volutpat_consequat
+	 * - **Documentation**: https://prismic.io/docs/field#date
+	 */
+	volutpat_consequat: prismic.DateField;
+	
+	/**
+	 * Amet field in Amet → Primary
+	 * 
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Tortor id aliquet
+	 * - **API ID Path**: venenatis.primary.et
+	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+	 */
+	et: prismic.RichTextField;
+	
+	/**
+	 * Suspendisse field in Suspendisse → Primary
+	 * 
+	 * - **Field Type**: Integration Fields (Catalog: \`neque_viverra\`)
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: venenatis.primary.nulla_aliquet
+	 * - **Documentation**: https://prismic.io/docs/field#integration
+	 */
+	nulla_aliquet: prismic.IntegrationField;
+	
+	/**
+	 * Dolor field in Dolor → Primary
+	 * 
+	 * - **Field Type**: Link
+	 * - **Placeholder**: Dictum non consectetur
+	 * - **API ID Path**: venenatis.primary.gravida_hendrerit
+	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+	 */
+	gravida_hendrerit: prismic.LinkField;
+	
+	/**
+	 * Nulla field in Nulla → Primary
+	 * 
+	 * - **Field Type**: Number
+	 * - **Placeholder**: Etiam tempor orci
+	 * - **API ID Path**: venenatis.primary.morbi_enim
+	 * - **Documentation**: https://prismic.io/docs/field#number
+	 */
+	morbi_enim: prismic.NumberField;
+	
+	/**
+	 * Lacinia field in Lacinia → Primary
+	 * 
+	 * - **Field Type**: Timestamp
+	 * - **Placeholder**: Sit amet commodo
+	 * - **API ID Path**: venenatis.primary.cras
+	 * - **Documentation**: https://prismic.io/docs/field#timestamp
+	 */
+	cras: prismic.TimestampField;
+	
+	/**
+	 * Lorem field in Lorem → Primary
+	 * 
+	 * - **Field Type**: Title
+	 * - **Placeholder**: Convallis posuere morbi
+	 * - **API ID Path**: venenatis.primary.enim_eu
+	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+	 */
+	enim_eu: prismic.TitleField;
+}
+
+export interface VenenatisSliceTristiqueItem {
+	/**
+	 * Maecenas field in Maecenas → Items
+	 * 
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: venenatis.items[].adipiscing
+	 * - **Documentation**: https://prismic.io/docs/field#boolean
+	 */
+	adipiscing: prismic.BooleanField;
+	
+	/**
+	 * Laoreet field in Laoreet → Items
+	 * 
+	 * - **Field Type**: Color
+	 * - **Placeholder**: Eu volutpat odio
+	 * - **API ID Path**: venenatis.items[].hac_habitasse
+	 * - **Documentation**: https://prismic.io/docs/field#color
+	 */
+	hac_habitasse: prismic.ColorField;
+	
+	/**
+	 * Faucibus field in Faucibus → Items
+	 * 
+	 * - **Field Type**: Content Relationship
+	 * - **Placeholder**: Duis at tellus
+	 * - **API ID Path**: venenatis.items[].imperdiet_dui
+	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+	 */
+	imperdiet_dui: prismic.ContentRelationshipField;
+	
+	/**
+	 * Elit field in Elit → Items
+	 * 
+	 * - **Field Type**: Embed
+	 * - **Placeholder**: A molestie lorem
+	 * - **API ID Path**: venenatis.items[].est
+	 * - **Documentation**: https://prismic.io/docs/field#embed
+	 */
+	est: prismic.EmbedField
+	
+	/**
+	 * Eget field in Eget → Items
+	 * 
+	 * - **Field Type**: GeoPoint
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: venenatis.items[].massa_placerat
+	 * - **Documentation**: https://prismic.io/docs/field#geopoint
+	 */
+	massa_placerat: prismic.GeoPointField;
+	
+	/**
+	 * Ut field in Ut → Items
+	 * 
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: venenatis.items[].scelerisque
+	 * - **Documentation**: https://prismic.io/docs/field#image
+	 */
+	scelerisque: prismic.ImageField<never>;
+	
+	/**
+	 * Et field in Et → Items
+	 * 
+	 * - **Field Type**: Integration Fields (Catalog: \`dolor_sed\`)
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: venenatis.items[].in_nisl
+	 * - **Documentation**: https://prismic.io/docs/field#integration
+	 */
+	in_nisl: prismic.IntegrationField;
+	
+	/**
+	 * Sagittis field in Sagittis → Items
+	 * 
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Elementum nisi quis
+	 * - **API ID Path**: venenatis.items[].commodo
+	 * - **Documentation**: https://prismic.io/docs/field#key-text
+	 */
+	commodo: prismic.KeyTextField;
+	
+	/**
+	 * Aliquet field in Aliquet → Items
+	 * 
+	 * - **Field Type**: Link to Media
+	 * - **Placeholder**: Sit amet facilisis
+	 * - **API ID Path**: venenatis.items[].enim_nec
+	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+	 */
+	enim_nec: prismic.LinkToMediaField;
+	
+	/**
+	 * Sit field in Sit → Items
+	 * 
+	 * - **Field Type**: Number
+	 * - **Placeholder**: Nibh nisl condimentum
+	 * - **API ID Path**: venenatis.items[].dui_id
+	 * - **Documentation**: https://prismic.io/docs/field#number
+	 */
+	dui_id: prismic.NumberField;
+	
+	/**
+	 * Pellentesque field in Pellentesque → Items
+	 * 
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Adipiscing tristique risus
+	 * - **API ID Path**: venenatis.items[].tincidunt
+	 * - **Documentation**: https://prismic.io/docs/field#select
+	 */
+	tincidunt: prismic.SelectField;
+	
+	/**
+	 * In field in In → Items
+	 * 
+	 * - **Field Type**: Timestamp
+	 * - **Placeholder**: Rutrum quisque non
+	 * - **API ID Path**: venenatis.items[].nam_aliquam
+	 * - **Documentation**: https://prismic.io/docs/field#timestamp
+	 */
+	nam_aliquam: prismic.TimestampField;
+	
+	/**
+	 * Volutpat field in Volutpat → Items
+	 * 
+	 * - **Field Type**: Title
+	 * - **Placeholder**: Lorem mollis aliquam
+	 * - **API ID Path**: venenatis.items[].at
+	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+	 */
+	at: prismic.TitleField;
+}
+
+export type VenenatisSliceTristique = prismic.SharedSliceVariation<\\"tristique\\", Simplify<VenenatisSliceTristiquePrimary>, Simplify<VenenatisSliceTristiqueItem>>;
+
+type VenenatisSliceVariation = VenenatisSliceTristique
+
+export type VenenatisSlice = prismic.SharedSlice<\\"venenatis\\", VenenatisSliceVariation>;
+
+export interface UrnaSliceMusPrimary {
+	/**
+	 * Quis field in Quis → Primary
+	 * 
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: urna.primary.mi
+	 * - **Documentation**: https://prismic.io/docs/field#boolean
+	 */
+	mi: prismic.BooleanField;
+	
+	/**
+	 * Sed field in Sed → Primary
+	 * 
+	 * - **Field Type**: Color
+	 * - **Placeholder**: Facilisis magna etiam
+	 * - **API ID Path**: urna.primary.neque_egestas
+	 * - **Documentation**: https://prismic.io/docs/field#color
+	 */
+	neque_egestas: prismic.ColorField;
+	
+	/**
+	 * Aliquam field in Aliquam → Primary
+	 * 
+	 * - **Field Type**: Date
+	 * - **Placeholder**: Lorem donec massa
+	 * - **API ID Path**: urna.primary.consectetur_purus
+	 * - **Documentation**: https://prismic.io/docs/field#date
+	 */
+	consectetur_purus: prismic.DateField;
+	
+	/**
+	 * Facilisi field in Facilisi → Primary
+	 * 
+	 * - **Field Type**: Number
+	 * - **Placeholder**: Quis auctor elit
+	 * - **API ID Path**: urna.primary.adipiscing_elit
+	 * - **Documentation**: https://prismic.io/docs/field#number
+	 */
+	adipiscing_elit: prismic.NumberField;
+	
+	/**
+	 * Blandit field in Blandit → Primary
+	 * 
+	 * - **Field Type**: Timestamp
+	 * - **Placeholder**: Nunc faucibus a
+	 * - **API ID Path**: urna.primary.tortor_condimentum
+	 * - **Documentation**: https://prismic.io/docs/field#timestamp
+	 */
+	tortor_condimentum: prismic.TimestampField;
+}
+
+export interface UrnaSliceMusItem {
+	/**
+	 * Arcu field in Arcu → Items
+	 * 
+	 * - **Field Type**: Color
+	 * - **Placeholder**: Volutpat diam ut
+	 * - **API ID Path**: urna.items[].at
+	 * - **Documentation**: https://prismic.io/docs/field#color
+	 */
+	at: prismic.ColorField;
+	
+	/**
+	 * Amet field in Amet → Items
+	 * 
+	 * - **Field Type**: Content Relationship
+	 * - **Placeholder**: Consequat ac felis
+	 * - **API ID Path**: urna.items[].vel
+	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+	 */
+	vel: prismic.ContentRelationshipField;
+	
+	/**
+	 * Cras field in Cras → Items
+	 * 
+	 * - **Field Type**: Date
+	 * - **Placeholder**: Erat imperdiet sed
+	 * - **API ID Path**: urna.items[].lectus
+	 * - **Documentation**: https://prismic.io/docs/field#date
+	 */
+	lectus: prismic.DateField;
+	
+	/**
+	 * Pellentesque field in Pellentesque → Items
+	 * 
+	 * - **Field Type**: Embed
+	 * - **Placeholder**: In nulla posuere
+	 * - **API ID Path**: urna.items[].magna_sit
+	 * - **Documentation**: https://prismic.io/docs/field#embed
+	 */
+	magna_sit: prismic.EmbedField
+	
+	/**
+	 * Non field in Non → Items
+	 * 
+	 * - **Field Type**: Integration Fields (Catalog: \`sed_tempus\`)
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: urna.items[].tellus_elementum
+	 * - **Documentation**: https://prismic.io/docs/field#integration
+	 */
+	tellus_elementum: prismic.IntegrationField;
+	
+	/**
+	 * Porttitor field in Porttitor → Items
+	 * 
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Volutpat diam ut
+	 * - **API ID Path**: urna.items[].aliquet_sagittis
+	 * - **Documentation**: https://prismic.io/docs/field#key-text
+	 */
+	aliquet_sagittis: prismic.KeyTextField;
+	
+	/**
+	 * Nisl field in Nisl → Items
+	 * 
+	 * - **Field Type**: Number
+	 * - **Placeholder**: Nam at lectus
+	 * - **API ID Path**: urna.items[].ultrices
+	 * - **Documentation**: https://prismic.io/docs/field#number
+	 */
+	ultrices: prismic.NumberField;
+	
+	/**
+	 * Nunc field in Nunc → Items
+	 * 
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Et pharetra pharetra
+	 * - **API ID Path**: urna.items[].tellus
+	 * - **Documentation**: https://prismic.io/docs/field#select
+	 */
+	tellus: prismic.SelectField;
+}
+
+export type UrnaSliceMus = prismic.SharedSliceVariation<\\"mus\\", Simplify<UrnaSliceMusPrimary>, Simplify<UrnaSliceMusItem>>;
+
+type UrnaSliceVariation = UrnaSliceMus
+
+export type UrnaSlice = prismic.SharedSlice<\\"urna\\", UrnaSliceVariation>;
+
+export interface SemSliceTinciduntPrimary {
+	/**
+	 * Mi field in Mi → Primary
+	 * 
+	 * - **Field Type**: Color
+	 * - **Placeholder**: Egestas erat imperdiet
+	 * - **API ID Path**: sem.primary.auctor_elit
+	 * - **Documentation**: https://prismic.io/docs/field#color
+	 */
+	auctor_elit: prismic.ColorField;
+	
+	/**
+	 * Nibh field in Nibh → Primary
+	 * 
+	 * - **Field Type**: Content Relationship
+	 * - **Placeholder**: Sed risus pretium
+	 * - **API ID Path**: sem.primary.sit
+	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+	 */
+	sit: prismic.ContentRelationshipField;
+	
+	/**
+	 * Suspendisse field in Suspendisse → Primary
+	 * 
+	 * - **Field Type**: Integration Fields (Catalog: \`lobortis_scelerisque\`)
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: sem.primary.hendrerit
+	 * - **Documentation**: https://prismic.io/docs/field#integration
+	 */
+	hendrerit: prismic.IntegrationField;
+	
+	/**
+	 * Elit field in Elit → Primary
+	 * 
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Vel risus commodo
+	 * - **API ID Path**: sem.primary.turpis
+	 * - **Documentation**: https://prismic.io/docs/field#key-text
+	 */
+	turpis: prismic.KeyTextField;
+	
+	/**
+	 * Dictumst field in Dictumst → Primary
+	 * 
+	 * - **Field Type**: Link
+	 * - **Placeholder**: At auctor urna
+	 * - **API ID Path**: sem.primary.ultrices_in
+	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+	 */
+	ultrices_in: prismic.LinkField;
+	
+	/**
+	 * Turpis field in Turpis → Primary
+	 * 
+	 * - **Field Type**: Link to Media
+	 * - **Placeholder**: Convallis a cras
+	 * - **API ID Path**: sem.primary.sed
+	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+	 */
+	sed: prismic.LinkToMediaField;
+	
+	/**
+	 * Lectus field in Lectus → Primary
+	 * 
+	 * - **Field Type**: Number
+	 * - **Placeholder**: Sed euismod nisi
+	 * - **API ID Path**: sem.primary.arcu_vitae
+	 * - **Documentation**: https://prismic.io/docs/field#number
+	 */
+	arcu_vitae: prismic.NumberField;
+	
+	/**
+	 * Iaculis field in Iaculis → Primary
+	 * 
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Lacinia at quis
+	 * - **API ID Path**: sem.primary.phasellus
+	 * - **Documentation**: https://prismic.io/docs/field#select
+	 */
+	phasellus: prismic.SelectField;
+}
+
+export interface SemSliceTinciduntItem {
+	/**
+	 * Ullamcorper field in Ullamcorper → Items
+	 * 
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: sem.items[].mattis
+	 * - **Documentation**: https://prismic.io/docs/field#boolean
+	 */
+	mattis: prismic.BooleanField;
+	
+	/**
+	 * Purus field in Purus → Items
+	 * 
+	 * - **Field Type**: Date
+	 * - **Placeholder**: Ornare massa eget
+	 * - **API ID Path**: sem.items[].mi_ipsum
+	 * - **Documentation**: https://prismic.io/docs/field#date
+	 */
+	mi_ipsum: prismic.DateField;
+	
+	/**
+	 * In field in In → Items
+	 * 
+	 * - **Field Type**: Integration Fields (Catalog: \`tristique_magna\`)
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: sem.items[].at
+	 * - **Documentation**: https://prismic.io/docs/field#integration
+	 */
+	at: prismic.IntegrationField;
+	
+	/**
+	 * Sociis field in Sociis → Items
+	 * 
+	 * - **Field Type**: Number
+	 * - **Placeholder**: Imperdiet proin fermentum
+	 * - **API ID Path**: sem.items[].risus
+	 * - **Documentation**: https://prismic.io/docs/field#number
+	 */
+	risus: prismic.NumberField;
+	
+	/**
+	 * Facilisi field in Facilisi → Items
+	 * 
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Morbi non arcu
+	 * - **API ID Path**: sem.items[].sagittis
+	 * - **Documentation**: https://prismic.io/docs/field#select
+	 */
+	sagittis: prismic.SelectField;
+	
+	/**
+	 * Consequat field in Consequat → Items
+	 * 
+	 * - **Field Type**: Title
+	 * - **Placeholder**: Malesuada fames ac
+	 * - **API ID Path**: sem.items[].aenean
+	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+	 */
+	aenean: prismic.TitleField;
+}
+
+export type SemSliceTincidunt = prismic.SharedSliceVariation<\\"tincidunt\\", Simplify<SemSliceTinciduntPrimary>, Simplify<SemSliceTinciduntItem>>;
+
+type SemSliceVariation = SemSliceTincidunt
+
+export type SemSlice = prismic.SharedSlice<\\"sem\\", SemSliceVariation>;
+
+declare module \\"@prismicio/client\\" {
+	interface CreateClient {
+		(
+			repositoryNameOrEndpoint: string,
+			options?: prismicClient.ClientConfig
+		): prismicClient.Client<AllDocumentTypes>;
+	}
+	
+	namespace Content {
+		export type {
+			TinciduntDocument,
+			TinciduntDocumentData,
+			TempusDocument,
+			TempusDocumentData,
+			AtDocument,
+			AtDocumentData,
+			AcDocument,
+			AcDocumentData,
+			ImperdietDocument,
+			ImperdietDocumentData,
+			AllDocumentTypes,
+			SedSlice,
+			SedSliceVariation,
+			SedSliceMolestie,
+			CondimentumSlice,
+			CondimentumSliceVariation,
+			CondimentumSliceTortor,
+			VenenatisSlice,
+			VenenatisSliceVariation,
+			VenenatisSliceTristique,
+			UrnaSlice,
+			UrnaSliceVariation,
+			UrnaSliceMus,
+			SemSlice,
+			SemSliceVariation,
+			SemSliceTincidunt
+		}
+	}
+}"
 `;
