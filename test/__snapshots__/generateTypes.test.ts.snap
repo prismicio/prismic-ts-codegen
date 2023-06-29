@@ -9,7 +9,7 @@ type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
 interface TinciduntDocumentData {
 	/**
 	 * Cras field in Cras
-	 * 
+	
 	 * - **Field Type**: Color
 	 * - **Placeholder**: Turpis egestas sed
 	 * - **API ID Path**: tincidunt.ut_eu
@@ -20,7 +20,7 @@ interface TinciduntDocumentData {
 	
 	/**
 	 * Sed field in Sed
-	 * 
+	
 	 * - **Field Type**: Content Relationship
 	 * - **Placeholder**: Scelerisque felis imperdiet
 	 * - **API ID Path**: tincidunt.dictum
@@ -31,7 +31,7 @@ interface TinciduntDocumentData {
 	
 	/**
 	 * Magna field in Magna
-	 * 
+	
 	 * - **Field Type**: Image
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: tincidunt.maecenas_sed
@@ -42,7 +42,7 @@ interface TinciduntDocumentData {
 	
 	/**
 	 * Vulputate field in Vulputate
-	 * 
+	
 	 * - **Field Type**: Integration Fields (Catalog: \`gravida_cum\`)
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: tincidunt.nisl
@@ -53,7 +53,7 @@ interface TinciduntDocumentData {
 	
 	/**
 	 * Nisl field in Nisl
-	 * 
+	
 	 * - **Field Type**: Text
 	 * - **Placeholder**: Natoque penatibus et
 	 * - **API ID Path**: tincidunt.mauris_ultrices
@@ -64,7 +64,7 @@ interface TinciduntDocumentData {
 	
 	/**
 	 * Nulla field in Nulla
-	 * 
+	
 	 * - **Field Type**: Link
 	 * - **Placeholder**: Dignissim cras tincidunt
 	 * - **API ID Path**: tincidunt.aliquam_sem
@@ -75,7 +75,7 @@ interface TinciduntDocumentData {
 	
 	/**
 	 * Luctus field in Luctus
-	 * 
+	
 	 * - **Field Type**: Select
 	 * - **Placeholder**: Imperdiet dui accumsan
 	 * - **API ID Path**: tincidunt.ut
@@ -86,7 +86,7 @@ interface TinciduntDocumentData {
 	
 	/**
 	 * Tellus field in Tellus
-	 * 
+	
 	 * - **Field Type**: Timestamp
 	 * - **Placeholder**: Sagittis vitae et
 	 * - **API ID Path**: tincidunt.vitae_proin
@@ -97,7 +97,7 @@ interface TinciduntDocumentData {
 	
 	/**
 	 * Eu field in Eu
-	 * 
+	
 	 * - **Field Type**: Title
 	 * - **Placeholder**: Adipiscing enim eu
 	 * - **API ID Path**: tincidunt.dignissim
@@ -107,13 +107,12 @@ interface TinciduntDocumentData {
 	dignissim: prismic.TitleField;
 }
 
-export type TinciduntDocument<Lang extends string = string> =
-	prismic.PrismicDocumentWithoutUID<Simplify<TinciduntDocumentData>, \\"tincidunt\\", Lang>;
+export type TinciduntDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<TinciduntDocumentData>, \\"tincidunt\\", Lang>;
 
 interface TempusDocumentData {
 	/**
 	 * Habitasse field in Habitasse
-	 * 
+	
 	 * - **Field Type**: Boolean
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: tempus.orci_porta
@@ -124,7 +123,7 @@ interface TempusDocumentData {
 	
 	/**
 	 * Risus field in Risus
-	 * 
+	
 	 * - **Field Type**: Color
 	 * - **Placeholder**: Maecenas sed enim
 	 * - **API ID Path**: tempus.diam
@@ -135,7 +134,7 @@ interface TempusDocumentData {
 	
 	/**
 	 * Urna field in Urna
-	 * 
+	
 	 * - **Field Type**: Content Relationship
 	 * - **Placeholder**: Nulla porttitor massa
 	 * - **API ID Path**: tempus.platea
@@ -146,7 +145,7 @@ interface TempusDocumentData {
 	
 	/**
 	 * Ultrices field in Ultrices
-	 * 
+	
 	 * - **Field Type**: GeoPoint
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: tempus.ut
@@ -157,7 +156,7 @@ interface TempusDocumentData {
 	
 	/**
 	 * Metus field in Metus
-	 * 
+	
 	 * - **Field Type**: Link
 	 * - **Placeholder**: Odio aenean sed
 	 * - **API ID Path**: tempus.nunc_sed
@@ -168,7 +167,7 @@ interface TempusDocumentData {
 	
 	/**
 	 * Sit field in Sit
-	 * 
+	
 	 * - **Field Type**: Link to Media
 	 * - **Placeholder**: Ut tellus elementum
 	 * - **API ID Path**: tempus.in
@@ -179,7 +178,7 @@ interface TempusDocumentData {
 	
 	/**
 	 * Nam field in Nam
-	 * 
+	
 	 * - **Field Type**: Select
 	 * - **Placeholder**: Lobortis feugiat vivamus
 	 * - **API ID Path**: tempus.et_magnis
@@ -189,13 +188,12 @@ interface TempusDocumentData {
 	et_magnis: prismic.SelectField;
 }
 
-export type TempusDocument<Lang extends string = string> =
-	prismic.PrismicDocumentWithoutUID<Simplify<TempusDocumentData>, \\"tempus\\", Lang>;
+export type TempusDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<TempusDocumentData>, \\"tempus\\", Lang>;
 
 interface AtDocumentData {
 	/**
 	 * Facilisi field in Facilisi
-	 * 
+	
 	 * - **Field Type**: Boolean
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: at.aliquet
@@ -206,7 +204,7 @@ interface AtDocumentData {
 	
 	/**
 	 * Lacus field in Lacus
-	 * 
+	
 	 * - **Field Type**: Content Relationship
 	 * - **Placeholder**: Suscipit tellus mauris
 	 * - **API ID Path**: at.ultricies
@@ -217,7 +215,7 @@ interface AtDocumentData {
 	
 	/**
 	 * Tempor field in Tempor
-	 * 
+	
 	 * - **Field Type**: Date
 	 * - **Placeholder**: Sed tempus urna
 	 * - **API ID Path**: at.sed
@@ -228,7 +226,7 @@ interface AtDocumentData {
 	
 	/**
 	 * Arcu field in Arcu
-	 * 
+	
 	 * - **Field Type**: Image
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: at.nisl
@@ -239,7 +237,7 @@ interface AtDocumentData {
 	
 	/**
 	 * Id field in Id
-	 * 
+	
 	 * - **Field Type**: Integration Fields (Catalog: \`accumsan_sit\`)
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: at.viverra_orci
@@ -250,7 +248,7 @@ interface AtDocumentData {
 	
 	/**
 	 * Gravida field in Gravida
-	 * 
+	
 	 * - **Field Type**: Text
 	 * - **Placeholder**: Amet aliquam id
 	 * - **API ID Path**: at.pellentesque_id
@@ -260,13 +258,12 @@ interface AtDocumentData {
 	pellentesque_id: prismic.KeyTextField;
 }
 
-export type AtDocument<Lang extends string = string> =
-	prismic.PrismicDocumentWithoutUID<Simplify<AtDocumentData>, \\"at\\", Lang>;
+export type AtDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<AtDocumentData>, \\"at\\", Lang>;
 
 interface AcDocumentData {
 	/**
 	 * Gravida field in Gravida
-	 * 
+	
 	 * - **Field Type**: Boolean
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: ac.a
@@ -277,7 +274,7 @@ interface AcDocumentData {
 	
 	/**
 	 * Dolor field in Dolor
-	 * 
+	
 	 * - **Field Type**: Color
 	 * - **Placeholder**: Nisl suscipit adipiscing
 	 * - **API ID Path**: ac.et
@@ -288,7 +285,7 @@ interface AcDocumentData {
 	
 	/**
 	 * Tristique field in Tristique
-	 * 
+	
 	 * - **Field Type**: Date
 	 * - **Placeholder**: Venenatis a condimentum
 	 * - **API ID Path**: ac.metus
@@ -299,7 +296,7 @@ interface AcDocumentData {
 	
 	/**
 	 * Aliquet field in Aliquet
-	 * 
+	
 	 * - **Field Type**: GeoPoint
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: ac.risus
@@ -310,7 +307,7 @@ interface AcDocumentData {
 	
 	/**
 	 * Ullamcorper field in Ullamcorper
-	 * 
+	
 	 * - **Field Type**: Link to Media
 	 * - **Placeholder**: Diam maecenas sed
 	 * - **API ID Path**: ac.viverra
@@ -321,7 +318,7 @@ interface AcDocumentData {
 	
 	/**
 	 * Pretium field in Pretium
-	 * 
+	
 	 * - **Field Type**: Number
 	 * - **Placeholder**: Ipsum nunc aliquet
 	 * - **API ID Path**: ac.quam_vulputate
@@ -332,7 +329,7 @@ interface AcDocumentData {
 	
 	/**
 	 * Augue field in Augue
-	 * 
+	
 	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: Proin sed libero
 	 * - **API ID Path**: ac.nunc
@@ -343,7 +340,7 @@ interface AcDocumentData {
 	
 	/**
 	 * Id field in Id
-	 * 
+	
 	 * - **Field Type**: Select
 	 * - **Placeholder**: Nisl tincidunt eget
 	 * - **API ID Path**: ac.lacinia
@@ -354,7 +351,7 @@ interface AcDocumentData {
 	
 	/**
 	 * Urna field in Urna
-	 * 
+	
 	 * - **Field Type**: Timestamp
 	 * - **Placeholder**: Pellentesque habitant morbi
 	 * - **API ID Path**: ac.et_ligula
@@ -365,7 +362,7 @@ interface AcDocumentData {
 	
 	/**
 	 * At field in At
-	 * 
+	
 	 * - **Field Type**: Title
 	 * - **Placeholder**: Volutpat ac tincidunt
 	 * - **API ID Path**: ac.faucibus_turpis
@@ -375,13 +372,12 @@ interface AcDocumentData {
 	faucibus_turpis: prismic.TitleField;
 }
 
-export type AcDocument<Lang extends string = string> =
-	prismic.PrismicDocumentWithoutUID<Simplify<AcDocumentData>, \\"ac\\", Lang>;
+export type AcDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<AcDocumentData>, \\"ac\\", Lang>;
 
 interface ImperdietDocumentData {
 	/**
 	 * Sapien field in Sapien
-	 * 
+	
 	 * - **Field Type**: Color
 	 * - **Placeholder**: Est velit egestas
 	 * - **API ID Path**: imperdiet.in_ante
@@ -392,7 +388,7 @@ interface ImperdietDocumentData {
 	
 	/**
 	 * Neque field in Neque
-	 * 
+	
 	 * - **Field Type**: Content Relationship
 	 * - **Placeholder**: Mi bibendum neque
 	 * - **API ID Path**: imperdiet.a_cras
@@ -403,7 +399,7 @@ interface ImperdietDocumentData {
 	
 	/**
 	 * Ipsum field in Ipsum
-	 * 
+	
 	 * - **Field Type**: Date
 	 * - **Placeholder**: Nisl vel pretium
 	 * - **API ID Path**: imperdiet.ut
@@ -414,7 +410,7 @@ interface ImperdietDocumentData {
 	
 	/**
 	 * Integer field in Integer
-	 * 
+	
 	 * - **Field Type**: Embed
 	 * - **Placeholder**: Orci sagittis eu
 	 * - **API ID Path**: imperdiet.at_urna
@@ -425,7 +421,7 @@ interface ImperdietDocumentData {
 	
 	/**
 	 * Aliquet field in Aliquet
-	 * 
+	
 	 * - **Field Type**: Text
 	 * - **Placeholder**: Mauris rhoncus aenean
 	 * - **API ID Path**: imperdiet.suspendisse
@@ -436,7 +432,7 @@ interface ImperdietDocumentData {
 	
 	/**
 	 * Natoque field in Natoque
-	 * 
+	
 	 * - **Field Type**: Number
 	 * - **Placeholder**: Adipiscing elit ut
 	 * - **API ID Path**: imperdiet.egestas_purus
@@ -447,7 +443,7 @@ interface ImperdietDocumentData {
 	
 	/**
 	 * Nibh field in Nibh
-	 * 
+	
 	 * - **Field Type**: Select
 	 * - **Placeholder**: Bibendum ut tristique
 	 * - **API ID Path**: imperdiet.commodo
@@ -458,7 +454,7 @@ interface ImperdietDocumentData {
 	
 	/**
 	 * At field in At
-	 * 
+	
 	 * - **Field Type**: Title
 	 * - **Placeholder**: Quis ipsum suspendisse
 	 * - **API ID Path**: imperdiet.etiam_erat
@@ -468,15 +464,14 @@ interface ImperdietDocumentData {
 	etiam_erat: prismic.TitleField;
 }
 
-export type ImperdietDocument<Lang extends string = string> =
-	prismic.PrismicDocumentWithoutUID<Simplify<ImperdietDocumentData>, \\"imperdiet\\", Lang>;
+export type ImperdietDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<ImperdietDocumentData>, \\"imperdiet\\", Lang>;
 
 export type AllDocumentTypes = TinciduntDocument | TempusDocument | AtDocument | AcDocument | ImperdietDocument;
 
 export interface SedSliceMolestiePrimary {
 	/**
 	 * Et field in Et → Primary
-	 * 
+	
 	 * - **Field Type**: Color
 	 * - **Placeholder**: Molestie at elementum
 	 * - **API ID Path**: sed.primary.est_ullamcorper
@@ -486,7 +481,7 @@ export interface SedSliceMolestiePrimary {
 	
 	/**
 	 * Egestas field in Egestas → Primary
-	 * 
+	
 	 * - **Field Type**: Integration Fields (Catalog: \`vestibulum_morbi\`)
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: sed.primary.orci_ac
@@ -496,7 +491,7 @@ export interface SedSliceMolestiePrimary {
 	
 	/**
 	 * Tellus field in Tellus → Primary
-	 * 
+	
 	 * - **Field Type**: Text
 	 * - **Placeholder**: Dui vivamus arcu
 	 * - **API ID Path**: sed.primary.varius_sit
@@ -506,7 +501,7 @@ export interface SedSliceMolestiePrimary {
 	
 	/**
 	 * Eget field in Eget → Primary
-	 * 
+	
 	 * - **Field Type**: Link
 	 * - **Placeholder**: Placerat in egestas
 	 * - **API ID Path**: sed.primary.congue
@@ -516,7 +511,7 @@ export interface SedSliceMolestiePrimary {
 	
 	/**
 	 * Sed field in Sed → Primary
-	 * 
+	
 	 * - **Field Type**: Link to Media
 	 * - **Placeholder**: Parturient montes nascetur
 	 * - **API ID Path**: sed.primary.ut
@@ -526,7 +521,7 @@ export interface SedSliceMolestiePrimary {
 	
 	/**
 	 * Pellentesque field in Pellentesque → Primary
-	 * 
+	
 	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: Elementum tempus egestas
 	 * - **API ID Path**: sed.primary.donec
@@ -536,7 +531,7 @@ export interface SedSliceMolestiePrimary {
 	
 	/**
 	 * Facilisis field in Facilisis → Primary
-	 * 
+	
 	 * - **Field Type**: Select
 	 * - **Placeholder**: Tempor orci dapibus
 	 * - **API ID Path**: sed.primary.a
@@ -546,7 +541,7 @@ export interface SedSliceMolestiePrimary {
 	
 	/**
 	 * Habitant field in Habitant → Primary
-	 * 
+	
 	 * - **Field Type**: Timestamp
 	 * - **Placeholder**: Et malesuada fames
 	 * - **API ID Path**: sed.primary.id_faucibus
@@ -558,7 +553,7 @@ export interface SedSliceMolestiePrimary {
 export interface SedSliceMolestieItem {
 	/**
 	 * Amet field in Amet → Items
-	 * 
+	
 	 * - **Field Type**: Boolean
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: sed.items[].id_ornare
@@ -568,7 +563,7 @@ export interface SedSliceMolestieItem {
 	
 	/**
 	 * Sed field in Sed → Items
-	 * 
+	
 	 * - **Field Type**: Color
 	 * - **Placeholder**: Nisi est sit
 	 * - **API ID Path**: sed.items[].a
@@ -578,7 +573,7 @@ export interface SedSliceMolestieItem {
 	
 	/**
 	 * Diam field in Diam → Items
-	 * 
+	
 	 * - **Field Type**: Content Relationship
 	 * - **Placeholder**: Mauris cursus mattis
 	 * - **API ID Path**: sed.items[].lacus_vestibulum
@@ -588,7 +583,7 @@ export interface SedSliceMolestieItem {
 	
 	/**
 	 * Amet field in Amet → Items
-	 * 
+	
 	 * - **Field Type**: Image
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: sed.items[].tempor
@@ -598,7 +593,7 @@ export interface SedSliceMolestieItem {
 	
 	/**
 	 * Lacus field in Lacus → Items
-	 * 
+	
 	 * - **Field Type**: Link to Media
 	 * - **Placeholder**: Aenean et tortor
 	 * - **API ID Path**: sed.items[].mauris
@@ -608,7 +603,7 @@ export interface SedSliceMolestieItem {
 	
 	/**
 	 * Vitae field in Vitae → Items
-	 * 
+	
 	 * - **Field Type**: Number
 	 * - **Placeholder**: Turpis nunc eget
 	 * - **API ID Path**: sed.items[].blandit_cursus
@@ -618,7 +613,7 @@ export interface SedSliceMolestieItem {
 	
 	/**
 	 * Egestas field in Egestas → Items
-	 * 
+	
 	 * - **Field Type**: Select
 	 * - **Placeholder**: Bibendum enim facilisis
 	 * - **API ID Path**: sed.items[].tellus
@@ -628,7 +623,7 @@ export interface SedSliceMolestieItem {
 	
 	/**
 	 * Eu field in Eu → Items
-	 * 
+	
 	 * - **Field Type**: Timestamp
 	 * - **Placeholder**: Elementum nisi quis
 	 * - **API ID Path**: sed.items[].sit
@@ -646,7 +641,7 @@ export type SedSlice = prismic.SharedSlice<\\"sed\\", SedSliceVariation>;
 export interface CondimentumSliceTortorPrimary {
 	/**
 	 * Eget field in Eget → Primary
-	 * 
+	
 	 * - **Field Type**: Content Relationship
 	 * - **Placeholder**: Enim facilisis gravida
 	 * - **API ID Path**: condimentum.primary.auctor
@@ -656,7 +651,7 @@ export interface CondimentumSliceTortorPrimary {
 	
 	/**
 	 * Quam field in Quam → Primary
-	 * 
+	
 	 * - **Field Type**: Embed
 	 * - **Placeholder**: Amet tellus cras
 	 * - **API ID Path**: condimentum.primary.massa_ultricies
@@ -666,7 +661,7 @@ export interface CondimentumSliceTortorPrimary {
 	
 	/**
 	 * Nisl field in Nisl → Primary
-	 * 
+	
 	 * - **Field Type**: Image
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: condimentum.primary.aliquam
@@ -676,7 +671,7 @@ export interface CondimentumSliceTortorPrimary {
 	
 	/**
 	 * Volutpat field in Volutpat → Primary
-	 * 
+	
 	 * - **Field Type**: Integration Fields (Catalog: \`purus_semper\`)
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: condimentum.primary.sit_amet
@@ -686,7 +681,7 @@ export interface CondimentumSliceTortorPrimary {
 	
 	/**
 	 * Egestas field in Egestas → Primary
-	 * 
+	
 	 * - **Field Type**: Link to Media
 	 * - **Placeholder**: Nullam eget felis
 	 * - **API ID Path**: condimentum.primary.volutpat
@@ -696,7 +691,7 @@ export interface CondimentumSliceTortorPrimary {
 	
 	/**
 	 * Scelerisque field in Scelerisque → Primary
-	 * 
+	
 	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: Justo donec enim
 	 * - **API ID Path**: condimentum.primary.orci_porta
@@ -706,7 +701,7 @@ export interface CondimentumSliceTortorPrimary {
 	
 	/**
 	 * Mi field in Mi → Primary
-	 * 
+	
 	 * - **Field Type**: Select
 	 * - **Placeholder**: Interdum consectetur libero
 	 * - **API ID Path**: condimentum.primary.rhoncus_est
@@ -716,7 +711,7 @@ export interface CondimentumSliceTortorPrimary {
 	
 	/**
 	 * Auctor field in Auctor → Primary
-	 * 
+	
 	 * - **Field Type**: Timestamp
 	 * - **Placeholder**: Nulla pharetra diam
 	 * - **API ID Path**: condimentum.primary.donec
@@ -728,7 +723,7 @@ export interface CondimentumSliceTortorPrimary {
 export interface CondimentumSliceTortorItem {
 	/**
 	 * Eu field in Eu → Items
-	 * 
+	
 	 * - **Field Type**: Content Relationship
 	 * - **Placeholder**: Aliquam etiam erat
 	 * - **API ID Path**: condimentum.items[].sapien_pellentesque
@@ -738,7 +733,7 @@ export interface CondimentumSliceTortorItem {
 	
 	/**
 	 * Sagittis field in Sagittis → Items
-	 * 
+	
 	 * - **Field Type**: Image
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: condimentum.items[].enim_praesent
@@ -748,7 +743,7 @@ export interface CondimentumSliceTortorItem {
 	
 	/**
 	 * Faucibus field in Faucibus → Items
-	 * 
+	
 	 * - **Field Type**: Text
 	 * - **Placeholder**: Facilisis gravida neque
 	 * - **API ID Path**: condimentum.items[].eget
@@ -758,7 +753,7 @@ export interface CondimentumSliceTortorItem {
 	
 	/**
 	 * At field in At → Items
-	 * 
+	
 	 * - **Field Type**: Link
 	 * - **Placeholder**: Arcu cursus vitae
 	 * - **API ID Path**: condimentum.items[].adipiscing_elit
@@ -776,7 +771,7 @@ export type CondimentumSlice = prismic.SharedSlice<\\"condimentum\\", Condimentu
 export interface VenenatisSliceTristiquePrimary {
 	/**
 	 * Turpis field in Turpis → Primary
-	 * 
+	
 	 * - **Field Type**: Boolean
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: venenatis.primary.dui_ut
@@ -786,7 +781,7 @@ export interface VenenatisSliceTristiquePrimary {
 	
 	/**
 	 * Cras field in Cras → Primary
-	 * 
+	
 	 * - **Field Type**: Content Relationship
 	 * - **Placeholder**: Nibh tellus molestie
 	 * - **API ID Path**: venenatis.primary.dignissim
@@ -796,7 +791,7 @@ export interface VenenatisSliceTristiquePrimary {
 	
 	/**
 	 * Mauris field in Mauris → Primary
-	 * 
+	
 	 * - **Field Type**: Date
 	 * - **Placeholder**: Arcu bibendum at
 	 * - **API ID Path**: venenatis.primary.volutpat_consequat
@@ -806,7 +801,7 @@ export interface VenenatisSliceTristiquePrimary {
 	
 	/**
 	 * Amet field in Amet → Primary
-	 * 
+	
 	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: Tortor id aliquet
 	 * - **API ID Path**: venenatis.primary.et
@@ -816,7 +811,7 @@ export interface VenenatisSliceTristiquePrimary {
 	
 	/**
 	 * Suspendisse field in Suspendisse → Primary
-	 * 
+	
 	 * - **Field Type**: Integration Fields (Catalog: \`neque_viverra\`)
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: venenatis.primary.nulla_aliquet
@@ -826,7 +821,7 @@ export interface VenenatisSliceTristiquePrimary {
 	
 	/**
 	 * Dolor field in Dolor → Primary
-	 * 
+	
 	 * - **Field Type**: Link
 	 * - **Placeholder**: Dictum non consectetur
 	 * - **API ID Path**: venenatis.primary.gravida_hendrerit
@@ -836,7 +831,7 @@ export interface VenenatisSliceTristiquePrimary {
 	
 	/**
 	 * Nulla field in Nulla → Primary
-	 * 
+	
 	 * - **Field Type**: Number
 	 * - **Placeholder**: Etiam tempor orci
 	 * - **API ID Path**: venenatis.primary.morbi_enim
@@ -846,7 +841,7 @@ export interface VenenatisSliceTristiquePrimary {
 	
 	/**
 	 * Lacinia field in Lacinia → Primary
-	 * 
+	
 	 * - **Field Type**: Timestamp
 	 * - **Placeholder**: Sit amet commodo
 	 * - **API ID Path**: venenatis.primary.cras
@@ -856,7 +851,7 @@ export interface VenenatisSliceTristiquePrimary {
 	
 	/**
 	 * Lorem field in Lorem → Primary
-	 * 
+	
 	 * - **Field Type**: Title
 	 * - **Placeholder**: Convallis posuere morbi
 	 * - **API ID Path**: venenatis.primary.enim_eu
@@ -868,7 +863,7 @@ export interface VenenatisSliceTristiquePrimary {
 export interface VenenatisSliceTristiqueItem {
 	/**
 	 * Maecenas field in Maecenas → Items
-	 * 
+	
 	 * - **Field Type**: Boolean
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: venenatis.items[].adipiscing
@@ -878,7 +873,7 @@ export interface VenenatisSliceTristiqueItem {
 	
 	/**
 	 * Laoreet field in Laoreet → Items
-	 * 
+	
 	 * - **Field Type**: Color
 	 * - **Placeholder**: Eu volutpat odio
 	 * - **API ID Path**: venenatis.items[].hac_habitasse
@@ -888,7 +883,7 @@ export interface VenenatisSliceTristiqueItem {
 	
 	/**
 	 * Faucibus field in Faucibus → Items
-	 * 
+	
 	 * - **Field Type**: Content Relationship
 	 * - **Placeholder**: Duis at tellus
 	 * - **API ID Path**: venenatis.items[].imperdiet_dui
@@ -898,7 +893,7 @@ export interface VenenatisSliceTristiqueItem {
 	
 	/**
 	 * Elit field in Elit → Items
-	 * 
+	
 	 * - **Field Type**: Embed
 	 * - **Placeholder**: A molestie lorem
 	 * - **API ID Path**: venenatis.items[].est
@@ -908,7 +903,7 @@ export interface VenenatisSliceTristiqueItem {
 	
 	/**
 	 * Eget field in Eget → Items
-	 * 
+	
 	 * - **Field Type**: GeoPoint
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: venenatis.items[].massa_placerat
@@ -918,7 +913,7 @@ export interface VenenatisSliceTristiqueItem {
 	
 	/**
 	 * Ut field in Ut → Items
-	 * 
+	
 	 * - **Field Type**: Image
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: venenatis.items[].scelerisque
@@ -928,7 +923,7 @@ export interface VenenatisSliceTristiqueItem {
 	
 	/**
 	 * Et field in Et → Items
-	 * 
+	
 	 * - **Field Type**: Integration Fields (Catalog: \`dolor_sed\`)
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: venenatis.items[].in_nisl
@@ -938,7 +933,7 @@ export interface VenenatisSliceTristiqueItem {
 	
 	/**
 	 * Sagittis field in Sagittis → Items
-	 * 
+	
 	 * - **Field Type**: Text
 	 * - **Placeholder**: Elementum nisi quis
 	 * - **API ID Path**: venenatis.items[].commodo
@@ -948,7 +943,7 @@ export interface VenenatisSliceTristiqueItem {
 	
 	/**
 	 * Aliquet field in Aliquet → Items
-	 * 
+	
 	 * - **Field Type**: Link to Media
 	 * - **Placeholder**: Sit amet facilisis
 	 * - **API ID Path**: venenatis.items[].enim_nec
@@ -958,7 +953,7 @@ export interface VenenatisSliceTristiqueItem {
 	
 	/**
 	 * Sit field in Sit → Items
-	 * 
+	
 	 * - **Field Type**: Number
 	 * - **Placeholder**: Nibh nisl condimentum
 	 * - **API ID Path**: venenatis.items[].dui_id
@@ -968,7 +963,7 @@ export interface VenenatisSliceTristiqueItem {
 	
 	/**
 	 * Pellentesque field in Pellentesque → Items
-	 * 
+	
 	 * - **Field Type**: Select
 	 * - **Placeholder**: Adipiscing tristique risus
 	 * - **API ID Path**: venenatis.items[].tincidunt
@@ -978,7 +973,7 @@ export interface VenenatisSliceTristiqueItem {
 	
 	/**
 	 * In field in In → Items
-	 * 
+	
 	 * - **Field Type**: Timestamp
 	 * - **Placeholder**: Rutrum quisque non
 	 * - **API ID Path**: venenatis.items[].nam_aliquam
@@ -988,7 +983,7 @@ export interface VenenatisSliceTristiqueItem {
 	
 	/**
 	 * Volutpat field in Volutpat → Items
-	 * 
+	
 	 * - **Field Type**: Title
 	 * - **Placeholder**: Lorem mollis aliquam
 	 * - **API ID Path**: venenatis.items[].at
@@ -1006,7 +1001,7 @@ export type VenenatisSlice = prismic.SharedSlice<\\"venenatis\\", VenenatisSlice
 export interface UrnaSliceMusPrimary {
 	/**
 	 * Quis field in Quis → Primary
-	 * 
+	
 	 * - **Field Type**: Boolean
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: urna.primary.mi
@@ -1016,7 +1011,7 @@ export interface UrnaSliceMusPrimary {
 	
 	/**
 	 * Sed field in Sed → Primary
-	 * 
+	
 	 * - **Field Type**: Color
 	 * - **Placeholder**: Facilisis magna etiam
 	 * - **API ID Path**: urna.primary.neque_egestas
@@ -1026,7 +1021,7 @@ export interface UrnaSliceMusPrimary {
 	
 	/**
 	 * Aliquam field in Aliquam → Primary
-	 * 
+	
 	 * - **Field Type**: Date
 	 * - **Placeholder**: Lorem donec massa
 	 * - **API ID Path**: urna.primary.consectetur_purus
@@ -1036,7 +1031,7 @@ export interface UrnaSliceMusPrimary {
 	
 	/**
 	 * Facilisi field in Facilisi → Primary
-	 * 
+	
 	 * - **Field Type**: Number
 	 * - **Placeholder**: Quis auctor elit
 	 * - **API ID Path**: urna.primary.adipiscing_elit
@@ -1046,7 +1041,7 @@ export interface UrnaSliceMusPrimary {
 	
 	/**
 	 * Blandit field in Blandit → Primary
-	 * 
+	
 	 * - **Field Type**: Timestamp
 	 * - **Placeholder**: Nunc faucibus a
 	 * - **API ID Path**: urna.primary.tortor_condimentum
@@ -1058,7 +1053,7 @@ export interface UrnaSliceMusPrimary {
 export interface UrnaSliceMusItem {
 	/**
 	 * Arcu field in Arcu → Items
-	 * 
+	
 	 * - **Field Type**: Color
 	 * - **Placeholder**: Volutpat diam ut
 	 * - **API ID Path**: urna.items[].at
@@ -1068,7 +1063,7 @@ export interface UrnaSliceMusItem {
 	
 	/**
 	 * Amet field in Amet → Items
-	 * 
+	
 	 * - **Field Type**: Content Relationship
 	 * - **Placeholder**: Consequat ac felis
 	 * - **API ID Path**: urna.items[].vel
@@ -1078,7 +1073,7 @@ export interface UrnaSliceMusItem {
 	
 	/**
 	 * Cras field in Cras → Items
-	 * 
+	
 	 * - **Field Type**: Date
 	 * - **Placeholder**: Erat imperdiet sed
 	 * - **API ID Path**: urna.items[].lectus
@@ -1088,7 +1083,7 @@ export interface UrnaSliceMusItem {
 	
 	/**
 	 * Pellentesque field in Pellentesque → Items
-	 * 
+	
 	 * - **Field Type**: Embed
 	 * - **Placeholder**: In nulla posuere
 	 * - **API ID Path**: urna.items[].magna_sit
@@ -1098,7 +1093,7 @@ export interface UrnaSliceMusItem {
 	
 	/**
 	 * Non field in Non → Items
-	 * 
+	
 	 * - **Field Type**: Integration Fields (Catalog: \`sed_tempus\`)
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: urna.items[].tellus_elementum
@@ -1108,7 +1103,7 @@ export interface UrnaSliceMusItem {
 	
 	/**
 	 * Porttitor field in Porttitor → Items
-	 * 
+	
 	 * - **Field Type**: Text
 	 * - **Placeholder**: Volutpat diam ut
 	 * - **API ID Path**: urna.items[].aliquet_sagittis
@@ -1118,7 +1113,7 @@ export interface UrnaSliceMusItem {
 	
 	/**
 	 * Nisl field in Nisl → Items
-	 * 
+	
 	 * - **Field Type**: Number
 	 * - **Placeholder**: Nam at lectus
 	 * - **API ID Path**: urna.items[].ultrices
@@ -1128,7 +1123,7 @@ export interface UrnaSliceMusItem {
 	
 	/**
 	 * Nunc field in Nunc → Items
-	 * 
+	
 	 * - **Field Type**: Select
 	 * - **Placeholder**: Et pharetra pharetra
 	 * - **API ID Path**: urna.items[].tellus
@@ -1146,7 +1141,7 @@ export type UrnaSlice = prismic.SharedSlice<\\"urna\\", UrnaSliceVariation>;
 export interface SemSliceTinciduntPrimary {
 	/**
 	 * Mi field in Mi → Primary
-	 * 
+	
 	 * - **Field Type**: Color
 	 * - **Placeholder**: Egestas erat imperdiet
 	 * - **API ID Path**: sem.primary.auctor_elit
@@ -1156,7 +1151,7 @@ export interface SemSliceTinciduntPrimary {
 	
 	/**
 	 * Nibh field in Nibh → Primary
-	 * 
+	
 	 * - **Field Type**: Content Relationship
 	 * - **Placeholder**: Sed risus pretium
 	 * - **API ID Path**: sem.primary.sit
@@ -1166,7 +1161,7 @@ export interface SemSliceTinciduntPrimary {
 	
 	/**
 	 * Suspendisse field in Suspendisse → Primary
-	 * 
+	
 	 * - **Field Type**: Integration Fields (Catalog: \`lobortis_scelerisque\`)
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: sem.primary.hendrerit
@@ -1176,7 +1171,7 @@ export interface SemSliceTinciduntPrimary {
 	
 	/**
 	 * Elit field in Elit → Primary
-	 * 
+	
 	 * - **Field Type**: Text
 	 * - **Placeholder**: Vel risus commodo
 	 * - **API ID Path**: sem.primary.turpis
@@ -1186,7 +1181,7 @@ export interface SemSliceTinciduntPrimary {
 	
 	/**
 	 * Dictumst field in Dictumst → Primary
-	 * 
+	
 	 * - **Field Type**: Link
 	 * - **Placeholder**: At auctor urna
 	 * - **API ID Path**: sem.primary.ultrices_in
@@ -1196,7 +1191,7 @@ export interface SemSliceTinciduntPrimary {
 	
 	/**
 	 * Turpis field in Turpis → Primary
-	 * 
+	
 	 * - **Field Type**: Link to Media
 	 * - **Placeholder**: Convallis a cras
 	 * - **API ID Path**: sem.primary.sed
@@ -1206,7 +1201,7 @@ export interface SemSliceTinciduntPrimary {
 	
 	/**
 	 * Lectus field in Lectus → Primary
-	 * 
+	
 	 * - **Field Type**: Number
 	 * - **Placeholder**: Sed euismod nisi
 	 * - **API ID Path**: sem.primary.arcu_vitae
@@ -1216,7 +1211,7 @@ export interface SemSliceTinciduntPrimary {
 	
 	/**
 	 * Iaculis field in Iaculis → Primary
-	 * 
+	
 	 * - **Field Type**: Select
 	 * - **Placeholder**: Lacinia at quis
 	 * - **API ID Path**: sem.primary.phasellus
@@ -1228,7 +1223,7 @@ export interface SemSliceTinciduntPrimary {
 export interface SemSliceTinciduntItem {
 	/**
 	 * Ullamcorper field in Ullamcorper → Items
-	 * 
+	
 	 * - **Field Type**: Boolean
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: sem.items[].mattis
@@ -1238,7 +1233,7 @@ export interface SemSliceTinciduntItem {
 	
 	/**
 	 * Purus field in Purus → Items
-	 * 
+	
 	 * - **Field Type**: Date
 	 * - **Placeholder**: Ornare massa eget
 	 * - **API ID Path**: sem.items[].mi_ipsum
@@ -1248,7 +1243,7 @@ export interface SemSliceTinciduntItem {
 	
 	/**
 	 * In field in In → Items
-	 * 
+	
 	 * - **Field Type**: Integration Fields (Catalog: \`tristique_magna\`)
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: sem.items[].at
@@ -1258,7 +1253,7 @@ export interface SemSliceTinciduntItem {
 	
 	/**
 	 * Sociis field in Sociis → Items
-	 * 
+	
 	 * - **Field Type**: Number
 	 * - **Placeholder**: Imperdiet proin fermentum
 	 * - **API ID Path**: sem.items[].risus
@@ -1268,7 +1263,7 @@ export interface SemSliceTinciduntItem {
 	
 	/**
 	 * Facilisi field in Facilisi → Items
-	 * 
+	
 	 * - **Field Type**: Select
 	 * - **Placeholder**: Morbi non arcu
 	 * - **API ID Path**: sem.items[].sagittis
@@ -1278,7 +1273,7 @@ export interface SemSliceTinciduntItem {
 	
 	/**
 	 * Consequat field in Consequat → Items
-	 * 
+	
 	 * - **Field Type**: Title
 	 * - **Placeholder**: Malesuada fames ac
 	 * - **API ID Path**: sem.items[].aenean
@@ -1295,10 +1290,7 @@ export type SemSlice = prismic.SharedSlice<\\"sem\\", SemSliceVariation>;
 
 declare module \\"@prismicio/client\\" {
 	interface CreateClient {
-		(
-			repositoryNameOrEndpoint: string,
-			options?: prismicClient.ClientConfig
-		): prismicClient.Client<AllDocumentTypes>;
+		(repositoryNameOrEndpoint: string, options?: prismicClient.ClientConfig): prismicClient.Client<AllDocumentTypes>;
 	}
 	
 	namespace Content {

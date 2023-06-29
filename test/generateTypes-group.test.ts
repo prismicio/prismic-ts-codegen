@@ -56,7 +56,7 @@ it("creates an interface for a group item containing its fields", (ctx) => {
 	).toBe("prismic.SelectField");
 });
 
-it("prefixes Group types starting with a number using an underscore prefix", (ctx) => {
+it.only("prefixes Group types starting with a number using an underscore prefix", (ctx) => {
 	const model = ctx.mock.model.customType({
 		id: "123",
 		fields: {

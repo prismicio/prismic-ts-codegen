@@ -1,5 +1,5 @@
 import { CustomTypeModel } from "@prismicio/client";
-import { source as typescript } from "common-tags";
+import { source } from "common-tags";
 
 import { buildTypeName } from "../lib/buildTypeName";
 
@@ -49,15 +49,13 @@ export function buildCustomTypeDataType(
 	}
 
 	if (fieldProperties) {
-		code = typescript`
+		code = source`
 			interface ${name} {
 				${fieldProperties}
 			}
 		`;
 	} else {
-		code = typescript`
-			interface ${name} {}
-		`;
+		code = `interface ${name} {}`;
 	}
 
 	return {

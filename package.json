@@ -51,7 +51,6 @@
 	"dependencies": {
 		"@prismicio/custom-types-client": "^1.1.0",
 		"common-tags": "^1.8.2",
-		"fast-case": "^1.7.0",
 		"fast-glob": "^3.2.12",
 		"jiti": "^1.18.2",
 		"joi": "^17.9.2",

@@ -3,10 +3,10 @@ import {
 	CustomTypeModelFieldType,
 	CustomTypeModelLinkSelectType,
 } from "@prismicio/client";
-import { source as typescript } from "common-tags";
 
 import { AuxiliaryType, FieldConfigs, FieldPath } from "../types";
 
+import { addLine } from "./addLine";
 import { addSection } from "./addSection";
 import { buildFieldDocs } from "./buildFieldDocs";
 import { buildTypeName } from "./buildTypeName";
@@ -28,7 +28,12 @@ type BuildFieldPropertyReturnType = {
 function buildFieldProperty(
 	args: BuildFieldPropertyArgs,
 ): BuildFieldPropertyReturnType {
-	let code = "";
+	let code = buildFieldDocs({
+		name: args.name,
+		field: args.field,
+		path: args.path,
+		tabName: args.tabName,
+	});
 
 	const auxiliaryTypes: AuxiliaryType[] = [];
 
@@ -38,12 +43,6 @@ function buildFieldProperty(
 		/^[0-9]/.test(args.name)
 			? `"${args.name}"`
 			: args.name;
-	const docs = buildFieldDocs({
-		name: args.name,
-		field: args.field,
-		path: args.path,
-		tabName: args.tabName,
-	});
 
 	switch (args.field.type) {
 		case CustomTypeModelFieldType.UID: {
@@ -52,37 +51,19 @@ function buildFieldProperty(
 		}
 
 		case CustomTypeModelFieldType.Boolean: {
-			code = addSection(
-				typescript`
-					${docs}
-					${name}: prismic.BooleanField;
-				`,
-				code,
-			);
+			code = addLine(`${name}: prismic.BooleanField;`, code);
 
 			break;
 		}
 
 		case CustomTypeModelFieldType.Color: {
-			code = addSection(
-				typescript`
-					${docs}
-					${name}: prismic.ColorField;
-				`,
-				code,
-			);
+			code = addLine(`${name}: prismic.ColorField;`, code);
 
 			break;
 		}
 
 		case CustomTypeModelFieldType.Date: {
-			code = addSection(
-				typescript`
-					${docs}
-					${name}: prismic.DateField;
-				`,
-				code,
-			);
+			code = addLine(`${name}: prismic.DateField;`, code);
 
 			break;
 		}
@@ -96,39 +77,26 @@ function buildFieldProperty(
 						args.fieldConfigs.embed?.providerTypes[providerType];
 
 					providerTypes.push(
-						typescript`
-							({ provider_name: "${providerType}" } & ${configuredProviderType})
-						`,
+						`({ provider_name: "${providerType}" } & ${configuredProviderType})`,
 					);
 				}
 			}
 
 			const providerTypesUnion = buildUnion(providerTypes);
 
-			code = addSection(
+			code =
 				providerTypes.length > 0
-					? typescript`
-						${docs}
-						${name}: prismic.EmbedField<prismic.AnyOEmbed & prismic.OEmbedExtra & (${providerTypesUnion})>
-					`
-					: typescript`
-						${docs}
-						${name}: prismic.EmbedField
-					`,
-				code,
-			);
+					? addLine(
+							`${name}: prismic.EmbedField<prismic.AnyOEmbed & prismic.OEmbedExtra & (${providerTypesUnion})>`,
+							code,
+					  )
+					: addLine(`${name}: prismic.EmbedField`, code);
 
 			break;
 		}
 
 		case CustomTypeModelFieldType.GeoPoint: {
-			code = addSection(
-				typescript`
-					${docs}
-					${name}: prismic.GeoPointField;
-				`,
-				code,
-			);
+			code = addLine(`${name}: prismic.GeoPointField;`, code);
 
 			break;
 		}
@@ -142,21 +110,9 @@ function buildFieldProperty(
 					args.field.config.thumbnails.map((thumb) => `"${thumb.name}"`),
 				);
 
-				code = addSection(
-					typescript`
-						${docs}
-						${name}: prismic.ImageField<${thumbnailNames}>;
-					`,
-					code,
-				);
+				code = addLine(`${name}: prismic.ImageField<${thumbnailNames}>;`, code);
 			} else {
-				code = addSection(
-					typescript`
-						${docs}
-						${name}: prismic.ImageField<never>;
-					`,
-					code,
-				);
+				code = addLine(`${name}: prismic.ImageField<never>;`, code);
 			}
 
 			break;
@@ -170,21 +126,12 @@ function buildFieldProperty(
 				: undefined;
 
 			if (catalogType) {
-				code = addSection(
-					typescript`
-						${docs}
-						${name}: prismic.IntegrationField<${catalogType}>;
-					`,
+				code = addLine(
+					`${name}: prismic.IntegrationField<${catalogType}>;`,
 					code,
 				);
 			} else {
-				code = addSection(
-					typescript`
-						${docs}
-						${name}: prismic.IntegrationField;
-					`,
-					code,
-				);
+				code = addLine(`${name}: prismic.IntegrationField;`, code);
 			}
 
 			break;
@@ -202,46 +149,25 @@ function buildFieldProperty(
 							args.field.config.customtypes.map((type) => `"${type}"`),
 						);
 
-						code = addSection(
-							typescript`
-							${docs}
-							${name}: prismic.ContentRelationshipField<${customTypeIDsUnion}>;
-						`,
+						code = addLine(
+							`${name}: prismic.ContentRelationshipField<${customTypeIDsUnion}>;`,
 							code,
 						);
 					} else {
-						code = addSection(
-							typescript`
-							${docs}
-							${name}: prismic.ContentRelationshipField;
-						`,
-							code,
-						);
+						code = addLine(`${name}: prismic.ContentRelationshipField;`, code);
 					}
 
 					break;
 				}
 
 				case CustomTypeModelLinkSelectType.Media: {
-					code = addSection(
-						typescript`
-							${docs}
-							${name}: prismic.LinkToMediaField;
-						`,
-						code,
-					);
+					code = addLine(`${name}: prismic.LinkToMediaField;`, code);
 
 					break;
 				}
 
 				default: {
-					code = addSection(
-						typescript`
-							${docs}
-							${name}: prismic.LinkField;
-						`,
-						code,
-					);
+					code = addLine(`${name}: prismic.LinkField;`, code);
 				}
 			}
 
@@ -249,13 +175,7 @@ function buildFieldProperty(
 		}
 
 		case CustomTypeModelFieldType.Number: {
-			code = addSection(
-				typescript`
-					${docs}
-					${name}: prismic.NumberField;
-				`,
-				code,
-			);
+			code = addLine(`${name}: prismic.NumberField;`, code);
 
 			break;
 		}
@@ -270,21 +190,9 @@ function buildFieldProperty(
 					.every((blockType) => /heading/.test(blockType));
 
 			if (isTitleField) {
-				code = addSection(
-					typescript`
-						${docs}
-						${name}: prismic.TitleField;
-					`,
-					code,
-				);
+				code = addLine(`${name}: prismic.TitleField;`, code);
 			} else {
-				code = addSection(
-					typescript`
-						${docs}
-						${name}: prismic.RichTextField;
-					`,
-					code,
-				);
+				code = addLine(`${name}: prismic.RichTextField;`, code);
 			}
 
 			break;
@@ -298,19 +206,15 @@ function buildFieldProperty(
 			const hasDefault = Boolean(args.field.config?.default_value);
 
 			if (hasDefault) {
-				code = addSection(
-					typescript`
-						${docs}
-						${name}: prismic.SelectField<${optionsType}, "filled">;
-					`,
+				code = addLine(
+					`${name}: prismic.SelectField<${optionsType}, "filled">;`,
 					code,
 				);
 			} else {
-				code = addSection(
-					typescript`
-						${docs}
-						${name}: prismic.SelectField${options.length > 0 ? `<${optionsType}>` : ""};
-					`,
+				code = addLine(
+					`${name}: prismic.SelectField${
+						options.length > 0 ? `<${optionsType}>` : ""
+					};`,
 					code,
 				);
 			}
@@ -319,25 +223,13 @@ function buildFieldProperty(
 		}
 
 		case CustomTypeModelFieldType.Text: {
-			code = addSection(
-				typescript`
-					${docs}
-					${name}: prismic.KeyTextField;
-				`,
-				code,
-			);
+			code = addLine(`${name}: prismic.KeyTextField;`, code);
 
 			break;
 		}
 
 		case CustomTypeModelFieldType.Timestamp: {
-			code = addSection(
-				typescript`
-					${docs}
-					${name}: prismic.TimestampField;
-				`,
-				code,
-			);
+			code = addLine(`${name}: prismic.TimestampField;`, code);
 
 			break;
 		}
@@ -365,18 +257,11 @@ function buildFieldProperty(
 
 			auxiliaryTypes.push({
 				name: itemName,
-				code: typescript`
-					export interface ${itemName} {
-						${itemFieldProperties.code}
-					}
-				`,
+				code: `export interface ${itemName} {\n${itemFieldProperties.code}\n}`,
 			});
 
-			code = addSection(
-				typescript`
-					${docs}
-					${name}: prismic.GroupField<Simplify<${itemName}>>;
-				`,
+			code = addLine(
+				`${name}: prismic.GroupField<Simplify<${itemName}>>;`,
 				code,
 			);
 
@@ -441,14 +326,9 @@ function buildFieldProperty(
 							auxiliaryTypes.push({
 								name: primaryInterfaceName,
 								code: primaryFieldProperties.code
-									? typescript`
-									export interface ${primaryInterfaceName} {
-										${primaryFieldProperties.code}
-									}
+									? `export interface ${primaryInterfaceName} {\n${primaryFieldProperties.code}\n}
 								`
-									: typescript`
-									export interface ${primaryInterfaceName} {}
-								`,
+									: `export interface ${primaryInterfaceName} {}`,
 							});
 						}
 
@@ -479,30 +359,20 @@ function buildFieldProperty(
 							auxiliaryTypes.push({
 								name: itemInterfaceName,
 								code: itemFieldProperties.code
-									? typescript`
-									export interface ${itemInterfaceName} {
-										${itemFieldProperties.code}
-									}
-								`
-									: typescript`
-									export interface ${itemInterfaceName} {}
-								`,
+									? `export interface ${itemInterfaceName} {\n${itemFieldProperties.code}\n} `
+									: `export interface ${itemInterfaceName} {}`,
 							});
 						}
 
 						auxiliaryTypes.push({
 							name: sliceName,
-							code: typescript`
-							export type ${sliceName} = prismic.Slice<"${choiceID}", ${
+							code: `export type ${sliceName} = prismic.Slice<"${choiceID}", ${
 								primaryInterfaceName
-									? typescript`Simplify<${primaryInterfaceName}>`
-									: typescript`Record<string, never>`
+									? `Simplify<${primaryInterfaceName}>`
+									: `Record<string, never>`
 							}, ${
-								itemInterfaceName
-									? typescript`Simplify<${itemInterfaceName}>`
-									: typescript`never`
-							}>
-						`,
+								itemInterfaceName ? `Simplify<${itemInterfaceName}>` : `never`
+							}>`,
 						});
 
 						choiceNames.push(sliceName);
@@ -520,30 +390,16 @@ function buildFieldProperty(
 			const choiceUnion = buildUnion(choiceNames);
 			auxiliaryTypes.push({
 				name: choiceUnionName,
-				code: typescript`
-					type ${choiceUnionName} = ${choiceUnion}
-				`,
+				code: `type ${choiceUnionName} = ${choiceUnion}`,
 			});
 
-			code = addSection(
-				typescript`
-					${docs}
-					${name}: prismic.SliceZone<${choiceUnionName}>;
-				`,
-				code,
-			);
+			code = addLine(`${name}: prismic.SliceZone<${choiceUnionName}>;`, code);
 
 			break;
 		}
 
 		default: {
-			code = addSection(
-				typescript`
-					${docs}
-					${name}: unknown;
-				`,
-				code,
-			);
+			code = addLine(`${name}: unknown;`, code);
 		}
 	}
 

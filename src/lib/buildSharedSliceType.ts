@@ -1,5 +1,5 @@
 import { SharedSliceModel } from "@prismicio/client";
-import { source as typescript } from "common-tags";
+import { source } from "common-tags";
 
 import { FieldConfigs } from "../types";
 
@@ -54,14 +54,12 @@ export function buildSharedSliceType(
 
 			code = addSection(
 				primaryFieldProperties.code
-					? typescript`
+					? source`
 						export interface ${primaryInterfaceName} {
 							${primaryFieldProperties.code}
 						}
 					`
-					: typescript`
-						export interface ${primaryInterfaceName} {}
-					`,
+					: `export interface ${primaryInterfaceName} {}`,
 				code,
 			);
 		}
@@ -86,32 +84,24 @@ export function buildSharedSliceType(
 
 			code = addSection(
 				itemFieldProperties.code
-					? typescript`
+					? source`
 						export interface ${itemInterfaceName} {
 							${itemFieldProperties.code}
 						}
 					`
-					: typescript`
-						export interface ${itemInterfaceName} {}
-					`,
+					: `export interface ${itemInterfaceName} {}`,
 				code,
 			);
 		}
 
 		code = addSection(
-			typescript`
-				export type ${variationName} = prismic.SharedSliceVariation<"${
+			`export type ${variationName} = prismic.SharedSliceVariation<"${
 				variationModel.id
 			}", ${
 				primaryInterfaceName
-					? typescript`Simplify<${primaryInterfaceName}>`
-					: typescript`Record<string, never>`
-			}, ${
-				itemInterfaceName
-					? typescript`Simplify<${itemInterfaceName}>`
-					: typescript`never`
-			}>;
-			`,
+					? `Simplify<${primaryInterfaceName}>`
+					: `Record<string, never>`
+			}, ${itemInterfaceName ? `Simplify<${itemInterfaceName}>` : `never`}>;`,
 			code,
 		);
 
@@ -122,18 +112,14 @@ export function buildSharedSliceType(
 	const variationsUnion = buildUnion(variationNames);
 
 	code = addSection(
-		typescript`
-			type ${variationUnionName} = ${
+		`type ${variationUnionName} = ${
 			variationNames.length > 0 ? variationsUnion : "never"
-		}
-		`,
+		}`,
 		code,
 	);
 
 	code = addSection(
-		typescript`
-			export type ${name} = prismic.SharedSlice<"${args.model.id}", ${variationUnionName}>;
-		`,
+		`export type ${name} = prismic.SharedSlice<"${args.model.id}", ${variationUnionName}>;`,
 		code,
 	);
 

@@ -1,5 +1,5 @@
 import type { CustomTypeModel, SharedSliceModel } from "@prismicio/client";
-import { source as typescript } from "common-tags";
+import { source } from "common-tags";
 
 import { addLine } from "./lib/addLine";
 import { addSection } from "./lib/addSection";
@@ -31,12 +31,7 @@ export function generateTypes(config: GenerateTypesConfig = {}): string {
 	const typesProvider = config.typesProvider || "@prismicio/types";
 	let clientImportName = "prismic";
 
-	code = addLine(
-		typescript`
-			import type * as prismic from "${typesProvider}";
-		`,
-		code,
-	);
+	code = addLine(`import type * as prismic from "${typesProvider}";`, code);
 
 	if (
 		config.clientIntegration?.includeCreateClientInterface ||
@@ -48,18 +43,14 @@ export function generateTypes(config: GenerateTypesConfig = {}): string {
 			// This import declaration would be a duplicate if the types
 			// provider is @prismicio/client.
 			code = addLine(
-				typescript`
-					import type * as ${clientImportName} from "@prismicio/client";
-				`,
+				`import type * as ${clientImportName} from "@prismicio/client";`,
 				code,
 			);
 		}
 	}
 
 	code = addSection(
-		typescript`
-			type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
-		`,
+		`type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };`,
 		code,
 	);
 
@@ -92,9 +83,7 @@ export function generateTypes(config: GenerateTypesConfig = {}): string {
 			const allDocumentTypesUnion = buildUnion(allDocumentTypesTypeNames);
 
 			code = addSection(
-				typescript`
-					export type ${allDocumentTypesUnionName} = ${allDocumentTypesUnion};
-				`,
+				`export type ${allDocumentTypesUnionName} = ${allDocumentTypesUnion};`,
 				code,
 			);
 
@@ -126,26 +115,16 @@ export function generateTypes(config: GenerateTypesConfig = {}): string {
 		if (config.clientIntegration.includeCreateClientInterface) {
 			if ((config.customTypeModels?.length || 0) > 0) {
 				clientModuleCode = addSection(
-					typescript`
-						interface CreateClient {
-							(
-								repositoryNameOrEndpoint: string,
-								options?: ${clientImportName}.ClientConfig
-							): ${clientImportName}.Client<AllDocumentTypes>;
-						}
-					`,
+					`interface CreateClient {
+	(repositoryNameOrEndpoint: string, options?: ${clientImportName}.ClientConfig): ${clientImportName}.Client<AllDocumentTypes>;
+}`,
 					clientModuleCode,
 				);
 			} else {
 				clientModuleCode = addSection(
-					typescript`
-						interface CreateClient {
-							(
-								repositoryNameOrEndpoint: string,
-								options?: ${clientImportName}.ClientConfig
-							): ${clientImportName}.Client;
-						}
-					`,
+					`interface CreateClient {
+	(repositoryNameOrEndpoint: string, options?: ${clientImportName}.ClientConfig): ${clientImportName}.Client;
+}`,
 					clientModuleCode,
 				);
 			}
@@ -153,7 +132,7 @@ export function generateTypes(config: GenerateTypesConfig = {}): string {
 
 		if (config.clientIntegration.includeContentNamespace) {
 			clientModuleCode = addSection(
-				typescript`
+				source`
 					namespace Content {
 						export type {
 							${contentTypeNames.join(",\n")}
@@ -165,7 +144,7 @@ export function generateTypes(config: GenerateTypesConfig = {}): string {
 		}
 
 		code = addSection(
-			typescript`
+			source`
 				declare module "@prismicio/client" {
 					${clientModuleCode}
 				}

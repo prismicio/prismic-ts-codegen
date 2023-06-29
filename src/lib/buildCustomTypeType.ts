@@ -1,5 +1,4 @@
 import { CustomTypeModel } from "@prismicio/client";
-import { source as typescript } from "common-tags";
 
 import { AuxiliaryType, FieldConfigs } from "../types";
 
@@ -48,10 +47,7 @@ export function buildCustomTypeType(
 	code = addSection(dataType.code, code);
 
 	code = addSection(
-		typescript`
-			export type ${name}<Lang extends string = ${langDefault}> =
-				prismic.${baseDocumentType}<Simplify<${dataType.name}>, "${args.model.id}", Lang>;
-		`,
+		`export type ${name}<Lang extends string = ${langDefault}> = prismic.${baseDocumentType}<Simplify<${dataType.name}>, "${args.model.id}", Lang>;`,
 		code,
 	);
 

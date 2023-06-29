@@ -31,6 +31,8 @@ export function getAPIIDPath(args: GetAPIIDPathArgs) {
 						previousElement.model.type === "SharedSlice")
 				) {
 					result += `${element.id}[]`;
+
+					continue;
 				}
 			}
 
