@@ -6,6 +6,8 @@ import { addSection } from "./lib/addSection";
 import { buildCustomTypeType } from "./lib/buildCustomTypeType";
 import { buildSharedSliceType } from "./lib/buildSharedSliceType";
 import { buildUnion } from "./lib/buildUnion";
+import { readCache } from "./lib/readCache";
+import { writeCache } from "./lib/writeCache";
 
 import { FieldConfigs } from "./types";
 
@@ -21,10 +23,13 @@ export type GenerateTypesConfig = {
 		includeCreateClientInterface?: boolean;
 		includeContentNamespace?: boolean;
 	};
+	useCache?: boolean;
 };
 
 export function generateTypes(config: GenerateTypesConfig = {}): string {
 	const fieldConfigs = config.fieldConfigs || {};
+
+	const cache = config.useCache ? readCache() : undefined;
 
 	let code = "";
 
@@ -64,6 +69,7 @@ export function generateTypes(config: GenerateTypesConfig = {}): string {
 				model,
 				localeIDs: config.localeIDs,
 				fieldConfigs,
+				cache,
 			});
 
 			for (const auxiliaryType of customTypeType.auxiliaryTypes) {
@@ -96,6 +102,7 @@ export function generateTypes(config: GenerateTypesConfig = {}): string {
 			const sharedSliceType = buildSharedSliceType({
 				model,
 				fieldConfigs,
+				cache,
 			});
 
 			code = addSection(sharedSliceType.code, code);
@@ -151,6 +158,10 @@ export function generateTypes(config: GenerateTypesConfig = {}): string {
 			`,
 			code,
 		);
+	}
+
+	if (cache) {
+		writeCache(cache);
 	}
 
 	return code;

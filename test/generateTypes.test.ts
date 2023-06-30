@@ -302,3 +302,13 @@ it("outputs correct code style", (ctx) => {
 
 	expect(res).toMatchSnapshot();
 });
+
+it("uses cached code when enabled", (ctx) => {
+	const res = lib.generateTypes({
+		customTypeModels: [
+			ctx.mock.model.customType({ id: "foo" }),
+			ctx.mock.model.customType({ id: "bar" }),
+		],
+		useCache: true,
+	});
+});

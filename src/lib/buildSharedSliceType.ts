@@ -1,16 +1,18 @@
 import { SharedSliceModel } from "@prismicio/client";
 import { source } from "common-tags";
 
-import { FieldConfigs } from "../types";
+import { Cache, FieldConfigs } from "../types";
 
 import { addSection } from "./addSection";
 import { buildFieldProperties } from "./buildFieldProperties";
 import { buildTypeName } from "./buildTypeName";
 import { buildUnion } from "./buildUnion";
+import { createContentDigest } from "./createContentDigest";
 
 type BuildSharedSliceTypeArgs = {
 	model: SharedSliceModel;
 	fieldConfigs: FieldConfigs;
+	cache?: Cache;
 };
 
 type BuildSharedSliceTypeReturnValue = {
@@ -23,6 +25,17 @@ type BuildSharedSliceTypeReturnValue = {
 export function buildSharedSliceType(
 	args: BuildSharedSliceTypeArgs,
 ): BuildSharedSliceTypeReturnValue {
+	if (args.cache) {
+		const key = createContentDigest(
+			JSON.stringify([args.model, args.fieldConfigs]),
+		);
+		const cached = args.cache.get(key);
+
+		if (cached) {
+			return cached as BuildSharedSliceTypeReturnValue;
+		}
+	}
+
 	let code = "";
 
 	const name = buildTypeName(args.model.id, "Slice");
@@ -123,10 +136,20 @@ export function buildSharedSliceType(
 		code,
 	);
 
-	return {
+	const result = {
 		name,
 		variationUnionName,
 		variationNames,
 		code,
 	};
+
+	if (args.cache) {
+		const key = createContentDigest(
+			JSON.stringify([args.model, args.fieldConfigs]),
+		);
+
+		args.cache.set(key, result);
+	}
+
+	return result;
 }

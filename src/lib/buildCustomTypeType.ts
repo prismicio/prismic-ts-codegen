@@ -1,17 +1,19 @@
 import { CustomTypeModel } from "@prismicio/client";
 
-import { AuxiliaryType, FieldConfigs } from "../types";
+import { AuxiliaryType, Cache, FieldConfigs } from "../types";
 
 import { addSection } from "./addSection";
 import { buildCustomTypeDataType } from "./buildCustomTypeDataType";
 import { buildTypeName } from "./buildTypeName";
 import { buildUnion } from "./buildUnion";
 import { checkHasUIDField } from "./checkHasUIDFIeld";
+import { createContentDigest } from "./createContentDigest";
 
 type BuildCustomTypeTypesArgs = {
 	model: CustomTypeModel;
 	localeIDs?: string[];
 	fieldConfigs: FieldConfigs;
+	cache?: Cache;
 };
 
 type BuildCustomTypeTypeReturnValue = {
@@ -24,6 +26,17 @@ type BuildCustomTypeTypeReturnValue = {
 export function buildCustomTypeType(
 	args: BuildCustomTypeTypesArgs,
 ): BuildCustomTypeTypeReturnValue {
+	if (args.cache) {
+		const key = createContentDigest(
+			JSON.stringify([args.model, args.localeIDs, args.fieldConfigs]),
+		);
+		const cached = args.cache.get(key);
+
+		if (cached) {
+			return cached as BuildCustomTypeTypeReturnValue;
+		}
+	}
+
 	let code = "";
 
 	const auxiliaryTypes: AuxiliaryType[] = [];
@@ -51,10 +64,20 @@ export function buildCustomTypeType(
 		code,
 	);
 
-	return {
+	const result = {
 		name,
 		dataName: dataType.name,
 		code,
 		auxiliaryTypes,
 	};
+
+	if (args.cache) {
+		const key = createContentDigest(
+			JSON.stringify([args.model, args.localeIDs, args.fieldConfigs]),
+		);
+
+		args.cache.set(key, result);
+	}
+
+	return result;
 }
