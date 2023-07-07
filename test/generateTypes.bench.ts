@@ -1,4 +1,4 @@
-import { bench } from "vitest";
+import { bench, describe } from "vitest";
 
 import * as v0_1_11 from "prismic-ts-codegen-v0-1-11";
 import { createMockFactory } from "@prismicio/mock";
@@ -22,15 +22,24 @@ const sharedSliceModels = Array.from({ length: 10 }, () =>
 	}),
 );
 
-bench("generate types (src, uncached)", () => {
-	src.generateTypes({ customTypeModels, sharedSliceModels, cache: false });
+describe("cached", () => {
+	bench("generate types (src)", () => {
+		src.generateTypes({ customTypeModels, sharedSliceModels, cache: true });
+	});
+
+	// No caching available
+	bench("generate types (v0.1.11)", () => {
+		v0_1_11.generateTypes({ customTypeModels, sharedSliceModels });
+	});
 });
 
-bench("generate types (src, cached)", () => {
-	src.generateTypes({ customTypeModels, sharedSliceModels, cache: true });
-});
+describe("uncached", () => {
+	bench("generate types (src)", () => {
+		src.generateTypes({ customTypeModels, sharedSliceModels, cache: false });
+	});
 
-// No caching available
-bench("generate types (v0.1.11)", async () => {
-	v0_1_11.generateTypes({ customTypeModels, sharedSliceModels });
+	// No caching available
+	bench("generate types (v0.1.11)", async () => {
+		v0_1_11.generateTypes({ customTypeModels, sharedSliceModels });
+	});
 });
