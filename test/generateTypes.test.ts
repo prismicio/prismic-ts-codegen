@@ -332,7 +332,13 @@ it("cached types are the same as uncached types", (ctx) => {
 		}),
 	];
 
-	const cached = lib.generateTypes({
+	const cached1 = lib.generateTypes({
+		customTypeModels,
+		sharedSliceModels,
+		cache: true,
+	});
+
+	const cached2 = lib.generateTypes({
 		customTypeModels,
 		sharedSliceModels,
 		cache: true,
@@ -344,5 +350,6 @@ it("cached types are the same as uncached types", (ctx) => {
 		cache: false,
 	});
 
-	expect(cached).toBe(uncached);
+	expect(cached1).toBe(cached2);
+	expect(cached1).toBe(uncached);
 });
