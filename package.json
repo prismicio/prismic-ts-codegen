@@ -56,7 +56,8 @@
 		"joi": "^17.9.2",
 		"meow": "^12.0.1",
 		"node-fetch": "^3.3.1",
-		"pascal-case": "^3.1.2"
+		"pascal-case": "^3.1.2",
+		"quick-lru": "^6.1.1"
 	},
 	"devDependencies": {
 		"@prismicio/client": "^7.1.0",
@@ -64,6 +65,7 @@
 		"@size-limit/preset-small-lib": "^8.2.6",
 		"@trivago/prettier-plugin-sort-imports": "^4.1.1",
 		"@types/common-tags": "^1.8.1",
+		"@types/find-cache-dir": "^3.2.1",
 		"@typescript-eslint/eslint-plugin": "^5.60.1",
 		"@typescript-eslint/parser": "^5.60.1",
 		"@vitest/coverage-c8": "0.31.1",

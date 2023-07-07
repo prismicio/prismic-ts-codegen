@@ -1,4 +1,5 @@
 import { CustomTypeModel } from "@prismicio/client";
+import QuickLRU from "quick-lru";
 
 import { AuxiliaryType, FieldConfigs } from "../types";
 
@@ -7,11 +8,13 @@ import { buildCustomTypeDataType } from "./buildCustomTypeDataType";
 import { buildTypeName } from "./buildTypeName";
 import { buildUnion } from "./buildUnion";
 import { checkHasUIDField } from "./checkHasUIDFIeld";
+import { createContentDigest } from "./createContentDigest";
 
 type BuildCustomTypeTypesArgs = {
 	model: CustomTypeModel;
 	localeIDs?: string[];
 	fieldConfigs: FieldConfigs;
+	cache?: QuickLRU<string, unknown>;
 };
 
 type BuildCustomTypeTypeReturnValue = {
@@ -24,6 +27,15 @@ type BuildCustomTypeTypeReturnValue = {
 export function buildCustomTypeType(
 	args: BuildCustomTypeTypesArgs,
 ): BuildCustomTypeTypeReturnValue {
+	if (args.cache) {
+		const key = createContentDigest(JSON.stringify(args.model));
+		const cached = args.cache.get(key);
+
+		if (cached) {
+			return cached as BuildCustomTypeTypeReturnValue;
+		}
+	}
+
 	let code = "";
 
 	const auxiliaryTypes: AuxiliaryType[] = [];
@@ -51,10 +63,18 @@ export function buildCustomTypeType(
 		code,
 	);
 
-	return {
+	const result = {
 		name,
 		dataName: dataType.name,
 		code,
 		auxiliaryTypes,
 	};
+
+	if (args.cache) {
+		const key = createContentDigest(JSON.stringify(args.model));
+
+		args.cache.set(key, result);
+	}
+
+	return result;
 }

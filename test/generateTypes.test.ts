@@ -302,3 +302,47 @@ it("outputs correct code style", (ctx) => {
 
 	expect(res).toMatchSnapshot();
 });
+
+it("cached types are the same as uncached types", (ctx) => {
+	const customTypeModels = [
+		ctx.mock.model.customType({
+			fields: ctx.mock.model.buildMockGroupFieldMap(),
+		}),
+		ctx.mock.model.customType({
+			fields: ctx.mock.model.buildMockGroupFieldMap(),
+		}),
+	];
+
+	const sharedSliceModels = [
+		ctx.mock.model.sharedSlice({
+			variations: [
+				ctx.mock.model.sharedSliceVariation({
+					primaryFields: ctx.mock.model.buildMockGroupFieldMap(),
+					itemsFields: ctx.mock.model.buildMockGroupFieldMap(),
+				}),
+			],
+		}),
+		ctx.mock.model.sharedSlice({
+			variations: [
+				ctx.mock.model.sharedSliceVariation({
+					primaryFields: ctx.mock.model.buildMockGroupFieldMap(),
+					itemsFields: ctx.mock.model.buildMockGroupFieldMap(),
+				}),
+			],
+		}),
+	];
+
+	const cached = lib.generateTypes({
+		customTypeModels,
+		sharedSliceModels,
+		cache: true,
+	});
+
+	const uncached = lib.generateTypes({
+		customTypeModels,
+		sharedSliceModels,
+		cache: false,
+	});
+
+	expect(cached).toBe(uncached);
+});
