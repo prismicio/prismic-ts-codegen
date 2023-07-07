@@ -1,7 +1,8 @@
 import { SharedSliceModel } from "@prismicio/client";
 import { source } from "common-tags";
+import LRUMap from "mnemonist/lru-map";
 
-import { Cache, FieldConfigs } from "../types";
+import { FieldConfigs } from "../types";
 
 import { addSection } from "./addSection";
 import { buildFieldProperties } from "./buildFieldProperties";
@@ -12,7 +13,7 @@ import { createContentDigest } from "./createContentDigest";
 type BuildSharedSliceTypeArgs = {
 	model: SharedSliceModel;
 	fieldConfigs: FieldConfigs;
-	cache?: Cache;
+	cache?: LRUMap<string, unknown>;
 };
 
 type BuildSharedSliceTypeReturnValue = {

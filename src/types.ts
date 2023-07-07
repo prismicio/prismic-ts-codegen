@@ -5,8 +5,6 @@ import type {
 	SharedSliceModel,
 } from "@prismicio/client";
 
-export type Cache = Map<string, unknown>;
-
 export type PathElement<
 	Model extends
 		| CustomTypeModel

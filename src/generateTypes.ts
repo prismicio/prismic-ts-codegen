@@ -1,17 +1,18 @@
 import type { CustomTypeModel, SharedSliceModel } from "@prismicio/client";
 import { source } from "common-tags";
+import LRUMap from "mnemonist/lru-map";
 
 import { addLine } from "./lib/addLine";
 import { addSection } from "./lib/addSection";
 import { buildCustomTypeType } from "./lib/buildCustomTypeType";
 import { buildSharedSliceType } from "./lib/buildSharedSliceType";
 import { buildUnion } from "./lib/buildUnion";
-import { readCache } from "./lib/readCache";
-import { writeCache } from "./lib/writeCache";
 
 import { FieldConfigs } from "./types";
 
 export type TypesProvider = "@prismicio/client" | "@prismicio/types";
+
+const cache = new LRUMap<string, unknown>(100);
 
 export type GenerateTypesConfig = {
 	customTypeModels?: CustomTypeModel[];
@@ -23,13 +24,12 @@ export type GenerateTypesConfig = {
 		includeCreateClientInterface?: boolean;
 		includeContentNamespace?: boolean;
 	};
-	useCache?: boolean;
+	cache?: boolean;
 };
 
 export function generateTypes(config: GenerateTypesConfig = {}): string {
 	const fieldConfigs = config.fieldConfigs || {};
-
-	const cache = config.useCache ? readCache() : undefined;
+	const shouldUseCache = config.cache ?? true;
 
 	let code = "";
 
@@ -69,7 +69,7 @@ export function generateTypes(config: GenerateTypesConfig = {}): string {
 				model,
 				localeIDs: config.localeIDs,
 				fieldConfigs,
-				cache,
+				cache: shouldUseCache ? cache : undefined,
 			});
 
 			for (const auxiliaryType of customTypeType.auxiliaryTypes) {
@@ -102,7 +102,7 @@ export function generateTypes(config: GenerateTypesConfig = {}): string {
 			const sharedSliceType = buildSharedSliceType({
 				model,
 				fieldConfigs,
-				cache,
+				cache: shouldUseCache ? cache : undefined,
 			});
 
 			code = addSection(sharedSliceType.code, code);
@@ -158,10 +158,6 @@ export function generateTypes(config: GenerateTypesConfig = {}): string {
 			`,
 			code,
 		);
-	}
-
-	if (cache) {
-		writeCache(cache);
 	}
 
 	return code;

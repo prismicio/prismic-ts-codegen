@@ -22,14 +22,15 @@ const sharedSliceModels = Array.from({ length: 10 }, () =>
 	}),
 );
 
-bench("generate types (src)", async () => {
-	src.generateTypes({ customTypeModels, sharedSliceModels });
+bench("generate types (src, uncached)", () => {
+	src.generateTypes({ customTypeModels, sharedSliceModels, cache: false });
 });
 
-bench("generate types (src, cached)", async () => {
-	src.generateTypes({ customTypeModels, sharedSliceModels, useCache: true });
+bench("generate types (src, cached)", () => {
+	src.generateTypes({ customTypeModels, sharedSliceModels, cache: true });
 });
 
-bench("generate types (latest)", async () => {
+// No caching available
+bench("generate types (v0.1.11)", async () => {
 	v0_1_11.generateTypes({ customTypeModels, sharedSliceModels });
 });

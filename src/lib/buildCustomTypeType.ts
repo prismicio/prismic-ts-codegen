@@ -1,6 +1,7 @@
 import { CustomTypeModel } from "@prismicio/client";
+import LRUMap from "mnemonist/lru-map";
 
-import { AuxiliaryType, Cache, FieldConfigs } from "../types";
+import { AuxiliaryType, FieldConfigs } from "../types";
 
 import { addSection } from "./addSection";
 import { buildCustomTypeDataType } from "./buildCustomTypeDataType";
@@ -13,7 +14,7 @@ type BuildCustomTypeTypesArgs = {
 	model: CustomTypeModel;
 	localeIDs?: string[];
 	fieldConfigs: FieldConfigs;
-	cache?: Cache;
+	cache?: LRUMap<string, unknown>;
 };
 
 type BuildCustomTypeTypeReturnValue = {
@@ -27,9 +28,7 @@ export function buildCustomTypeType(
 	args: BuildCustomTypeTypesArgs,
 ): BuildCustomTypeTypeReturnValue {
 	if (args.cache) {
-		const key = createContentDigest(
-			JSON.stringify([args.model, args.localeIDs, args.fieldConfigs]),
-		);
+		const key = createContentDigest(JSON.stringify(args.model));
 		const cached = args.cache.get(key);
 
 		if (cached) {
@@ -72,9 +71,7 @@ export function buildCustomTypeType(
 	};
 
 	if (args.cache) {
-		const key = createContentDigest(
-			JSON.stringify([args.model, args.localeIDs, args.fieldConfigs]),
-		);
+		const key = createContentDigest(JSON.stringify(args.model));
 
 		args.cache.set(key, result);
 	}
