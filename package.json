@@ -68,7 +68,7 @@
 		"@types/find-cache-dir": "^3.2.1",
 		"@typescript-eslint/eslint-plugin": "^5.60.1",
 		"@typescript-eslint/parser": "^5.60.1",
-		"@vitest/coverage-c8": "0.31.1",
+		"@vitest/coverage-c8": "^0.33.0",
 		"eslint": "^8.43.0",
 		"eslint-config-prettier": "^8.8.0",
 		"eslint-plugin-prettier": "^4.2.1",
@@ -81,7 +81,7 @@
 		"typescript": "^5.1.3",
 		"vite": "^4.3.9",
 		"vite-plugin-sdk": "^0.1.1",
-		"vitest": "0.31.1"
+		"vitest": "^0.33.0"
 	},
 	"peerDependencies": {
 		"@prismicio/client": "^6.6 || ^7"
