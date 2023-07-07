@@ -1,6 +1,6 @@
 import type { CustomTypeModel, SharedSliceModel } from "@prismicio/client";
 import { source } from "common-tags";
-import LRUMap from "mnemonist/lru-map";
+import QuickLRU from "quick-lru";
 
 import { addLine } from "./lib/addLine";
 import { addSection } from "./lib/addSection";
@@ -12,7 +12,7 @@ import { FieldConfigs } from "./types";
 
 export type TypesProvider = "@prismicio/client" | "@prismicio/types";
 
-const cache = new LRUMap<string, unknown>(100);
+const cache = new QuickLRU<string, unknown>({ maxSize: 1000 });
 
 export type GenerateTypesConfig = {
 	customTypeModels?: CustomTypeModel[];

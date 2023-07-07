@@ -1,5 +1,5 @@
 import { CustomTypeModel } from "@prismicio/client";
-import LRUMap from "mnemonist/lru-map";
+import QuickLRU from "quick-lru";
 
 import { AuxiliaryType, FieldConfigs } from "../types";
 
@@ -14,7 +14,7 @@ type BuildCustomTypeTypesArgs = {
 	model: CustomTypeModel;
 	localeIDs?: string[];
 	fieldConfigs: FieldConfigs;
-	cache?: LRUMap<string, unknown>;
+	cache?: QuickLRU<string, unknown>;
 };
 
 type BuildCustomTypeTypeReturnValue = {

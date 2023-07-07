@@ -52,12 +52,12 @@
 		"@prismicio/custom-types-client": "^1.1.0",
 		"common-tags": "^1.8.2",
 		"fast-glob": "^3.2.12",
-		"find-cache-dir": "^4.0.0",
 		"jiti": "^1.18.2",
 		"joi": "^17.9.2",
 		"meow": "^12.0.1",
 		"node-fetch": "^3.3.1",
-		"pascal-case": "^3.1.2"
+		"pascal-case": "^3.1.2",
+		"quick-lru": "^6.1.1"
 	},
 	"devDependencies": {
 		"@prismicio/client": "^7.1.0",
