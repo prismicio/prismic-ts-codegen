@@ -1,7 +1,10 @@
 import { CustomTypeModel } from "@prismicio/client";
+import { source } from "common-tags";
 import QuickLRU from "quick-lru";
 
 import { AuxiliaryType, FieldConfigs } from "../types";
+
+import { CUSTOM_TYPES_DOCUMENTATION_URL } from "../constants";
 
 import { addSection } from "./addSection";
 import { buildCustomTypeDataType } from "./buildCustomTypeDataType";
@@ -9,6 +12,7 @@ import { buildTypeName } from "./buildTypeName";
 import { buildUnion } from "./buildUnion";
 import { checkHasUIDField } from "./checkHasUIDFIeld";
 import { createContentDigest } from "./createContentDigest";
+import { getHumanReadableModelName } from "./getHumanReadableModelName";
 
 type BuildCustomTypeTypesArgs = {
 	model: CustomTypeModel;
@@ -48,6 +52,10 @@ export function buildCustomTypeType(
 	const baseDocumentType = checkHasUIDField(args.model)
 		? "PrismicDocumentWithUID"
 		: "PrismicDocumentWithoutUID";
+	const humanReadableName = getHumanReadableModelName({
+		name: args.model.id,
+		model: args.model,
+	});
 
 	const dataType = buildCustomTypeDataType({
 		model: args.model,
@@ -59,7 +67,20 @@ export function buildCustomTypeType(
 	code = addSection(dataType.code, code);
 
 	code = addSection(
-		`export type ${name}<Lang extends string = ${langDefault}> = prismic.${baseDocumentType}<Simplify<${dataType.name}>, "${args.model.id}", Lang>;`,
+		source`
+			/**
+			 * ${humanReadableName} document from Prismic
+			 *
+			 * - **API ID**: \`${args.model.id}\`
+			 * - **Repeatable**: \`${args.model.repeatable.toString()}\`
+			 * - **Documentation**: ${CUSTOM_TYPES_DOCUMENTATION_URL}
+			 *
+			 * @typeParam Lang - Language API ID of the document.
+			 */
+			export type ${name}<Lang extends string = ${langDefault}> = prismic.${baseDocumentType}<Simplify<${
+			dataType.name
+		}>, "${args.model.id}", Lang>;
+		`,
 		code,
 	);
 

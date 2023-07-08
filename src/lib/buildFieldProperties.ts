@@ -3,6 +3,7 @@ import {
 	CustomTypeModelFieldType,
 	CustomTypeModelLinkSelectType,
 } from "@prismicio/client";
+import { source, stripIndent } from "common-tags";
 
 import { AuxiliaryType, FieldConfigs, FieldPath } from "../types";
 
@@ -11,6 +12,7 @@ import { addSection } from "./addSection";
 import { buildFieldDocs } from "./buildFieldDocs";
 import { buildTypeName } from "./buildTypeName";
 import { buildUnion } from "./buildUnion";
+import { getHumanReadablePath } from "./getHumanReadablePath";
 
 type BuildFieldPropertyArgs = Pick<
 	BuildFieldPropertiesArgs,
@@ -236,23 +238,26 @@ function buildFieldProperty(
 
 		case CustomTypeModelFieldType.Group: {
 			const itemName = buildTypeName(
-				args.path[0].id,
+				args.path[0].name,
 				"Document",
 				"Data",
 				args.name,
 				"Item",
 			);
 
+			const path: FieldPath = [
+				...args.path,
+				{
+					name: name,
+					model: args.field,
+				},
+			];
+			const humanReadablePath = getHumanReadablePath({ path });
+
 			const itemFieldProperties = buildFieldProperties({
 				fields: args.field.config?.fields || {},
 				fieldConfigs: args.fieldConfigs,
-				path: [
-					...args.path,
-					{
-						id: name,
-						model: args.field,
-					},
-				],
+				path,
 			});
 
 			auxiliaryTypes.push({
@@ -260,6 +265,9 @@ function buildFieldProperty(
 				code: `export interface ${itemName} {\n${itemFieldProperties.code}\n}`,
 			});
 
+			code = addLine("/**", code);
+			code = addLine(` * Item in ${humanReadablePath}`, code);
+			code = addLine(" */", code);
 			code = addLine(
 				`${name}: prismic.GroupField<Simplify<${itemName}>>;`,
 				code,
@@ -289,7 +297,7 @@ function buildFieldProperty(
 						choiceNames.push(buildTypeName(choiceID, "Slice"));
 					} else if (choice.type === "Slice") {
 						const sliceName = buildTypeName(
-							args.path[0].id,
+							args.path[0].name,
 							"Document",
 							"Data",
 							args.name,
@@ -303,32 +311,52 @@ function buildFieldProperty(
 							Object.keys(choice["non-repeat"]).length > 0
 						) {
 							primaryInterfaceName = buildTypeName(sliceName, "Primary");
+
+							const path: FieldPath = [
+								...args.path,
+								{
+									name: args.name,
+									model: args.field,
+								},
+								{
+									name: choiceID,
+									model: choice,
+								},
+								{
+									name: "primary",
+									label: "Primary",
+								},
+							];
+							const humanReadablePath = getHumanReadablePath({ path });
+
 							const primaryFieldProperties = buildFieldProperties({
 								fields: choice["non-repeat"],
 								fieldConfigs: args.fieldConfigs,
-								path: [
-									...args.path,
-									{
-										id: args.name,
-										model: args.field,
-									},
-									{
-										id: choiceID,
-										model: choice,
-									},
-									{
-										id: "primary",
-										label: "Primary",
-									},
-								],
+								path,
 							});
+
+							let primaryCode = stripIndent`
+								/**
+								 * Primary content in *${humanReadablePath}*
+								 */
+							`;
+							primaryCode = primaryFieldProperties.code
+								? addLine(
+										source`
+											export interface ${primaryInterfaceName} {
+												${primaryFieldProperties.code}
+											}
+										`,
+										primaryCode,
+								  )
+								: addLine(
+										`export interface ${primaryInterfaceName} {}`,
+										primaryCode,
+								  );
 
 							auxiliaryTypes.push({
 								name: primaryInterfaceName,
-								code: primaryFieldProperties.code
-									? `export interface ${primaryInterfaceName} {\n${primaryFieldProperties.code}\n}
-								`
-									: `export interface ${primaryInterfaceName} {}`,
+								code: primaryCode,
 							});
 						}
 
@@ -336,43 +364,73 @@ function buildFieldProperty(
 						if (choice.repeat && Object.keys(choice.repeat).length > 0) {
 							itemInterfaceName = buildTypeName(sliceName, "Item");
 
+							const path: FieldPath = [
+								...args.path,
+								{
+									name: args.name,
+									model: args.field,
+								},
+								{
+									name: choiceID,
+									model: choice,
+								},
+								{
+									name: "items",
+									label: "Items",
+								},
+							];
+							const humanReadablePath = getHumanReadablePath({ path });
+
 							const itemFieldProperties = buildFieldProperties({
 								fields: choice.repeat,
 								fieldConfigs: args.fieldConfigs,
-								path: [
-									...args.path,
-									{
-										id: args.name,
-										model: args.field,
-									},
-									{
-										id: choiceID,
-										model: choice,
-									},
-									{
-										id: "items",
-										label: "Items",
-									},
-								],
+								path,
 							});
+
+							let itemCode = stripIndent`
+								/**
+								 * Item content in *${humanReadablePath}*
+								 */
+							`;
+							itemCode = itemFieldProperties.code
+								? addLine(
+										source`
+											export interface ${itemInterfaceName} {
+												${itemFieldProperties.code}
+											}
+										`,
+										itemCode,
+								  )
+								: addLine(`export interface ${itemInterfaceName} {}`, itemCode);
 
 							auxiliaryTypes.push({
 								name: itemInterfaceName,
-								code: itemFieldProperties.code
-									? `export interface ${itemInterfaceName} {\n${itemFieldProperties.code}\n} `
-									: `export interface ${itemInterfaceName} {}`,
+								code: itemCode,
 							});
 						}
 
 						auxiliaryTypes.push({
 							name: sliceName,
-							code: `export type ${sliceName} = prismic.Slice<"${choiceID}", ${
+							code: stripIndent`
+								/**
+								 * Slice for *${getHumanReadablePath({
+										path: [
+											...args.path,
+											{
+												name: args.name,
+												model: args.field,
+											},
+										],
+									})}*
+								 */
+								export type ${sliceName} = prismic.Slice<"${choiceID}", ${
 								primaryInterfaceName
 									? `Simplify<${primaryInterfaceName}>`
 									: `Record<string, never>`
 							}, ${
 								itemInterfaceName ? `Simplify<${itemInterfaceName}>` : `never`
-							}>`,
+							}>
+							`,
 						});
 
 						choiceNames.push(sliceName);
@@ -381,7 +439,7 @@ function buildFieldProperty(
 			}
 
 			const choiceUnionName = buildTypeName(
-				args.path[0].id,
+				args.path[0].name,
 				"Document",
 				"Data",
 				args.name,

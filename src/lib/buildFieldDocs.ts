@@ -4,10 +4,10 @@ import { FieldPath } from "../types";
 
 import { FIELD_DOCUMENTATION_URLS } from "../constants";
 
-import { addBlankLine } from "./addBlankLine";
 import { addLine } from "./addLine";
 import { getAPIIDPath } from "./getAPIIDPath";
 import { getHumanReadableModelName } from "./getHumanReadableModelName";
+import { getHumanReadablePath } from "./getHumanReadablePath";
 
 type GetFieldHumanReadableTypeArgs = {
 	field: CustomTypeModelField;
@@ -77,27 +77,17 @@ export function buildFieldDocs(args: BuildFieldDocsArgs): string {
 		model: args.field,
 		name: args.name,
 	});
-	const humanReadablePath = args.path
-		.map((element) => {
-			if (element.model) {
-				return humanReadableName;
-			} else if (element.label) {
-				return element.label;
-			} else {
-				return element.id;
-			}
-		})
-		.join(" → ");
+	const humanReadablePath = getHumanReadablePath({ path: args.path });
 	const humanReadableFieldType = getHumanReadableFieldType({
 		field: args.field,
 	});
 
 	result = addLine(
-		` * ${humanReadableName} field in ${humanReadablePath}`,
+		` * ${humanReadableName} field in *${humanReadablePath}*`,
 		result,
 	);
 
-	result = addBlankLine(result, { force: true });
+	result = addLine(" *", result);
 
 	result = addLine(` * - **Field Type**: ${humanReadableFieldType}`, result);
 
@@ -123,7 +113,7 @@ export function buildFieldDocs(args: BuildFieldDocsArgs): string {
 	}
 
 	const apiIDPath = getAPIIDPath({
-		path: [...args.path, { id: args.name, model: args.field }],
+		path: [...args.path, { name: args.name, model: args.field }],
 	});
 	result = addLine(` * - **API ID Path**: ${apiIDPath}`, result);
 

@@ -6,6 +6,7 @@ import { buildTypeName } from "../lib/buildTypeName";
 import { AuxiliaryType, FieldConfigs } from "../types";
 
 import { buildFieldProperties } from "./buildFieldProperties";
+import { getHumanReadableModelName } from "./getHumanReadableModelName";
 
 type BuildCustomTypeDataTypeArgs = {
 	model: CustomTypeModel;
@@ -25,6 +26,10 @@ export function buildCustomTypeDataType(
 	const auxiliaryTypes: AuxiliaryType[] = [];
 
 	const name = buildTypeName(args.model.id, "Document", "Data");
+	const humanReadableName = getHumanReadableModelName({
+		name: args.model.id,
+		model: args.model,
+	});
 
 	let fieldProperties = "";
 
@@ -36,7 +41,7 @@ export function buildCustomTypeDataType(
 			fieldConfigs: args.fieldConfigs,
 			path: [
 				{
-					id: args.model.id,
+					name: args.model.id,
 					model: args.model,
 				},
 			],
@@ -50,6 +55,9 @@ export function buildCustomTypeDataType(
 
 	if (fieldProperties) {
 		code = source`
+			/**
+			 * Content for ${humanReadableName} documents
+			 */
 			interface ${name} {
 				${fieldProperties}
 			}

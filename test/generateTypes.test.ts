@@ -1,5 +1,7 @@
 import { expect, it } from "vitest";
 
+import * as v0_1_11 from "prismic-ts-codegen-v0-1-11";
+
 import { parseSourceFile } from "./__testutils__/parseSourceFile";
 
 import * as lib from "../src";
@@ -277,7 +279,17 @@ it("uses the existing prismic import if the `@prismicio/client` types provider i
 it("outputs correct code style", (ctx) => {
 	const customTypeModels = Array.from({ length: 5 }, () =>
 		ctx.mock.model.customType({
-			fields: ctx.mock.model.buildMockGroupFieldMap(),
+			fields: {
+				...ctx.mock.model.buildMockGroupFieldMap(),
+				sliceZone: ctx.mock.model.sliceZone({
+					choices: {
+						foo: ctx.mock.model.slice({
+							nonRepeatFields: ctx.mock.model.buildMockGroupFieldMap(),
+							repeatFields: ctx.mock.model.buildMockGroupFieldMap(),
+						}),
+					},
+				}),
+			},
 		}),
 	);
 	const sharedSliceModels = Array.from({ length: 5 }, () =>
@@ -352,4 +364,43 @@ it("cached types are the same as uncached types", (ctx) => {
 
 	expect(cached1).toBe(cached2);
 	expect(cached1).toBe(uncached);
+});
+
+// TODO: Remove once transition is complete.
+it.only("has compat with v0.1.11", (ctx) => {
+	const customTypeModels = [
+		ctx.mock.model.customType({
+			fields: {
+				foo: ctx.mock.model.keyText(),
+			},
+		}),
+	];
+
+	const sharedSliceModels = [
+		ctx.mock.model.sharedSlice({
+			variations: [
+				ctx.mock.model.sharedSliceVariation({
+					primaryFields: {
+						bar: ctx.mock.model.keyText(),
+					},
+					itemsFields: {
+						baz: ctx.mock.model.keyText(),
+					},
+				}),
+			],
+		}),
+	];
+
+	const pre = v0_1_11.generateTypes({
+		customTypeModels,
+		sharedSliceModels,
+	});
+
+	const post = lib.generateTypes({
+		customTypeModels,
+		sharedSliceModels,
+		cache: true,
+	});
+
+	expect(pre).toBe(post);
 });

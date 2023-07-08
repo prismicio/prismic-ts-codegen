@@ -12,7 +12,7 @@ export type PathElement<
 		| CustomTypeModelField
 		| CustomTypeModelSlice,
 > = {
-	id: string;
+	name: string;
 	model?: Model;
 	label?: string;
 };

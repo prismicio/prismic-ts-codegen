@@ -19,9 +19,9 @@ export function getAPIIDPath(args: GetAPIIDPathArgs) {
 			"type" in element.model &&
 			(element.model.type === "Group" || element.model.type === "Slices")
 		) {
-			result += `${element.id}[]`;
+			result += `${element.name}[]`;
 		} else {
-			if (element.id === "items") {
+			if (element.name === "items") {
 				const previousElement = args.path[i - 1];
 
 				if (
@@ -30,13 +30,13 @@ export function getAPIIDPath(args: GetAPIIDPathArgs) {
 						"type" in previousElement.model &&
 						previousElement.model.type === "SharedSlice")
 				) {
-					result += `${element.id}[]`;
+					result += `${element.name}[]`;
 
 					continue;
 				}
 			}
 
-			result += element.id;
+			result += element.name;
 		}
 	}
 

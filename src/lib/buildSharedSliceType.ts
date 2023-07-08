@@ -1,14 +1,18 @@
 import { SharedSliceModel } from "@prismicio/client";
-import { source } from "common-tags";
+import { source, stripIndent } from "common-tags";
 import QuickLRU from "quick-lru";
 
-import { FieldConfigs } from "../types";
+import { FieldConfigs, FieldPath } from "../types";
+
+import { SHARED_SLICES_DOCUMENTATION_URL } from "../constants";
 
 import { addSection } from "./addSection";
 import { buildFieldProperties } from "./buildFieldProperties";
 import { buildTypeName } from "./buildTypeName";
 import { buildUnion } from "./buildUnion";
 import { createContentDigest } from "./createContentDigest";
+import { getHumanReadableModelName } from "./getHumanReadableModelName";
+import { getHumanReadablePath } from "./getHumanReadablePath";
 
 type BuildSharedSliceTypeArgs = {
 	model: SharedSliceModel;
@@ -40,6 +44,10 @@ export function buildSharedSliceType(
 	let code = "";
 
 	const name = buildTypeName(args.model.id, "Slice");
+	const humanReadableName = getHumanReadableModelName({
+		name: args.model.id,
+		model: args.model,
+	});
 
 	const variationNames: string[] = [];
 	for (const variationModel of args.model.variations) {
@@ -51,29 +59,43 @@ export function buildSharedSliceType(
 			Object.keys(variationModel.primary).length > 0
 		) {
 			primaryInterfaceName = buildTypeName(variationName, "Primary");
+
+			const path: FieldPath = [
+				{
+					name: args.model.id,
+					model: args.model,
+				},
+				{
+					name: "primary",
+					label: "Primary",
+				},
+			];
+			const humanReadablePath = getHumanReadablePath({ path });
+
 			const primaryFieldProperties = buildFieldProperties({
 				fields: variationModel.primary,
 				fieldConfigs: args.fieldConfigs,
-				path: [
-					{
-						id: args.model.id,
-						model: args.model,
-					},
-					{
-						id: "primary",
-						label: "Primary",
-					},
-				],
+				path,
 			});
+
+			const docs = stripIndent`
+				/**
+				 * Primary content in *${humanReadablePath}*
+				 */
+			`;
 
 			code = addSection(
 				primaryFieldProperties.code
 					? source`
+						${docs}
 						export interface ${primaryInterfaceName} {
 							${primaryFieldProperties.code}
 						}
 					`
-					: `export interface ${primaryInterfaceName} {}`,
+					: source`
+						${docs}
+						export interface ${primaryInterfaceName} {}
+					`,
 				code,
 			);
 		}
@@ -81,41 +103,64 @@ export function buildSharedSliceType(
 		let itemInterfaceName: string | undefined;
 		if (variationModel.items && Object.keys(variationModel.items).length > 0) {
 			itemInterfaceName = buildTypeName(variationName, "Item");
+
+			const path: FieldPath = [
+				{
+					name: args.model.id,
+					model: args.model,
+				},
+				{
+					name: "items",
+					label: "Items",
+				},
+			];
+			const humanReadablePath = getHumanReadablePath({ path });
+
 			const itemFieldProperties = buildFieldProperties({
 				fields: variationModel.items,
 				fieldConfigs: args.fieldConfigs,
-				path: [
-					{
-						id: args.model.id,
-						model: args.model,
-					},
-					{
-						id: "items",
-						label: "Items",
-					},
-				],
+				path,
 			});
+
+			const docs = stripIndent`
+				/**
+				 * Primary content in *${humanReadablePath}*
+				 */
+			`;
 
 			code = addSection(
 				itemFieldProperties.code
 					? source`
+						${docs}
 						export interface ${itemInterfaceName} {
 							${itemFieldProperties.code}
 						}
 					`
-					: `export interface ${itemInterfaceName} {}`,
+					: source`
+						${docs}
+						export interface ${itemInterfaceName} {}
+					`,
 				code,
 			);
 		}
 
 		code = addSection(
-			`export type ${variationName} = prismic.SharedSliceVariation<"${
+			source`
+				/**
+				 * ${variationModel.name} variation for ${humanReadableName} Slice
+				 *
+				 * - **API ID**: \`${variationModel.id}\`
+				 * - **Description**: ${variationModel.description || "*None*"}
+				 * - **Documentation**: ${SHARED_SLICES_DOCUMENTATION_URL}
+				 */
+				export type ${variationName} = prismic.SharedSliceVariation<"${
 				variationModel.id
 			}", ${
 				primaryInterfaceName
 					? `Simplify<${primaryInterfaceName}>`
 					: `Record<string, never>`
-			}, ${itemInterfaceName ? `Simplify<${itemInterfaceName}>` : `never`}>;`,
+			}, ${itemInterfaceName ? `Simplify<${itemInterfaceName}>` : `never`}>;
+			`,
 			code,
 		);
 
@@ -126,14 +171,30 @@ export function buildSharedSliceType(
 	const variationsUnion = buildUnion(variationNames);
 
 	code = addSection(
-		`type ${variationUnionName} = ${
+		source`
+			/**
+			 * Slice variation for *${humanReadableName}*
+			 */
+			type ${variationUnionName} = ${
 			variationNames.length > 0 ? variationsUnion : "never"
-		}`,
+		}
+		`,
 		code,
 	);
 
 	code = addSection(
-		`export type ${name} = prismic.SharedSlice<"${args.model.id}", ${variationUnionName}>;`,
+		source`
+			/**
+			 * ${humanReadableName} Shared Slice
+			 *
+			 * - **API ID**: \`${args.model.id}\`
+			 * - **Description**: ${args.model.description || "*None*"}
+			 * - **Documentation**: ${SHARED_SLICES_DOCUMENTATION_URL}
+			 */
+			export type ${name} = prismic.SharedSlice<"${
+			args.model.id
+		}", ${variationUnionName}>;
+		`,
 		code,
 	);
 
