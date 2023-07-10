@@ -1,7 +1,5 @@
 import { expect, it } from "vitest";
 
-import * as v0_1_11 from "prismic-ts-codegen-v0-1-11";
-
 import { parseSourceFile } from "./__testutils__/parseSourceFile";
 
 import * as lib from "../src";
@@ -364,43 +362,4 @@ it("cached types are the same as uncached types", (ctx) => {
 
 	expect(cached1).toBe(cached2);
 	expect(cached1).toBe(uncached);
-});
-
-// TODO: Remove once transition is complete.
-it.only("has compat with v0.1.11", (ctx) => {
-	const customTypeModels = [
-		ctx.mock.model.customType({
-			fields: {
-				foo: ctx.mock.model.keyText(),
-			},
-		}),
-	];
-
-	const sharedSliceModels = [
-		ctx.mock.model.sharedSlice({
-			variations: [
-				ctx.mock.model.sharedSliceVariation({
-					primaryFields: {
-						bar: ctx.mock.model.keyText(),
-					},
-					itemsFields: {
-						baz: ctx.mock.model.keyText(),
-					},
-				}),
-			],
-		}),
-	];
-
-	const pre = v0_1_11.generateTypes({
-		customTypeModels,
-		sharedSliceModels,
-	});
-
-	const post = lib.generateTypes({
-		customTypeModels,
-		sharedSliceModels,
-		cache: true,
-	});
-
-	expect(pre).toBe(post);
 });
