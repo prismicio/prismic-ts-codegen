@@ -262,12 +262,16 @@ function buildFieldProperty(
 
 			auxiliaryTypes.push({
 				name: itemName,
-				code: `export interface ${itemName} {\n${itemFieldProperties.code}\n}`,
+				code: source`
+					/**
+					 * Item in *${humanReadablePath}*
+					 */
+					export interface ${itemName} {
+						${itemFieldProperties.code}
+					}
+				`,
 			});
 
-			code = addLine("/**", code);
-			code = addLine(` * Item in ${humanReadablePath}`, code);
-			code = addLine(" */", code);
 			code = addLine(
 				`${name}: prismic.GroupField<Simplify<${itemName}>>;`,
 				code,
