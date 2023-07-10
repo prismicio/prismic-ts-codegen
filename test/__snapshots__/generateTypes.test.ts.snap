@@ -173,6 +173,9 @@ export type MorbiDocumentDataSliceZoneFooSlice = prismic.Slice<\\"foo\\", Simpli
 
 type MorbiDocumentDataSliceZoneSlice = MorbiDocumentDataSliceZoneFooSlice
 
+/**
+ * Content for Morbi documents
+ */
 interface MorbiDocumentData {
 	/**
 	 * Cras field in *Morbi*
@@ -285,6 +288,15 @@ interface MorbiDocumentData {
 	sliceZone: prismic.SliceZone<MorbiDocumentDataSliceZoneSlice>;
 }
 
+/**
+ * Morbi document from Prismic
+ *
+ * - **API ID**: \`morbi\`
+ * - **Repeatable**: \`true\`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
 export type MorbiDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<MorbiDocumentData>, \\"morbi\\", Lang>;
 
 /**
@@ -464,6 +476,9 @@ export type NetusDocumentDataSliceZoneFooSlice = prismic.Slice<\\"foo\\", Simpli
 
 type NetusDocumentDataSliceZoneSlice = NetusDocumentDataSliceZoneFooSlice
 
+/**
+ * Content for Netus documents
+ */
 interface NetusDocumentData {
 	/**
 	 * Vel field in *Netus*
@@ -565,6 +580,15 @@ interface NetusDocumentData {
 	sliceZone: prismic.SliceZone<NetusDocumentDataSliceZoneSlice>;
 }
 
+/**
+ * Netus document from Prismic
+ *
+ * - **API ID**: \`netus\`
+ * - **Repeatable**: \`false\`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
 export type NetusDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NetusDocumentData>, \\"netus\\", Lang>;
 
 /**
@@ -714,6 +738,9 @@ export type AliquamDocumentDataSliceZoneFooSlice = prismic.Slice<\\"foo\\", Simp
 
 type AliquamDocumentDataSliceZoneSlice = AliquamDocumentDataSliceZoneFooSlice
 
+/**
+ * Content for Aliquam documents
+ */
 interface AliquamDocumentData {
 	/**
 	 * Eros field in *Aliquam*
@@ -837,6 +864,15 @@ interface AliquamDocumentData {
 	sliceZone: prismic.SliceZone<AliquamDocumentDataSliceZoneSlice>;
 }
 
+/**
+ * Aliquam document from Prismic
+ *
+ * - **API ID**: \`aliquam\`
+ * - **Repeatable**: \`false\`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
 export type AliquamDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<AliquamDocumentData>, \\"aliquam\\", Lang>;
 
 /**
@@ -1036,6 +1072,9 @@ export type ADocumentDataSliceZoneFooSlice = prismic.Slice<\\"foo\\", Simplify<A
 
 type ADocumentDataSliceZoneSlice = ADocumentDataSliceZoneFooSlice
 
+/**
+ * Content for A documents
+ */
 interface ADocumentData {
 	/**
 	 * In field in *A*
@@ -1115,6 +1154,15 @@ interface ADocumentData {
 	sliceZone: prismic.SliceZone<ADocumentDataSliceZoneSlice>;
 }
 
+/**
+ * A document from Prismic
+ *
+ * - **API ID**: \`a\`
+ * - **Repeatable**: \`false\`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
 export type ADocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<ADocumentData>, \\"a\\", Lang>;
 
 /**
@@ -1294,6 +1342,9 @@ export type ConsequatDocumentDataSliceZoneFooSlice = prismic.Slice<\\"foo\\", Si
 
 type ConsequatDocumentDataSliceZoneSlice = ConsequatDocumentDataSliceZoneFooSlice
 
+/**
+ * Content for Consequat documents
+ */
 interface ConsequatDocumentData {
 	/**
 	 * Mi field in *Consequat*
@@ -1362,10 +1413,22 @@ interface ConsequatDocumentData {
 	sliceZone: prismic.SliceZone<ConsequatDocumentDataSliceZoneSlice>;
 }
 
+/**
+ * Consequat document from Prismic
+ *
+ * - **API ID**: \`consequat\`
+ * - **Repeatable**: \`true\`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
 export type ConsequatDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<ConsequatDocumentData>, \\"consequat\\", Lang>;
 
 export type AllDocumentTypes = MorbiDocument | NetusDocument | AliquamDocument | ADocument | ConsequatDocument;
 
+/**
+ * Primary content in *Interdum → Primary*
+ */
 export interface InterdumSliceVelPrimary {
 	/**
 	 * Massa field in *Interdum → Primary*
@@ -1488,6 +1551,9 @@ export interface InterdumSliceVelPrimary {
 	congue_nisi: prismic.TitleField;
 }
 
+/**
+ * Primary content in *Interdum → Items*
+ */
 export interface InterdumSliceVelItem {
 	/**
 	 * Quis field in *Interdum → Items*
@@ -1580,12 +1646,32 @@ export interface InterdumSliceVelItem {
 	enim_praesent: prismic.TitleField;
 }
 
+/**
+ * Vel variation for Interdum Slice
+ *
+ * - **API ID**: \`vel\`
+ * - **Description**: Tortor consequat id porta nibh venenatis cras sed
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
 export type InterdumSliceVel = prismic.SharedSliceVariation<\\"vel\\", Simplify<InterdumSliceVelPrimary>, Simplify<InterdumSliceVelItem>>;
 
+/**
+ * Slice variation for *Interdum*
+ */
 type InterdumSliceVariation = InterdumSliceVel
 
+/**
+ * Interdum Shared Slice
+ *
+ * - **API ID**: \`interdum\`
+ * - **Description**: Diam sollicitudin tempor id eu nisl nunc mi ipsum
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
 export type InterdumSlice = prismic.SharedSlice<\\"interdum\\", InterdumSliceVariation>;
 
+/**
+ * Primary content in *Justo → Primary*
+ */
 export interface JustoSliceAPrimary {
 	/**
 	 * Ut field in *Justo → Primary*
@@ -1648,6 +1734,9 @@ export interface JustoSliceAPrimary {
 	aliquet_nibh: prismic.NumberField;
 }
 
+/**
+ * Primary content in *Justo → Items*
+ */
 export interface JustoSliceAItem {
 	/**
 	 * Lacinia field in *Justo → Items*
@@ -1720,12 +1809,32 @@ export interface JustoSliceAItem {
 	vel_quam: prismic.TitleField;
 }
 
+/**
+ * A variation for Justo Slice
+ *
+ * - **API ID**: \`a\`
+ * - **Description**: Posuere urna nec tincidunt praesent semper feugiat nibh sed
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
 export type JustoSliceA = prismic.SharedSliceVariation<\\"a\\", Simplify<JustoSliceAPrimary>, Simplify<JustoSliceAItem>>;
 
+/**
+ * Slice variation for *Justo*
+ */
 type JustoSliceVariation = JustoSliceA
 
+/**
+ * Justo Shared Slice
+ *
+ * - **API ID**: \`justo\`
+ * - **Description**: Nibh cras pulvinar mattis nunc sed blandit libero volutpat
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
 export type JustoSlice = prismic.SharedSlice<\\"justo\\", JustoSliceVariation>;
 
+/**
+ * Primary content in *Eget → Primary*
+ */
 export interface EgetSliceSollicitudinPrimary {
 	/**
 	 * Condimentum field in *Eget → Primary*
@@ -1798,6 +1907,9 @@ export interface EgetSliceSollicitudinPrimary {
 	aenean_vel: prismic.TimestampField;
 }
 
+/**
+ * Primary content in *Eget → Items*
+ */
 export interface EgetSliceSollicitudinItem {
 	/**
 	 * Sed field in *Eget → Items*
@@ -1890,12 +2002,32 @@ export interface EgetSliceSollicitudinItem {
 	et: prismic.TitleField;
 }
 
+/**
+ * Sollicitudin variation for Eget Slice
+ *
+ * - **API ID**: \`sollicitudin\`
+ * - **Description**: Posuere sollicitudin aliquam ultrices sagittis orci a scelerisque purus
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
 export type EgetSliceSollicitudin = prismic.SharedSliceVariation<\\"sollicitudin\\", Simplify<EgetSliceSollicitudinPrimary>, Simplify<EgetSliceSollicitudinItem>>;
 
+/**
+ * Slice variation for *Eget*
+ */
 type EgetSliceVariation = EgetSliceSollicitudin
 
+/**
+ * Eget Shared Slice
+ *
+ * - **API ID**: \`eget\`
+ * - **Description**: Quisque non tellus orci ac auctor augue mauris augue
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
 export type EgetSlice = prismic.SharedSlice<\\"eget\\", EgetSliceVariation>;
 
+/**
+ * Primary content in *Aliquet → Primary*
+ */
 export interface AliquetSliceVitaePrimary {
 	/**
 	 * A field in *Aliquet → Primary*
@@ -1958,6 +2090,9 @@ export interface AliquetSliceVitaePrimary {
 	dictum: prismic.TitleField;
 }
 
+/**
+ * Primary content in *Aliquet → Items*
+ */
 export interface AliquetSliceVitaeItem {
 	/**
 	 * Sagittis field in *Aliquet → Items*
@@ -2010,12 +2145,32 @@ export interface AliquetSliceVitaeItem {
 	gravida_neque: prismic.TitleField;
 }
 
+/**
+ * Vitae variation for Aliquet Slice
+ *
+ * - **API ID**: \`vitae\`
+ * - **Description**: Enim tortor at auctor urna nunc id
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
 export type AliquetSliceVitae = prismic.SharedSliceVariation<\\"vitae\\", Simplify<AliquetSliceVitaePrimary>, Simplify<AliquetSliceVitaeItem>>;
 
+/**
+ * Slice variation for *Aliquet*
+ */
 type AliquetSliceVariation = AliquetSliceVitae
 
+/**
+ * Aliquet Shared Slice
+ *
+ * - **API ID**: \`aliquet\`
+ * - **Description**: Adipiscing enim eu turpis egestas pretium aenean
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
 export type AliquetSlice = prismic.SharedSlice<\\"aliquet\\", AliquetSliceVariation>;
 
+/**
+ * Primary content in *Cum → Primary*
+ */
 export interface CumSliceIdPrimary {
 	/**
 	 * Malesuada field in *Cum → Primary*
@@ -2118,6 +2273,9 @@ export interface CumSliceIdPrimary {
 	aliquam_sem: prismic.TitleField;
 }
 
+/**
+ * Primary content in *Cum → Items*
+ */
 export interface CumSliceIdItem {
 	/**
 	 * Elit field in *Cum → Items*
@@ -2210,10 +2368,27 @@ export interface CumSliceIdItem {
 	bibendum_enim: prismic.TitleField;
 }
 
+/**
+ * Id variation for Cum Slice
+ *
+ * - **API ID**: \`id\`
+ * - **Description**: Netus et malesuada fames ac turpis
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
 export type CumSliceId = prismic.SharedSliceVariation<\\"id\\", Simplify<CumSliceIdPrimary>, Simplify<CumSliceIdItem>>;
 
+/**
+ * Slice variation for *Cum*
+ */
 type CumSliceVariation = CumSliceId
 
+/**
+ * Cum Shared Slice
+ *
+ * - **API ID**: \`cum\`
+ * - **Description**: Quam pellentesque nec nam aliquam sem et tortor
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
 export type CumSlice = prismic.SharedSlice<\\"cum\\", CumSliceVariation>;
 
 declare module \\"@prismicio/client\\" {
