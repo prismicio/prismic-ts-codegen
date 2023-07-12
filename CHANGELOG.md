@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.12](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.11...v0.1.12) (2023-07-12)
+
+
+### Refactor
+
+* optimize type generation ([#51](https://github.com/prismicio/prismic-ts-codegen/issues/51)) ([ed15590](https://github.com/prismicio/prismic-ts-codegen/commit/ed15590564a8ab085a02e65001200e1ce20a284c)), closes [#53](https://github.com/prismicio/prismic-ts-codegen/issues/53)
+
 ### [0.1.11](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.10...v0.1.11) (2023-05-31)
 
 
