@@ -11,7 +11,7 @@ import { buildCustomTypeDataType } from "./buildCustomTypeDataType";
 import { buildTypeName } from "./buildTypeName";
 import { buildUnion } from "./buildUnion";
 import { checkHasUIDField } from "./checkHasUIDFIeld";
-import { createContentDigest } from "./createContentDigest";
+import { getCacheKey } from "./getCacheKey";
 import { getHumanReadableModelName } from "./getHumanReadableModelName";
 
 type BuildCustomTypeTypesArgs = {
@@ -32,7 +32,7 @@ export function buildCustomTypeType(
 	args: BuildCustomTypeTypesArgs,
 ): BuildCustomTypeTypeReturnValue {
 	if (args.cache) {
-		const key = createContentDigest(JSON.stringify(args.model));
+		const key = getCacheKey(args.model);
 		const cached = args.cache.get(key);
 
 		if (cached) {
@@ -92,7 +92,7 @@ export function buildCustomTypeType(
 	};
 
 	if (args.cache) {
-		const key = createContentDigest(JSON.stringify(args.model));
+		const key = getCacheKey(args.model);
 
 		args.cache.set(key, result);
 	}

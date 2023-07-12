@@ -10,7 +10,7 @@ import { addSection } from "./addSection";
 import { buildFieldProperties } from "./buildFieldProperties";
 import { buildTypeName } from "./buildTypeName";
 import { buildUnion } from "./buildUnion";
-import { createContentDigest } from "./createContentDigest";
+import { getCacheKey } from "./getCacheKey";
 import { getHumanReadableModelName } from "./getHumanReadableModelName";
 import { getHumanReadablePath } from "./getHumanReadablePath";
 
@@ -31,9 +31,7 @@ export function buildSharedSliceType(
 	args: BuildSharedSliceTypeArgs,
 ): BuildSharedSliceTypeReturnValue {
 	if (args.cache) {
-		const key = createContentDigest(
-			JSON.stringify([args.model, args.fieldConfigs]),
-		);
+		const key = getCacheKey([args.model, args.fieldConfigs]);
 		const cached = args.cache.get(key);
 
 		if (cached) {
@@ -206,9 +204,7 @@ export function buildSharedSliceType(
 	};
 
 	if (args.cache) {
-		const key = createContentDigest(
-			JSON.stringify([args.model, args.fieldConfigs]),
-		);
+		const key = getCacheKey([args.model, args.fieldConfigs]);
 
 		args.cache.set(key, result);
 	}
