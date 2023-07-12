@@ -273,3 +273,93 @@ it("uses the existing prismic import if the `@prismicio/client` types provider i
 		file.getImportDeclarationOrThrow("@prismicio/client");
 	}).not.throws("imports `@prismicio/client`");
 });
+
+it("outputs correct code style", (ctx) => {
+	const customTypeModels = Array.from({ length: 5 }, () =>
+		ctx.mock.model.customType({
+			fields: {
+				...ctx.mock.model.buildMockGroupFieldMap(),
+				sliceZone: ctx.mock.model.sliceZone({
+					choices: {
+						foo: ctx.mock.model.slice({
+							nonRepeatFields: ctx.mock.model.buildMockGroupFieldMap(),
+							repeatFields: ctx.mock.model.buildMockGroupFieldMap(),
+						}),
+					},
+				}),
+			},
+		}),
+	);
+	const sharedSliceModels = Array.from({ length: 5 }, () =>
+		ctx.mock.model.sharedSlice({
+			variations: [
+				ctx.mock.model.sharedSliceVariation({
+					primaryFields: ctx.mock.model.buildMockGroupFieldMap(),
+					itemsFields: ctx.mock.model.buildMockGroupFieldMap(),
+				}),
+			],
+		}),
+	);
+
+	const res = lib.generateTypes({
+		customTypeModels,
+		sharedSliceModels,
+		clientIntegration: {
+			includeContentNamespace: true,
+			includeCreateClientInterface: true,
+		},
+	});
+
+	expect(res).toMatchSnapshot();
+});
+
+it("cached types are the same as uncached types", (ctx) => {
+	const customTypeModels = [
+		ctx.mock.model.customType({
+			fields: ctx.mock.model.buildMockGroupFieldMap(),
+		}),
+		ctx.mock.model.customType({
+			fields: ctx.mock.model.buildMockGroupFieldMap(),
+		}),
+	];
+
+	const sharedSliceModels = [
+		ctx.mock.model.sharedSlice({
+			variations: [
+				ctx.mock.model.sharedSliceVariation({
+					primaryFields: ctx.mock.model.buildMockGroupFieldMap(),
+					itemsFields: ctx.mock.model.buildMockGroupFieldMap(),
+				}),
+			],
+		}),
+		ctx.mock.model.sharedSlice({
+			variations: [
+				ctx.mock.model.sharedSliceVariation({
+					primaryFields: ctx.mock.model.buildMockGroupFieldMap(),
+					itemsFields: ctx.mock.model.buildMockGroupFieldMap(),
+				}),
+			],
+		}),
+	];
+
+	const cached1 = lib.generateTypes({
+		customTypeModels,
+		sharedSliceModels,
+		cache: true,
+	});
+
+	const cached2 = lib.generateTypes({
+		customTypeModels,
+		sharedSliceModels,
+		cache: true,
+	});
+
+	const uncached = lib.generateTypes({
+		customTypeModels,
+		sharedSliceModels,
+		cache: false,
+	});
+
+	expect(cached1).toBe(cached2);
+	expect(cached1).toBe(uncached);
+});

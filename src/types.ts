@@ -12,9 +12,19 @@ export type PathElement<
 		| CustomTypeModelField
 		| CustomTypeModelSlice,
 > = {
-	id: string;
+	name: string;
 	model?: Model;
 	label?: string;
+};
+
+export type FieldPath = [
+	PathElement<CustomTypeModel | SharedSliceModel>,
+	...PathElement<CustomTypeModelField | CustomTypeModelSlice>[],
+];
+
+export type AuxiliaryType = {
+	code: string;
+	name: string;
 };
 
 export type FieldConfigs = {

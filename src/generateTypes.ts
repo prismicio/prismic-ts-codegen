@@ -1,16 +1,18 @@
 import type { CustomTypeModel, SharedSliceModel } from "@prismicio/client";
-import { ModuleDeclarationKind, Project } from "ts-morph";
+import { source } from "common-tags";
+import QuickLRU from "quick-lru";
 
-import { addTypeAliasForCustomType } from "./lib/addTypeAliasForCustomType";
-import { addTypeAliasForSharedSlice } from "./lib/addTypeAliasForSharedSlice";
-import { buildTypeName } from "./lib/buildTypeName";
-import { getSourceFileText } from "./lib/getSourceFileText";
+import { addLine } from "./lib/addLine";
+import { addSection } from "./lib/addSection";
+import { buildCustomTypeType } from "./lib/buildCustomTypeType";
+import { buildSharedSliceType } from "./lib/buildSharedSliceType";
+import { buildUnion } from "./lib/buildUnion";
 
 import { FieldConfigs } from "./types";
 
-import { BLANK_LINE_IDENTIFIER } from "./constants";
-
 export type TypesProvider = "@prismicio/client" | "@prismicio/types";
+
+const cache = new QuickLRU<string, unknown>({ maxSize: 1000 });
 
 export type GenerateTypesConfig = {
 	customTypeModels?: CustomTypeModel[];
@@ -22,65 +24,92 @@ export type GenerateTypesConfig = {
 		includeCreateClientInterface?: boolean;
 		includeContentNamespace?: boolean;
 	};
+	cache?: boolean;
 };
 
-export const generateTypes = (config: GenerateTypesConfig = {}) => {
-	const project = new Project({
-		useInMemoryFileSystem: true,
-	});
+export function generateTypes(config: GenerateTypesConfig = {}): string {
+	const fieldConfigs = config.fieldConfigs || {};
+	const shouldUseCache = config.cache ?? true;
 
-	const sourceFile = project.createSourceFile("types.d.ts");
+	let code = "";
 
 	const typesProvider = config.typesProvider || "@prismicio/types";
+	let clientImportName = "prismic";
 
-	sourceFile.addImportDeclaration({
-		moduleSpecifier: typesProvider,
-		namespaceImport: "prismic",
-		isTypeOnly: true,
-	});
+	code = addLine(`import type * as prismic from "${typesProvider}";`, code);
 
-	sourceFile.addStatements(BLANK_LINE_IDENTIFIER);
+	if (
+		config.clientIntegration?.includeCreateClientInterface ||
+		config.clientIntegration?.includeContentNamespace
+	) {
+		if (typesProvider !== "@prismicio/client") {
+			clientImportName = "prismicClient";
 
-	const simplifyTypeAlias = sourceFile.addTypeAlias({
-		name: "Simplify",
-		typeParameters: [
-			{
-				name: "T",
-			},
-		],
-		type: `{ [KeyType in keyof T]: T[KeyType] }`,
-	});
+			// This import declaration would be a duplicate if the types
+			// provider is @prismicio/client.
+			code = addLine(
+				`import type * as ${clientImportName} from "@prismicio/client";`,
+				code,
+			);
+		}
+	}
+
+	code = addSection(
+		`type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };`,
+		code,
+	);
+
+	const contentTypeNames: string[] = [];
 
 	if (config.customTypeModels) {
+		const allDocumentTypesTypeNames: string[] = [];
+
 		for (const model of config.customTypeModels) {
-			addTypeAliasForCustomType({
+			const customTypeType = buildCustomTypeType({
 				model,
-				sourceFile,
-				localeIDs: config.localeIDs || [],
-				fieldConfigs: config.fieldConfigs || {},
+				localeIDs: config.localeIDs,
+				fieldConfigs,
+				cache: shouldUseCache ? cache : undefined,
 			});
+
+			for (const auxiliaryType of customTypeType.auxiliaryTypes) {
+				code = addSection(auxiliaryType.code, code);
+			}
+
+			code = addSection(customTypeType.code, code);
+
+			allDocumentTypesTypeNames.push(customTypeType.name);
+
+			contentTypeNames.push(customTypeType.name);
+			contentTypeNames.push(customTypeType.dataName);
 		}
 
 		if (config.customTypeModels.length > 0) {
-			sourceFile.addTypeAlias({
-				name: "AllDocumentTypes",
-				type: config.customTypeModels
-					.map((customTypeModel) =>
-						buildTypeName(customTypeModel.id, "Document"),
-					)
-					.join(" | "),
-				isExported: true,
-			});
+			const allDocumentTypesUnionName = "AllDocumentTypes";
+			const allDocumentTypesUnion = buildUnion(allDocumentTypesTypeNames);
+
+			code = addSection(
+				`export type ${allDocumentTypesUnionName} = ${allDocumentTypesUnion};`,
+				code,
+			);
+
+			contentTypeNames.push(allDocumentTypesUnionName);
 		}
 	}
 
 	if (config.sharedSliceModels) {
 		for (const model of config.sharedSliceModels) {
-			addTypeAliasForSharedSlice({
+			const sharedSliceType = buildSharedSliceType({
 				model,
-				sourceFile,
-				fieldConfigs: config.fieldConfigs || {},
+				fieldConfigs,
+				cache: shouldUseCache ? cache : undefined,
 			});
+
+			code = addSection(sharedSliceType.code, code);
+
+			contentTypeNames.push(sharedSliceType.name);
+			contentTypeNames.push(sharedSliceType.variationUnionName);
+			contentTypeNames.push(...sharedSliceType.variationNames);
 		}
 	}
 
@@ -88,76 +117,48 @@ export const generateTypes = (config: GenerateTypesConfig = {}) => {
 		config.clientIntegration?.includeCreateClientInterface ||
 		config.clientIntegration?.includeContentNamespace
 	) {
-		let clientNamespaceImportName = "prismic";
-
-		if (typesProvider !== "@prismicio/client") {
-			clientNamespaceImportName = "prismicClient";
-
-			// This import declaration would be a duplicate if the types
-			// provider is @prismicio/client.
-			sourceFile.addImportDeclaration({
-				moduleSpecifier: "@prismicio/client",
-				namespaceImport: clientNamespaceImportName,
-				isTypeOnly: true,
-			});
-		}
-
-		const clientModuleDeclaration = sourceFile.addModule({
-			name: '"@prismicio/client"',
-			hasDeclareKeyword: true,
-			declarationKind: ModuleDeclarationKind.Module,
-		});
+		let clientModuleCode = "";
 
 		if (config.clientIntegration.includeCreateClientInterface) {
-			clientModuleDeclaration.addInterface({
-				name: "CreateClient",
-				callSignatures: [
-					{
-						parameters: [
-							{
-								name: "repositoryNameOrEndpoint",
-								type: "string",
-							},
-							{
-								name: "options",
-								type: `${clientNamespaceImportName}.ClientConfig`,
-								hasQuestionToken: true,
-							},
-						],
-						returnType:
-							(config.customTypeModels?.length || 0) > 0
-								? `${clientNamespaceImportName}.Client<AllDocumentTypes>`
-								: `${clientNamespaceImportName}.Client`,
-					},
-				],
-			});
+			if ((config.customTypeModels?.length || 0) > 0) {
+				clientModuleCode = addSection(
+					`interface CreateClient {
+	(repositoryNameOrEndpoint: string, options?: ${clientImportName}.ClientConfig): ${clientImportName}.Client<AllDocumentTypes>;
+}`,
+					clientModuleCode,
+				);
+			} else {
+				clientModuleCode = addSection(
+					`interface CreateClient {
+	(repositoryNameOrEndpoint: string, options?: ${clientImportName}.ClientConfig): ${clientImportName}.Client;
+}`,
+					clientModuleCode,
+				);
+			}
 		}
 
 		if (config.clientIntegration.includeContentNamespace) {
-			const contentNamespaceDeclaration = clientModuleDeclaration.addModule({
-				name: "Content",
-				declarationKind: ModuleDeclarationKind.Namespace,
-			});
-
-			const exportSymbols = sourceFile
-				.getExportSymbols()
-				.filter((exportSymbol) => {
-					// The Simplify utility type should not
-					// be exported, but it is included in
-					// `getExportSymbols()`'s result.
-					return exportSymbol.getName() !== simplifyTypeAlias.getName();
-				});
-
-			contentNamespaceDeclaration.addExportDeclaration({
-				isTypeOnly: true,
-				namedExports: exportSymbols.map((exportSymbol) => {
-					return {
-						name: exportSymbol.getName(),
-					};
-				}),
-			});
+			clientModuleCode = addSection(
+				source`
+					namespace Content {
+						export type {
+							${contentTypeNames.join(",\n")}
+						}
+					}
+				`,
+				clientModuleCode,
+			);
 		}
+
+		code = addSection(
+			source`
+				declare module "@prismicio/client" {
+					${clientModuleCode}
+				}
+			`,
+			code,
+		);
 	}
 
-	return getSourceFileText(sourceFile);
-};
+	return code;
+}

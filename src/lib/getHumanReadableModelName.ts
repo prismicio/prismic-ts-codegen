@@ -5,13 +5,8 @@ import type {
 	SharedSliceModel,
 } from "@prismicio/client";
 
-import { isCustomTypeModel } from "./isCustomTypeModel";
-import { isCustomTypeModelField } from "./isCustomTypeModelField";
-import { isCustomTypeModelSlice } from "./isCustomTypeModelSlice";
-import { isSharedSliceModel } from "./isSharedSliceModel";
-
-type GetModelHumanNameConfig = {
-	id: string;
+type GetModelHumanNameArgs = {
+	name: string;
 	model:
 		| CustomTypeModel
 		| SharedSliceModel
@@ -20,23 +15,31 @@ type GetModelHumanNameConfig = {
 };
 
 export const getHumanReadableModelName = (
-	config: GetModelHumanNameConfig,
+	args: GetModelHumanNameArgs,
 ): string => {
-	if (isCustomTypeModel(config.model)) {
-		return config.model.label || config.model.id;
-	} else if (isSharedSliceModel(config.model)) {
-		return config.model.name;
-	} else if (isCustomTypeModelField(config.model)) {
-		if (config.model.config && "label" in config.model.config) {
+	if ("json" in args.model) {
+		// Custom type model
+
+		return args.model.label || args.model.id;
+	} else if ("type" in args.model && args.model.type === "SharedSlice") {
+		// Shared Slice model
+
+		return args.model.name;
+	} else if ("type" in args.model && args.model.type === "Slice") {
+		// Legacy Slice model
+
+		return args.model.fieldset || args.name;
+	} else if ("type" in args.model) {
+		// Field model
+
+		if (args.model.config && "label" in args.model.config) {
 			// Non-Slice Zone fields
-			return config.model.config.label || config.id;
-		} else if (config.model.config && "fieldset" in config.model) {
+			return args.model.config.label || args.name;
+		} else if (args.model.config && "fieldset" in args.model) {
 			// Slice Zone
-			return config.model.fieldset || config.id;
+			return args.model.fieldset || args.name;
 		}
-	} else if (isCustomTypeModelSlice(config.model)) {
-		return config.model.fieldset || config.id;
 	}
 
-	return `\`${config.id}\``;
+	return `\`${args.name}\``;
 };

@@ -1,45 +1,44 @@
-import type {
-	CustomTypeModel,
-	CustomTypeModelField,
-	CustomTypeModelSlice,
-	SharedSliceModel,
-} from "@prismicio/client";
+import { FieldPath } from "../types";
 
-import { PathElement } from "../types";
-
-import { isCustomTypeModelField } from "./isCustomTypeModelField";
-import { isCustomTypeModelSlice } from "./isCustomTypeModelSlice";
-import { isSharedSliceModel } from "./isSharedSliceModel";
-
-type GetAPIIDPathConfig = {
-	path: [
-		PathElement<CustomTypeModel | SharedSliceModel>,
-		...PathElement<CustomTypeModelField | CustomTypeModelSlice>[],
-	];
+type GetAPIIDPathArgs = {
+	path: FieldPath;
 };
 
-export const getAPIIDPath = (config: GetAPIIDPathConfig): string => {
-	return config.path
-		.map((element, i) => {
-			if (
-				isCustomTypeModelField(element.model) &&
-				(element.model.type === "Group" || element.model.type === "Slices")
-			) {
-				return `${element.id}[]`;
-			} else {
-				if (element.id === "items") {
-					const previousElement = config.path[i - 1];
+export function getAPIIDPath(args: GetAPIIDPathArgs) {
+	let result = "";
 
-					if (
-						isCustomTypeModelSlice(previousElement.model) ||
-						isSharedSliceModel(previousElement.model)
-					) {
-						return `${element.id}[]`;
-					}
+	for (let i = 0; i < args.path.length; i++) {
+		if (i > 0) {
+			result += ".";
+		}
+
+		const element = args.path[i];
+
+		if (
+			element.model &&
+			"type" in element.model &&
+			(element.model.type === "Group" || element.model.type === "Slices")
+		) {
+			result += `${element.name}[]`;
+		} else {
+			if (element.name === "items") {
+				const previousElement = args.path[i - 1];
+
+				if (
+					(previousElement.model && "json" in previousElement.model) ||
+					(previousElement.model &&
+						"type" in previousElement.model &&
+						previousElement.model.type === "SharedSlice")
+				) {
+					result += `${element.name}[]`;
+
+					continue;
 				}
-
-				return element.id;
 			}
-		})
-		.join(".");
-};
+
+			result += element.name;
+		}
+	}
+
+	return result;
+}
