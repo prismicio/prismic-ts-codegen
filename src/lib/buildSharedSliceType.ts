@@ -1,4 +1,4 @@
-import { SharedSliceModel } from "@prismicio/client";
+import type { SharedSliceModel } from "@prismicio/client";
 import { source, stripIndent } from "common-tags";
 import QuickLRU from "quick-lru";
 

@@ -1,8 +1,4 @@
-import {
-	CustomTypeModelField,
-	CustomTypeModelFieldType,
-	CustomTypeModelLinkSelectType,
-} from "@prismicio/client";
+import type { CustomTypeModelField } from "@prismicio/client";
 import { source, stripIndent } from "common-tags";
 
 import { AuxiliaryType, FieldConfigs, FieldPath } from "../types";
@@ -47,30 +43,30 @@ function buildFieldProperty(
 			: args.name;
 
 	switch (args.field.type) {
-		case CustomTypeModelFieldType.UID: {
+		case "UID": {
 			// UID fields are not included in Data.
 			break;
 		}
 
-		case CustomTypeModelFieldType.Boolean: {
+		case "Boolean": {
 			code = addLine(`${name}: prismic.BooleanField;`, code);
 
 			break;
 		}
 
-		case CustomTypeModelFieldType.Color: {
+		case "Color": {
 			code = addLine(`${name}: prismic.ColorField;`, code);
 
 			break;
 		}
 
-		case CustomTypeModelFieldType.Date: {
+		case "Date": {
 			code = addLine(`${name}: prismic.DateField;`, code);
 
 			break;
 		}
 
-		case CustomTypeModelFieldType.Embed: {
+		case "Embed": {
 			const providerTypes: string[] = [];
 
 			if (args.fieldConfigs.embed?.providerTypes) {
@@ -97,13 +93,13 @@ function buildFieldProperty(
 			break;
 		}
 
-		case CustomTypeModelFieldType.GeoPoint: {
+		case "GeoPoint": {
 			code = addLine(`${name}: prismic.GeoPointField;`, code);
 
 			break;
 		}
 
-		case CustomTypeModelFieldType.Image: {
+		case "Image": {
 			if (
 				args.field.config?.thumbnails &&
 				args.field.config.thumbnails.length > 0
@@ -120,7 +116,7 @@ function buildFieldProperty(
 			break;
 		}
 
-		case CustomTypeModelFieldType.Integration: {
+		case "IntegrationFields": {
 			const catalogType = args.field.config?.catalog
 				? args.fieldConfigs.integrationFields?.catalogTypes?.[
 						args.field.config.catalog
@@ -139,9 +135,9 @@ function buildFieldProperty(
 			break;
 		}
 
-		case CustomTypeModelFieldType.Link: {
+		case "Link": {
 			switch (args.field.config?.select) {
-				case CustomTypeModelLinkSelectType.Document: {
+				case "document": {
 					if (
 						"customtypes" in args.field.config &&
 						args.field.config.customtypes &&
@@ -162,7 +158,7 @@ function buildFieldProperty(
 					break;
 				}
 
-				case CustomTypeModelLinkSelectType.Media: {
+				case "media": {
 					code = addLine(`${name}: prismic.LinkToMediaField;`, code);
 
 					break;
@@ -176,13 +172,13 @@ function buildFieldProperty(
 			break;
 		}
 
-		case CustomTypeModelFieldType.Number: {
+		case "Number": {
 			code = addLine(`${name}: prismic.NumberField;`, code);
 
 			break;
 		}
 
-		case CustomTypeModelFieldType.StructuredText: {
+		case "StructuredText": {
 			const isTitleField =
 				args.field.config &&
 				"single" in args.field.config &&
@@ -200,7 +196,7 @@ function buildFieldProperty(
 			break;
 		}
 
-		case CustomTypeModelFieldType.Select: {
+		case "Select": {
 			const options: string[] =
 				args.field.config?.options?.map((option) => `"${option}"`) || [];
 			const optionsType = options.length ? buildUnion(options) : "string";
@@ -224,19 +220,19 @@ function buildFieldProperty(
 			break;
 		}
 
-		case CustomTypeModelFieldType.Text: {
+		case "Text": {
 			code = addLine(`${name}: prismic.KeyTextField;`, code);
 
 			break;
 		}
 
-		case CustomTypeModelFieldType.Timestamp: {
+		case "Timestamp": {
 			code = addLine(`${name}: prismic.TimestampField;`, code);
 
 			break;
 		}
 
-		case CustomTypeModelFieldType.Group: {
+		case "Group": {
 			const itemName = buildTypeName(
 				args.path[0].name,
 				"Document",
@@ -280,7 +276,7 @@ function buildFieldProperty(
 			break;
 		}
 
-		case CustomTypeModelFieldType.Slices: {
+		case "Slices": {
 			const choiceNames: string[] = [];
 
 			if (args.field.config?.choices) {
