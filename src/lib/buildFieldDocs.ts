@@ -1,4 +1,4 @@
-import { CustomTypeModelField } from "@prismicio/client";
+import type { CustomTypeModelField } from "@prismicio/client";
 
 import { FieldPath } from "../types";
 

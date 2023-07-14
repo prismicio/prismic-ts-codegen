@@ -1,4 +1,4 @@
-import { CustomTypeModel } from "@prismicio/client";
+import type { CustomTypeModel } from "@prismicio/client";
 import { source } from "common-tags";
 import QuickLRU from "quick-lru";
 
