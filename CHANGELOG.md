@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.15](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.14...v0.1.15) (2023-07-14)
+
+
+### Bug Fixes
+
+* restore support for Slice Zones without choices ([#55](https://github.com/prismicio/prismic-ts-codegen/issues/55)) ([3793c9f](https://github.com/prismicio/prismic-ts-codegen/commit/3793c9ff98568755bcaf0f9e05f7a62eec1d8af4))
+
 ### [0.1.14](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.13...v0.1.14) (2023-07-14)
 
 
