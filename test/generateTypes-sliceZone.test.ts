@@ -79,6 +79,23 @@ it("creates a type alias to a union of all Slice types", (ctx) => {
 	);
 });
 
+it("handles Slice zones with no choices", (ctx) => {
+	const model = ctx.mock.model.customType({
+		id: "foo",
+		fields: {
+			bar: ctx.mock.model.sliceZone({
+				choices: {},
+			}),
+		},
+	});
+
+	const types = lib.generateTypes({ customTypeModels: [model] });
+	const file = parseSourceFile(types);
+	const sliceTypeAlias = file.getTypeAliasOrThrow("FooDocumentDataBarSlice");
+
+	expect(sliceTypeAlias.getTypeNodeOrThrow().getText()).toBe("never");
+});
+
 it("creates a type alias for each Slice", (ctx) => {
 	const model = ctx.mock.model.customType({
 		id: "foo",
