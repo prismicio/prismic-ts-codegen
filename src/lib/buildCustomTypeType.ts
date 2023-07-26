@@ -23,9 +23,9 @@ type BuildCustomTypeTypesArgs = {
 
 type BuildCustomTypeTypeReturnValue = {
 	name: string;
-	dataName: string;
 	code: string;
 	auxiliaryTypes: AuxiliaryType[];
+	contentTypeNames: string[];
 };
 
 export function buildCustomTypeType(
@@ -43,6 +43,7 @@ export function buildCustomTypeType(
 	let code = "";
 
 	const auxiliaryTypes: AuxiliaryType[] = [];
+	const contentTypeNames: string[] = [];
 
 	const name = buildTypeName(args.model.id, "Document");
 	const langDefault =
@@ -63,6 +64,8 @@ export function buildCustomTypeType(
 	});
 
 	auxiliaryTypes.push(...dataType.auxiliaryTypes);
+	contentTypeNames.push(dataType.name);
+	contentTypeNames.push(...dataType.contentTypeNames);
 
 	code = addSection(dataType.code, code);
 
@@ -86,9 +89,9 @@ export function buildCustomTypeType(
 
 	const result = {
 		name,
-		dataName: dataType.name,
 		code,
 		auxiliaryTypes,
+		contentTypeNames,
 	};
 
 	if (args.cache) {

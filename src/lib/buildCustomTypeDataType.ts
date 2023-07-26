@@ -17,6 +17,7 @@ type BuildCustomTypeDataTypeReturnValue = {
 	name: string;
 	code: string;
 	auxiliaryTypes: AuxiliaryType[];
+	contentTypeNames: string[];
 };
 
 export function buildCustomTypeDataType(
@@ -24,6 +25,7 @@ export function buildCustomTypeDataType(
 ): BuildCustomTypeDataTypeReturnValue {
 	let code = "";
 	const auxiliaryTypes: AuxiliaryType[] = [];
+	const contentTypeNames: string[] = [];
 
 	const name = buildTypeName(args.model.id, "Document", "Data");
 	const humanReadableName = getHumanReadableModelName({
@@ -51,6 +53,7 @@ export function buildCustomTypeDataType(
 		fieldProperties += tabFieldProperties.code;
 
 		auxiliaryTypes.push(...tabFieldProperties.auxiliaryTypes);
+		contentTypeNames.push(...tabFieldProperties.contentTypeNames);
 	}
 
 	if (fieldProperties) {
@@ -70,5 +73,6 @@ export function buildCustomTypeDataType(
 		name,
 		code,
 		auxiliaryTypes,
+		contentTypeNames,
 	};
 }

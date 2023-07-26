@@ -21,6 +21,7 @@ type BuildFieldPropertyArgs = Pick<
 type BuildFieldPropertyReturnType = {
 	code: string;
 	auxiliaryTypes: AuxiliaryType[];
+	contentTypeNames: string[];
 };
 
 function buildFieldProperty(
@@ -34,6 +35,7 @@ function buildFieldProperty(
 	});
 
 	const auxiliaryTypes: AuxiliaryType[] = [];
+	const contentTypeNames: string[] = [];
 
 	const name =
 		args.name.includes("-") ||
@@ -450,6 +452,7 @@ function buildFieldProperty(
 				name: choiceUnionName,
 				code: `type ${choiceUnionName} = ${choiceUnion}`,
 			});
+			contentTypeNames.push(choiceUnionName);
 
 			code = addLine(`${name}: prismic.SliceZone<${choiceUnionName}>;`, code);
 
@@ -464,6 +467,7 @@ function buildFieldProperty(
 	return {
 		code,
 		auxiliaryTypes,
+		contentTypeNames,
 	};
 }
 
@@ -477,6 +481,7 @@ type BuildFieldPropertiesArgs = {
 type BuildFieldPropertiesReturnType = {
 	code: string;
 	auxiliaryTypes: AuxiliaryType[];
+	contentTypeNames: string[];
 };
 
 export function buildFieldProperties(
@@ -485,6 +490,7 @@ export function buildFieldProperties(
 	let code = "";
 
 	const auxiliaryTypes: AuxiliaryType[] = [];
+	const contentTypeNames: string[] = [];
 
 	for (const name in args.fields) {
 		const field = args.fields[name];
@@ -500,10 +506,12 @@ export function buildFieldProperties(
 		code = addSection(fieldProperty.code, code);
 
 		auxiliaryTypes.push(...fieldProperty.auxiliaryTypes);
+		contentTypeNames.push(...fieldProperty.contentTypeNames);
 	}
 
 	return {
 		code,
 		auxiliaryTypes,
+		contentTypeNames,
 	};
 }
