@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.16](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.15...v0.1.16) (2023-07-26)
+
+
+### Bug Fixes
+
+* restore Slice Zone Slices union in `Content` ([#57](https://github.com/prismicio/prismic-ts-codegen/issues/57)) ([6748a5e](https://github.com/prismicio/prismic-ts-codegen/commit/6748a5e17d3fc0ada8163fcd855f04aa4a1728ff))
+
 ### [0.1.15](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.14...v0.1.15) (2023-07-14)
 
 
