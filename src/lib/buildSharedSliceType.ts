@@ -22,9 +22,9 @@ type BuildSharedSliceTypeArgs = {
 
 type BuildSharedSliceTypeReturnValue = {
 	name: string;
-	variationUnionName: string;
 	variationNames: string[];
 	code: string;
+	contentTypeNames: string[];
 };
 
 export function buildSharedSliceType(
@@ -40,6 +40,7 @@ export function buildSharedSliceType(
 	}
 
 	let code = "";
+	const contentTypeNames: string[] = [];
 
 	const name = buildTypeName(args.model.id, "Slice");
 	const humanReadableName = getHumanReadableModelName({
@@ -75,6 +76,8 @@ export function buildSharedSliceType(
 				fieldConfigs: args.fieldConfigs,
 				path,
 			});
+
+			contentTypeNames.push(...primaryFieldProperties.contentTypeNames);
 
 			const docs = stripIndent`
 				/**
@@ -119,6 +122,8 @@ export function buildSharedSliceType(
 				fieldConfigs: args.fieldConfigs,
 				path,
 			});
+
+			contentTypeNames.push(...itemFieldProperties.contentTypeNames);
 
 			const docs = stripIndent`
 				/**
@@ -168,6 +173,9 @@ export function buildSharedSliceType(
 	const variationUnionName = buildTypeName(name, "Variation");
 	const variationsUnion = buildUnion(variationNames);
 
+	contentTypeNames.push(variationUnionName);
+	contentTypeNames.push(...variationNames);
+
 	code = addSection(
 		source`
 			/**
@@ -198,9 +206,9 @@ export function buildSharedSliceType(
 
 	const result = {
 		name,
-		variationUnionName,
 		variationNames,
 		code,
+		contentTypeNames,
 	};
 
 	if (args.cache) {

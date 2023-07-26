@@ -81,7 +81,7 @@ export function generateTypes(config: GenerateTypesConfig = {}): string {
 			allDocumentTypesTypeNames.push(customTypeType.name);
 
 			contentTypeNames.push(customTypeType.name);
-			contentTypeNames.push(customTypeType.dataName);
+			contentTypeNames.push(...customTypeType.contentTypeNames);
 		}
 
 		if (config.customTypeModels.length > 0) {
@@ -108,8 +108,7 @@ export function generateTypes(config: GenerateTypesConfig = {}): string {
 			code = addSection(sharedSliceType.code, code);
 
 			contentTypeNames.push(sharedSliceType.name);
-			contentTypeNames.push(sharedSliceType.variationUnionName);
-			contentTypeNames.push(...sharedSliceType.variationNames);
+			contentTypeNames.push(...sharedSliceType.contentTypeNames);
 		}
 	}
 
