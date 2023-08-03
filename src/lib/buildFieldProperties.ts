@@ -360,6 +360,7 @@ function buildFieldProperty(
 								name: primaryInterfaceName,
 								code: primaryCode,
 							});
+							contentTypeNames.push(primaryInterfaceName);
 						}
 
 						let itemInterfaceName: string | undefined;
@@ -409,6 +410,7 @@ function buildFieldProperty(
 								name: itemInterfaceName,
 								code: itemCode,
 							});
+							contentTypeNames.push(itemInterfaceName);
 						}
 
 						auxiliaryTypes.push({
