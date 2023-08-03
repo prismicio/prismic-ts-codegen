@@ -78,6 +78,7 @@ export function buildSharedSliceType(
 			});
 
 			contentTypeNames.push(...primaryFieldProperties.contentTypeNames);
+			contentTypeNames.push(primaryInterfaceName);
 
 			const docs = stripIndent`
 				/**
@@ -124,6 +125,7 @@ export function buildSharedSliceType(
 			});
 
 			contentTypeNames.push(...itemFieldProperties.contentTypeNames);
+			contentTypeNames.push(itemInterfaceName);
 
 			const docs = stripIndent`
 				/**
