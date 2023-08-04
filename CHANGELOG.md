@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.17](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.16...v0.1.17) (2023-08-04)
+
+
+### Bug Fixes
+
+* **cli:** prevent `"Named export 'createClient' not found"` error ([#58](https://github.com/prismicio/prismic-ts-codegen/issues/58)) ([bde11d8](https://github.com/prismicio/prismic-ts-codegen/commit/bde11d869c45fa57afc7600dc3d086471ce801df))
+* restore exports for a Slice's `primary` and `item` interfaces ([#59](https://github.com/prismicio/prismic-ts-codegen/issues/59)) ([b31a30a](https://github.com/prismicio/prismic-ts-codegen/commit/b31a30a4c7434fa7a2db85c1e1e6b78b9d85fded))
+
 ### [0.1.16](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.15...v0.1.16) (2023-07-26)
 
 
