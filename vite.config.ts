@@ -4,7 +4,12 @@ import sdk from "vite-plugin-sdk";
 export default defineConfig({
 	plugins: [
 		sdk({
-			internalDependencies: ["@prismicio/client", "quick-lru"],
+			internalDependencies: [
+				"@prismicio/client",
+				"meow",
+				"node-fetch",
+				"quick-lru",
+			],
 		}),
 	],
 	build: {

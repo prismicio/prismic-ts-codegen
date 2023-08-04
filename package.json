@@ -24,7 +24,7 @@
 	"module": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"bin": {
-		"prismic-ts-codegen": "./bin/prismic-ts-codegen.mjs"
+		"prismic-ts-codegen": "./bin/prismic-ts-codegen.js"
 	},
 	"files": [
 		"dist",
