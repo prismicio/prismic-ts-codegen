@@ -279,6 +279,9 @@ it("outputs correct code style", (ctx) => {
 		ctx.mock.model.customType({
 			fields: {
 				...ctx.mock.model.buildMockGroupFieldMap(),
+				group: ctx.mock.model.group({
+					fields: ctx.mock.model.buildMockGroupFieldMap(),
+				}),
 				sliceZone: ctx.mock.model.sliceZone({
 					choices: {
 						foo: ctx.mock.model.slice({
