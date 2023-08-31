@@ -269,6 +269,7 @@ function buildFieldProperty(
 					}
 				`,
 			});
+			contentTypeNames.push(itemName);
 
 			code = addLine(
 				`${name}: prismic.GroupField<Simplify<${itemName}>>;`,
