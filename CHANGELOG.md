@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.18](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.17...v0.1.18) (2023-08-31)
+
+
+### Bug Fixes
+
+* restore group field item type exports ([#60](https://github.com/prismicio/prismic-ts-codegen/issues/60)) ([df04be3](https://github.com/prismicio/prismic-ts-codegen/commit/df04be39c725c63fb73e6caeb1d3446377c97c60))
+
 ### [0.1.17](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.16...v0.1.17) (2023-08-04)
 
 
