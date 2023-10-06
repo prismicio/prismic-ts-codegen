@@ -142,11 +142,13 @@ const main = async () => {
 		} else {
 			if (error) {
 				console.error(error.message);
-
-				return;
+				process.exit(1);
 			}
 		}
 	}
 };
 
-main().catch((error) => console.error(error));
+main().catch((error) => {
+	console.error(error);
+	process.exit(1);
+});
