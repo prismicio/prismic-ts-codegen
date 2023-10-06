@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.19](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.18...v0.1.19) (2023-10-06)
+
+
+### Bug Fixes
+
+* **cli:** exit with non-zero error code when CLI has errors ([#61](https://github.com/prismicio/prismic-ts-codegen/issues/61)) ([2f7046c](https://github.com/prismicio/prismic-ts-codegen/commit/2f7046cb8e6c9ec32f55404bc7a8dff573915515))
+
 ### [0.1.18](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.17...v0.1.18) (2023-08-31)
 
 
