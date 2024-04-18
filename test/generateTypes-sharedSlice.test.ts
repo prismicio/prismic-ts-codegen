@@ -202,6 +202,30 @@ it("creates an interface for a Slice variation's primary fields", (ctx) => {
 	).toBe("prismic.KeyTextField");
 });
 
+it("handles group fields in a Slice variation's primary fields", (ctx) => {
+	const model = ctx.mock.model.sharedSlice({
+		id: "foo",
+		variations: [
+			ctx.mock.model.sharedSliceVariation({
+				id: "bar",
+				primaryFields: {
+					baz: ctx.mock.model.group({
+						fields: { qux: ctx.mock.model.keyText() },
+					}),
+				},
+			}),
+		],
+	});
+
+	const types = lib.generateTypes({ sharedSliceModels: [model] });
+	const file = parseSourceFile(types);
+
+	const primaryInterface = file.getInterfaceOrThrow("FooSliceBarPrimary");
+	expect(
+		primaryInterface.getPropertyOrThrow("baz").getTypeNodeOrThrow().getText(),
+	).toBe("prismic.GroupField<Simplify<FooSliceBarPrimaryBazItem>>");
+});
+
 it("creates an interface for a Slice variation's items fields", (ctx) => {
 	const model = ctx.mock.model.sharedSlice({
 		id: "foo",

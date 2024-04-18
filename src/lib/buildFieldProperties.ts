@@ -235,13 +235,31 @@ function buildFieldProperty(
 		}
 
 		case "Group": {
-			const itemName = buildTypeName(
-				args.path[0].name,
-				"Document",
-				"Data",
-				args.name,
-				"Item",
-			);
+			let itemName;
+			if (
+				args.path[0].model &&
+				"type" in args.path[0].model &&
+				args.path[0].model.type === "SharedSlice"
+			) {
+				const [slicePathPart, variationPathPart, zonePathPart] = args.path;
+
+				itemName = buildTypeName(
+					slicePathPart.name,
+					"Slice",
+					variationPathPart.name,
+					zonePathPart.name,
+					args.name,
+					"Item",
+				);
+			} else {
+				itemName = buildTypeName(
+					args.path[0].name,
+					"Document",
+					"Data",
+					args.name,
+					"Item",
+				);
+			}
 
 			const path: FieldPath = [
 				...args.path,

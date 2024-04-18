@@ -65,6 +65,10 @@ export function buildSharedSliceType(
 					model: args.model,
 				},
 				{
+					name: variationModel.id,
+					label: variationModel.name,
+				},
+				{
 					name: "primary",
 					label: "Primary",
 				},
