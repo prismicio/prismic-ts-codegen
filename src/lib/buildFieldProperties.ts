@@ -275,6 +275,8 @@ function buildFieldProperty(
 				fieldConfigs: args.fieldConfigs,
 				path,
 			});
+			auxiliaryTypes.push(...itemFieldProperties.auxiliaryTypes);
+			contentTypeNames.push(...itemFieldProperties.contentTypeNames);
 
 			auxiliaryTypes.push({
 				name: itemName,
@@ -355,6 +357,8 @@ function buildFieldProperty(
 								fieldConfigs: args.fieldConfigs,
 								path,
 							});
+							auxiliaryTypes.push(...primaryFieldProperties.auxiliaryTypes);
+							contentTypeNames.push(...primaryFieldProperties.contentTypeNames);
 
 							let primaryCode = stripIndent`
 								/**
@@ -408,6 +412,8 @@ function buildFieldProperty(
 								fieldConfigs: args.fieldConfigs,
 								path,
 							});
+							auxiliaryTypes.push(...itemFieldProperties.auxiliaryTypes);
+							contentTypeNames.push(...itemFieldProperties.contentTypeNames);
 
 							let itemCode = stripIndent`
 								/**
