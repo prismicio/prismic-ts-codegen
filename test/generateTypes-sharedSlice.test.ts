@@ -202,7 +202,7 @@ it("creates an interface for a Slice variation's primary fields", (ctx) => {
 	).toBe("prismic.KeyTextField");
 });
 
-it.only("handles group fields in a Slice variation's primary fields", (ctx) => {
+it("handles group fields in a Slice variation's primary fields", (ctx) => {
 	const model = ctx.mock.model.sharedSlice({
 		id: "foo",
 		variations: [
