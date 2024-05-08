@@ -105,6 +105,10 @@ export function generateTypes(config: GenerateTypesConfig = {}): string {
 				cache: shouldUseCache ? cache : undefined,
 			});
 
+			for (const auxiliaryType of sharedSliceType.auxiliaryTypes) {
+				code = addSection(auxiliaryType.code, code);
+			}
+
 			code = addSection(sharedSliceType.code, code);
 
 			contentTypeNames.push(sharedSliceType.name);

@@ -2,7 +2,7 @@ import type { SharedSliceModel } from "@prismicio/client";
 import { source, stripIndent } from "common-tags";
 import QuickLRU from "quick-lru";
 
-import { FieldConfigs, FieldPath } from "../types";
+import { AuxiliaryType, FieldConfigs, FieldPath } from "../types";
 
 import { SHARED_SLICES_DOCUMENTATION_URL } from "../constants";
 
@@ -24,6 +24,7 @@ type BuildSharedSliceTypeReturnValue = {
 	name: string;
 	variationNames: string[];
 	code: string;
+	auxiliaryTypes: AuxiliaryType[];
 	contentTypeNames: string[];
 };
 
@@ -40,6 +41,8 @@ export function buildSharedSliceType(
 	}
 
 	let code = "";
+
+	const auxiliaryTypes: AuxiliaryType[] = [];
 	const contentTypeNames: string[] = [];
 
 	const name = buildTypeName(args.model.id, "Slice");
@@ -65,6 +68,10 @@ export function buildSharedSliceType(
 					model: args.model,
 				},
 				{
+					name: variationModel.id,
+					label: variationModel.name,
+				},
+				{
 					name: "primary",
 					label: "Primary",
 				},
@@ -76,8 +83,9 @@ export function buildSharedSliceType(
 				fieldConfigs: args.fieldConfigs,
 				path,
 			});
-
+			auxiliaryTypes.push(...primaryFieldProperties.auxiliaryTypes);
 			contentTypeNames.push(...primaryFieldProperties.contentTypeNames);
+
 			contentTypeNames.push(primaryInterfaceName);
 
 			const docs = stripIndent`
@@ -123,8 +131,9 @@ export function buildSharedSliceType(
 				fieldConfigs: args.fieldConfigs,
 				path,
 			});
-
+			auxiliaryTypes.push(...itemFieldProperties.auxiliaryTypes);
 			contentTypeNames.push(...itemFieldProperties.contentTypeNames);
+
 			contentTypeNames.push(itemInterfaceName);
 
 			const docs = stripIndent`
@@ -210,6 +219,7 @@ export function buildSharedSliceType(
 		name,
 		variationNames,
 		code,
+		auxiliaryTypes,
 		contentTypeNames,
 	};
 
