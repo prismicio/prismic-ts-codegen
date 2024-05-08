@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.20](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.19...v0.1.20) (2024-05-08)
+
+
+### Features
+
+* support group fields in slices ([#62](https://github.com/prismicio/prismic-ts-codegen/issues/62)) ([6f7fd88](https://github.com/prismicio/prismic-ts-codegen/commit/6f7fd881e202e42c35eb72c95a0632683fc4bf95))
+
 ### [0.1.19](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.18...v0.1.19) (2023-10-06)
 
 
