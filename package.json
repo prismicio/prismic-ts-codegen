@@ -61,7 +61,7 @@
 	},
 	"devDependencies": {
 		"@prismicio/client": "^7.6.0-alpha.0",
-		"@prismicio/mock": "^0.3.6",
+		"@prismicio/mock": "^0.3.7-alpha.1",
 		"@size-limit/preset-small-lib": "^8.2.6",
 		"@trivago/prettier-plugin-sort-imports": "^4.1.1",
 		"@types/common-tags": "^1.8.1",
