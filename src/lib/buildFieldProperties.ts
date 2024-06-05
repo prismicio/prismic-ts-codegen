@@ -1,4 +1,7 @@
-import type { CustomTypeModelField } from "@prismicio/client";
+import {
+	type CustomTypeModelField,
+	CustomTypeModelFieldType,
+} from "@prismicio/client";
 import { source, stripIndent } from "common-tags";
 
 import { AuxiliaryType, FieldConfigs, FieldPath } from "../types";
@@ -291,10 +294,25 @@ function buildFieldProperty(
 			});
 			contentTypeNames.push(itemName);
 
-			code = addLine(
-				`${name}: prismic.GroupField<Simplify<${itemName}>>;`,
-				code,
+			const indexOfFirstGroupInPath = path.findIndex(
+				(pathElement) =>
+					pathElement.model &&
+					"type" in pathElement.model &&
+					pathElement.model.type === CustomTypeModelFieldType.Group,
 			);
+			const isNestedGroup = indexOfFirstGroupInPath < path.length - 1;
+
+			if (isNestedGroup) {
+				code = addLine(
+					`${name}: prismic.NestedGroupField<Simplify<${itemName}>>;`,
+					code,
+				);
+			} else {
+				code = addLine(
+					`${name}: prismic.GroupField<Simplify<${itemName}>>;`,
+					code,
+				);
+			}
 
 			break;
 		}
