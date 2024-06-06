@@ -80,11 +80,11 @@ it("supports nested groups", (ctx) => {
 		.getInterfaceOrThrow("FooDocumentDataBarItem")
 		.getPropertyOrThrow("baz");
 	expect(nestedGroupProperty.getTypeNodeOrThrow().getText()).toBe(
-		"prismic.NestedGroupField<Simplify<FooDocumentDataBazItem>>",
+		"prismic.NestedGroupField<Simplify<FooDocumentDataBarBazItem>>",
 	);
 
 	const nestedGroupItemInterface = file.getInterfaceOrThrow(
-		"FooDocumentDataBazItem",
+		"FooDocumentDataBarBazItem",
 	);
 	expect(nestedGroupItemInterface.isExported()).toBe(true);
 	expect(

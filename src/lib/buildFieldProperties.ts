@@ -238,6 +238,14 @@ function buildFieldProperty(
 		}
 
 		case "Group": {
+			const groupPathParts = args.path.filter(
+				(part) =>
+					part.model !== undefined &&
+					"type" in part.model &&
+					part.model.type === CustomTypeModelFieldType.Group,
+			);
+			const isNestedGroup = groupPathParts.length > 0;
+
 			let itemName;
 			if (
 				args.path[0].model &&
@@ -251,6 +259,7 @@ function buildFieldProperty(
 					"Slice",
 					variationPathPart.name,
 					zonePathPart.name,
+					...groupPathParts.map((part) => part.name),
 					args.name,
 					"Item",
 				);
@@ -259,6 +268,7 @@ function buildFieldProperty(
 					args.path[0].name,
 					"Document",
 					"Data",
+					...groupPathParts.map((part) => part.name),
 					args.name,
 					"Item",
 				);
@@ -293,14 +303,6 @@ function buildFieldProperty(
 				`,
 			});
 			contentTypeNames.push(itemName);
-
-			const indexOfFirstGroupInPath = path.findIndex(
-				(pathElement) =>
-					pathElement.model &&
-					"type" in pathElement.model &&
-					pathElement.model.type === CustomTypeModelFieldType.Group,
-			);
-			const isNestedGroup = indexOfFirstGroupInPath < path.length - 1;
 
 			if (isNestedGroup) {
 				code = addLine(
