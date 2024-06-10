@@ -98,8 +98,8 @@ gh pr create
 > Publishing is restricted to the Prismic team.[^4]
 
 ```sh
-# Checkout the master branch and pull the latest changes.
-git checkout master
+# Checkout the main branch and pull the latest changes.
+git checkout main
 git pull
 
 # Perform a dry-run and verify the output.
