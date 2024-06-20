@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.21-alpha.0](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.20...v0.1.21-alpha.0) (2024-06-05)
+
+
+### Features
+
+* support groups in groups ([e93146c](https://github.com/prismicio/prismic-ts-codegen/commit/e93146c2dead44caeb869b309f4a0e20fb75ebd1))
+
+
+### Bug Fixes
+
+* update `@prismicio/mock` to prevent a type error ([bb2a846](https://github.com/prismicio/prismic-ts-codegen/commit/bb2a846326c99068348ebd7d30e8d89919c48b29))
+
+
+### Chore
+
+* add temporary `overrides` entry to prevent `@prismicio/mock` installation error ([33cb3d7](https://github.com/prismicio/prismic-ts-codegen/commit/33cb3d765634e595258c9765fd1e49ec78a79aad))
+
 ### [0.1.20](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.19...v0.1.20) (2024-05-08)
 
 

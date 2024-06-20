@@ -1,4 +1,7 @@
-import type { CustomTypeModelField } from "@prismicio/client";
+import {
+	type CustomTypeModelField,
+	CustomTypeModelFieldType,
+} from "@prismicio/client";
 import { source, stripIndent } from "common-tags";
 
 import { AuxiliaryType, FieldConfigs, FieldPath } from "../types";
@@ -235,6 +238,14 @@ function buildFieldProperty(
 		}
 
 		case "Group": {
+			const groupPathParts = args.path.filter(
+				(part) =>
+					part.model !== undefined &&
+					"type" in part.model &&
+					part.model.type === CustomTypeModelFieldType.Group,
+			);
+			const isNestedGroup = groupPathParts.length > 0;
+
 			let itemName;
 			if (
 				args.path[0].model &&
@@ -248,6 +259,7 @@ function buildFieldProperty(
 					"Slice",
 					variationPathPart.name,
 					zonePathPart.name,
+					...groupPathParts.map((part) => part.name),
 					args.name,
 					"Item",
 				);
@@ -256,6 +268,7 @@ function buildFieldProperty(
 					args.path[0].name,
 					"Document",
 					"Data",
+					...groupPathParts.map((part) => part.name),
 					args.name,
 					"Item",
 				);
@@ -291,10 +304,17 @@ function buildFieldProperty(
 			});
 			contentTypeNames.push(itemName);
 
-			code = addLine(
-				`${name}: prismic.GroupField<Simplify<${itemName}>>;`,
-				code,
-			);
+			if (isNestedGroup) {
+				code = addLine(
+					`${name}: prismic.NestedGroupField<Simplify<${itemName}>>;`,
+					code,
+				);
+			} else {
+				code = addLine(
+					`${name}: prismic.GroupField<Simplify<${itemName}>>;`,
+					code,
+				);
+			}
 
 			break;
 		}

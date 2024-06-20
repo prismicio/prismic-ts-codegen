@@ -232,6 +232,48 @@ it("handles group fields in a Slice variation's primary fields", (ctx) => {
 	).toBe("prismic.KeyTextField");
 });
 
+it("handles nested group fields in a Slice variation's primary fields", (ctx) => {
+	const model = ctx.mock.model.sharedSlice({
+		id: "foo",
+		variations: [
+			ctx.mock.model.sharedSliceVariation({
+				id: "bar",
+				primaryFields: {
+					baz: ctx.mock.model.group({
+						fields: {
+							qux: ctx.mock.model.group({
+								fields: {
+									quux: ctx.mock.model.keyText(),
+								},
+							}),
+						},
+					}),
+				},
+			}),
+		],
+	});
+
+	const types = lib.generateTypes({ sharedSliceModels: [model] });
+	const file = parseSourceFile(types);
+
+	const itemInterface = file.getInterfaceOrThrow("FooSliceBarPrimaryBazItem");
+	expect(itemInterface.isExported()).toBe(true);
+	expect(
+		itemInterface.getPropertyOrThrow("qux").getTypeNodeOrThrow().getText(),
+	).toBe("prismic.NestedGroupField<Simplify<FooSliceBarPrimaryBazQuxItem>>");
+
+	const nestedItemInterface = file.getInterfaceOrThrow(
+		"FooSliceBarPrimaryBazQuxItem",
+	);
+	expect(nestedItemInterface.isExported()).toBe(true);
+	expect(
+		nestedItemInterface
+			.getPropertyOrThrow("quux")
+			.getTypeNodeOrThrow()
+			.getText(),
+	).toBe("prismic.KeyTextField");
+});
+
 it("creates an interface for a Slice variation's items fields", (ctx) => {
 	const model = ctx.mock.model.sharedSlice({
 		id: "foo",

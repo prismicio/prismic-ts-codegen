@@ -1,6 +1,6 @@
 {
 	"name": "prismic-ts-codegen",
-	"version": "0.1.20",
+	"version": "0.1.21-alpha.0",
 	"description": "An experimental Prismic model-to-TypeScript-type generator",
 	"keywords": [
 		"typescript",
@@ -37,8 +37,8 @@
 		"prepare": "npm run build",
 		"release": "npm run test && standard-version && git push --follow-tags && npm run build && npm publish",
 		"release:dry": "standard-version --dry-run",
-		"release:alpha": "npm run test && standard-version --release-as major --prerelease alpha && git push --follow-tags && npm run build && npm publish --tag alpha",
-		"release:alpha:dry": "standard-version --release-as major --prerelease alpha --dry-run",
+		"release:alpha": "npm run test && standard-version --release-as patch --prerelease alpha && git push --follow-tags && npm run build && npm publish --tag alpha",
+		"release:alpha:dry": "standard-version --release-as patch --prerelease alpha --dry-run",
 		"lint": "eslint --ext .js,.ts .",
 		"types": "tsc --noEmit",
 		"unit": "vitest run --coverage",
@@ -60,8 +60,8 @@
 		"quick-lru": "^6.1.1"
 	},
 	"devDependencies": {
-		"@prismicio/client": "^7.5.0",
-		"@prismicio/mock": "^0.3.6",
+		"@prismicio/client": "^7.6.0",
+		"@prismicio/mock": "^0.3.7",
 		"@size-limit/preset-small-lib": "^8.2.6",
 		"@trivago/prettier-plugin-sort-imports": "^4.1.1",
 		"@types/common-tags": "^1.8.1",
