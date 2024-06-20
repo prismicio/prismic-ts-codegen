@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.21](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.20...v0.1.21) (2024-06-20)
+
+
+### Features
+
+* support groups in groups ([#63](https://github.com/prismicio/prismic-ts-codegen/issues/63)) ([1484d51](https://github.com/prismicio/prismic-ts-codegen/commit/1484d51f7fca4db1d7a9e310ef0fccc24957539a))
+
+
+### Documentation
+
+* update `CONTRIBUTING.md` ([#64](https://github.com/prismicio/prismic-ts-codegen/issues/64)) ([843a450](https://github.com/prismicio/prismic-ts-codegen/commit/843a45093adb99bed8668551df91aa4cadec515a))
+
 ### [0.1.21-alpha.0](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.20...v0.1.21-alpha.0) (2024-06-05)
 
 
