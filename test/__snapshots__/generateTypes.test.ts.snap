@@ -2845,6 +2845,14 @@ declare module \\"@prismicio/client\\" {
 		(repositoryNameOrEndpoint: string, options?: prismicClient.ClientConfig): prismicClient.Client<AllDocumentTypes>;
 	}
 	
+	interface CreateWriteClient {
+		(repositoryNameOrEndpoint: string, options: prismicClient.WriteClientConfig): prismicClient.WriteClient<AllDocumentTypes>;
+	}
+	
+	interface CreateMigration {
+		(): prismicClient.Migration<AllDocumentTypes>;
+	}
+	
 	namespace Content {
 		export type {
 			EgetDocument,

@@ -131,6 +131,131 @@ it("includes untyped `@prismicio/client` in CreateClient interface if no Custom 
 	);
 });
 
+it("includes @prismicio/client module declaration including a CreateWriteClient interface if configured", (ctx) => {
+	const res = lib.generateTypes({
+		clientIntegration: {
+			includeCreateClientInterface: true,
+		},
+		customTypeModels: [ctx.mock.model.customType({ id: "foo" })],
+	});
+
+	const file = parseSourceFile(res);
+
+	const importDeclaration =
+		file.getImportDeclarationOrThrow("@prismicio/client");
+
+	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe(
+		"prismicClient",
+	);
+	expect(importDeclaration.isTypeOnly()).toBe(true);
+
+	const createWriteClientInterface = file
+		.getModuleOrThrow('"@prismicio/client"')
+		.getInterfaceOrThrow("CreateWriteClient");
+	const callSignatures = createWriteClientInterface.getCallSignatures();
+	const firstCallSignature = callSignatures[0];
+
+	expect(callSignatures.length).toBe(1);
+
+	expect(
+		firstCallSignature
+			.getParameterOrThrow("repositoryNameOrEndpoint")
+			.getTypeNodeOrThrow()
+			.getText(),
+	).toBe(`string`);
+
+	expect(
+		firstCallSignature
+			.getParameterOrThrow("options")
+			.getTypeNodeOrThrow()
+			.getText(),
+	).toBe(`prismicClient.WriteClientConfig`);
+	expect(firstCallSignature.getParameterOrThrow("options").isOptional()).toBe(
+		false,
+	);
+
+	expect(firstCallSignature.getReturnTypeNodeOrThrow().getText()).toBe(
+		"prismicClient.WriteClient<AllDocumentTypes>",
+	);
+
+	expect(() => {
+		file.getImportDeclarationOrThrow("@prismicio/client");
+	}).not.throws("imports `@prismicio/client`");
+});
+
+it("includes untyped `@prismicio/client` in CreateWriteClient interface if no Custom Type models are provided", () => {
+	const res = lib.generateTypes({
+		clientIntegration: {
+			includeCreateClientInterface: true,
+		},
+		customTypeModels: [],
+	});
+
+	const file = parseSourceFile(res);
+	const createWriteClientInterface = file
+		.getModuleOrThrow('"@prismicio/client"')
+		.getInterfaceOrThrow("CreateWriteClient");
+	const callSignatures = createWriteClientInterface.getCallSignatures();
+
+	expect(callSignatures[0].getReturnTypeNodeOrThrow().getText()).toBe(
+		"prismicClient.WriteClient",
+	);
+});
+
+it("includes @prismicio/client module declaration including a CreateMigration interface if configured", (ctx) => {
+	const res = lib.generateTypes({
+		clientIntegration: {
+			includeCreateClientInterface: true,
+		},
+		customTypeModels: [ctx.mock.model.customType({ id: "foo" })],
+	});
+
+	const file = parseSourceFile(res);
+
+	const importDeclaration =
+		file.getImportDeclarationOrThrow("@prismicio/client");
+
+	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe(
+		"prismicClient",
+	);
+	expect(importDeclaration.isTypeOnly()).toBe(true);
+
+	const createMigrationInterface = file
+		.getModuleOrThrow('"@prismicio/client"')
+		.getInterfaceOrThrow("CreateMigration");
+	const callSignatures = createMigrationInterface.getCallSignatures();
+	const firstCallSignature = callSignatures[0];
+
+	expect(callSignatures.length).toBe(1);
+
+	expect(firstCallSignature.getReturnTypeNodeOrThrow().getText()).toBe(
+		"prismicClient.Migration<AllDocumentTypes>",
+	);
+
+	expect(() => {
+		file.getImportDeclarationOrThrow("@prismicio/client");
+	}).not.throws("imports `@prismicio/client`");
+});
+
+it("includes untyped `@prismicio/client` in CreateMigration interface if no Custom Type models are provided", () => {
+	const res = lib.generateTypes({
+		clientIntegration: {
+			includeCreateClientInterface: true,
+		},
+		customTypeModels: [],
+	});
+
+	const file = parseSourceFile(res);
+	const createMigrationInterface = file
+		.getModuleOrThrow('"@prismicio/client"')
+		.getInterfaceOrThrow("CreateMigration");
+	const callSignatures = createMigrationInterface.getCallSignatures();
+
+	expect(callSignatures[0].getReturnTypeNodeOrThrow().getText()).toBe(
+		"prismicClient.Migration",
+	);
+});
+
 it("includes @prismicio/client Content namespace containing all document and Slice types if configured", (ctx) => {
 	const res = lib.generateTypes({
 		clientIntegration: {
@@ -267,6 +392,85 @@ it("uses the existing prismic import if the `@prismicio/client` types provider i
 
 	expect(firstCallSignature.getReturnTypeNodeOrThrow().getText()).toBe(
 		"prismic.Client<AllDocumentTypes>",
+	);
+
+	expect(() => {
+		file.getImportDeclarationOrThrow("@prismicio/client");
+	}).not.throws("imports `@prismicio/client`");
+});
+
+it("uses the existing prismic import if the `@prismicio/client` types provider is used with the CreateWriteClient interface", (ctx) => {
+	const res = lib.generateTypes({
+		clientIntegration: {
+			includeCreateClientInterface: true,
+		},
+		typesProvider: "@prismicio/client",
+		customTypeModels: [ctx.mock.model.customType({ id: "foo" })],
+	});
+
+	const file = parseSourceFile(res);
+
+	const importDeclaration =
+		file.getImportDeclarationOrThrow("@prismicio/client");
+
+	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe(
+		"prismic",
+	);
+	expect(importDeclaration.isTypeOnly()).toBe(true);
+
+	const createWriteClientInterface = file
+		.getModuleOrThrow('"@prismicio/client"')
+		.getInterfaceOrThrow("CreateWriteClient");
+	const callSignatures = createWriteClientInterface.getCallSignatures();
+	const firstCallSignature = callSignatures[0];
+
+	expect(callSignatures.length).toBe(1);
+
+	expect(
+		firstCallSignature
+			.getParameterOrThrow("options")
+			.getTypeNodeOrThrow()
+			.getText(),
+	).toBe(`prismic.WriteClientConfig`);
+
+	expect(firstCallSignature.getReturnTypeNodeOrThrow().getText()).toBe(
+		"prismic.WriteClient<AllDocumentTypes>",
+	);
+
+	expect(() => {
+		file.getImportDeclarationOrThrow("@prismicio/client");
+	}).not.throws("imports `@prismicio/client`");
+});
+
+it("uses the existing prismic import if the `@prismicio/client` types provider is used with the CreateMigration interface", (ctx) => {
+	const res = lib.generateTypes({
+		clientIntegration: {
+			includeCreateClientInterface: true,
+		},
+		typesProvider: "@prismicio/client",
+		customTypeModels: [ctx.mock.model.customType({ id: "foo" })],
+	});
+
+	const file = parseSourceFile(res);
+
+	const importDeclaration =
+		file.getImportDeclarationOrThrow("@prismicio/client");
+
+	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe(
+		"prismic",
+	);
+	expect(importDeclaration.isTypeOnly()).toBe(true);
+
+	const createMigrationInterface = file
+		.getModuleOrThrow('"@prismicio/client"')
+		.getInterfaceOrThrow("CreateMigration");
+	const callSignatures = createMigrationInterface.getCallSignatures();
+	const firstCallSignature = callSignatures[0];
+
+	expect(callSignatures.length).toBe(1);
+
+	expect(firstCallSignature.getReturnTypeNodeOrThrow().getText()).toBe(
+		"prismic.Migration<AllDocumentTypes>",
 	);
 
 	expect(() => {
