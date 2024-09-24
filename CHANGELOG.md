@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.22](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.21...v0.1.22) (2024-09-24)
+
+
+### Features
+
+* support new `@prismicio/client`'s `WriteClient` ([#65](https://github.com/prismicio/prismic-ts-codegen/issues/65)) ([8d5335b](https://github.com/prismicio/prismic-ts-codegen/commit/8d5335b439adc6287f87b6f8e71917481ad119c7))
+
 ### [0.1.21](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.20...v0.1.21) (2024-06-20)
 
 
