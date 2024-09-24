@@ -130,10 +130,34 @@ export function generateTypes(config: GenerateTypesConfig = {}): string {
 }`,
 					clientModuleCode,
 				);
+				clientModuleCode = addSection(
+					`interface CreateWriteClient {
+	(repositoryNameOrEndpoint: string, options: ${clientImportName}.WriteClientConfig): ${clientImportName}.WriteClient<AllDocumentTypes>;
+}`,
+					clientModuleCode,
+				);
+				clientModuleCode = addSection(
+					`interface CreateMigration {
+	(): ${clientImportName}.Migration<AllDocumentTypes>;
+}`,
+					clientModuleCode,
+				);
 			} else {
 				clientModuleCode = addSection(
 					`interface CreateClient {
 	(repositoryNameOrEndpoint: string, options?: ${clientImportName}.ClientConfig): ${clientImportName}.Client;
+}`,
+					clientModuleCode,
+				);
+				clientModuleCode = addSection(
+					`interface CreateWriteClient {
+	(repositoryNameOrEndpoint: string, options?: ${clientImportName}.WriteClientConfig): ${clientImportName}.WriteClient;
+}`,
+					clientModuleCode,
+				);
+				clientModuleCode = addSection(
+					`interface CreateMigration {
+	(): ${clientImportName}.Migration;
 }`,
 					clientModuleCode,
 				);
