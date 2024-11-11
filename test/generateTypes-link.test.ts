@@ -10,3 +10,10 @@ it("is correctly typed", (ctx) => {
 it("is correctly documented", (ctx) => {
 	expectToHaveDocs(ctx.mock.model.link());
 });
+
+it("supports repeatable links", (ctx) => {
+	expectToHaveFieldType(
+		ctx.mock.model.link({ repeat: true }),
+		"prismic.LinkField[]",
+	);
+});
