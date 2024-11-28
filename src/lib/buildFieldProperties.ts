@@ -164,7 +164,7 @@ function buildFieldProperty(
 				}
 
 				case "media": {
-					code = addLine(`${name}: prismic.LinkField;`, code);
+					code = addLine(`${name}: prismic.LinkToMediaField;`, code);
 					break;
 				}
 
