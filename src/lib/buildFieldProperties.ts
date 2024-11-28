@@ -141,7 +141,6 @@ function buildFieldProperty(
 		}
 
 		case "Link": {
-			const repeatableSuffix = args.field.config?.repeat ? "[]" : "";
 			switch (args.field.config?.select) {
 				case "document": {
 					if (
@@ -165,19 +164,16 @@ function buildFieldProperty(
 				}
 
 				case "media": {
-					code = addLine(
-						`${name}: prismic.LinkToMediaField${repeatableSuffix};`,
-						code,
-					);
-
+					code = addLine(`${name}: prismic.LinkField;`, code);
 					break;
 				}
 
 				default: {
-					code = addLine(
-						`${name}: prismic.LinkField${repeatableSuffix};`,
-						code,
-					);
+					const type = args.field.config?.repeat
+						? "prismic.Repeatable<LinkField>"
+						: "prismic.LinkField";
+					code = addLine(`${name}: ${type};`, code);
+					break;
 				}
 			}
 

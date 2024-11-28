@@ -13,10 +13,3 @@ it("is correctly typed", (ctx) => {
 it("is correctly documented", (ctx) => {
 	expectToHaveDocs(ctx.mock.model.linkToMedia());
 });
-
-it("supports repeatable links", (ctx) => {
-	expectToHaveFieldType(
-		ctx.mock.model.linkToMedia({ repeat: true }),
-		"prismic.LinkToMediaField[]",
-	);
-});
