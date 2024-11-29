@@ -258,7 +258,7 @@ export interface FeugiatDocumentDataSliceZoneFooSliceItem {
 	 * - **API ID Path**: feugiat.sliceZone[].foo.items.in_ante
 	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
 	 */
-	in_ante: prismic.Repeatable<LinkField>;
+	in_ante: prismic.Repeatable<prismic.LinkField>;
 	
 	/**
 	 * Ut field in *Feugiat → Slice zone → Etiam Erat → Items*
@@ -366,7 +366,7 @@ interface FeugiatDocumentData {
 	 * - **Tab**: Main
 	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
 	 */
-	aliquam_sem: prismic.Repeatable<LinkField>;
+	aliquam_sem: prismic.Repeatable<prismic.LinkField>;
 	
 	/**
 	 * Fringilla field in *Feugiat*
@@ -487,7 +487,7 @@ export interface ProinDocumentDataGroupItem {
 	 * - **API ID Path**: proin.group[].mauris_augue
 	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
 	 */
-	mauris_augue: prismic.Repeatable<LinkField>;
+	mauris_augue: prismic.Repeatable<prismic.LinkField>;
 	
 	/**
 	 * Lectus field in *Proin → Laoreet*
@@ -929,7 +929,7 @@ export interface InDocumentDataSliceZoneFooSlicePrimary {
 	 * - **API ID Path**: in.sliceZone[].foo.primary.hac_habitasse
 	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
 	 */
-	hac_habitasse: prismic.Repeatable<LinkField>;
+	hac_habitasse: prismic.Repeatable<prismic.LinkField>;
 	
 	/**
 	 * Est field in *In → Slice zone → Mattis Enim → Primary*
@@ -1078,7 +1078,7 @@ interface InDocumentData {
 	 * - **Tab**: Main
 	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
 	 */
-	at: prismic.Repeatable<LinkField>;
+	at: prismic.Repeatable<prismic.LinkField>;
 	
 	/**
 	 * Sit field in *In*
@@ -1415,7 +1415,7 @@ interface TempusDocumentData {
 	 * - **Tab**: Main
 	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
 	 */
-	at: prismic.Repeatable<LinkField>;
+	at: prismic.Repeatable<prismic.LinkField>;
 	
 	/**
 	 * Lectus field in *Tempus*
@@ -1526,7 +1526,7 @@ export interface DuisDocumentDataGroupItem {
 	 * - **API ID Path**: duis.group[].aenean_pharetra
 	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
 	 */
-	aenean_pharetra: prismic.Repeatable<LinkField>;
+	aenean_pharetra: prismic.Repeatable<prismic.LinkField>;
 	
 	/**
 	 * In field in *Duis → Accumsan*
@@ -1780,7 +1780,7 @@ interface DuisDocumentData {
 	 * - **Tab**: Main
 	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
 	 */
-	congue_nisi: prismic.Repeatable<LinkField>;
+	congue_nisi: prismic.Repeatable<prismic.LinkField>;
 	
 	/**
 	 * At field in *Duis*
@@ -1913,7 +1913,7 @@ export interface DolorSliceVitaePrimary {
 	 * - **API ID Path**: dolor.vitae.primary.ornare_suspendisse
 	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
 	 */
-	ornare_suspendisse: prismic.Repeatable<LinkField>;
+	ornare_suspendisse: prismic.Repeatable<prismic.LinkField>;
 	
 	/**
 	 * Donec field in *Dolor → Vitae → Primary*
@@ -2434,7 +2434,7 @@ export interface DolorSliceNislItem {
 	 * - **API ID Path**: dolor.items[].lobortis_elementum
 	 * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
 	 */
-	lobortis_elementum: prismic.Repeatable<LinkField>;
+	lobortis_elementum: prismic.Repeatable<prismic.LinkField>;
 	
 	/**
 	 * Quis field in *Dolor → Items*
