@@ -14,6 +14,6 @@ it("is correctly documented", (ctx) => {
 it("supports repeatable links", (ctx) => {
 	expectToHaveFieldType(
 		ctx.mock.model.link({ repeat: true }),
-		"prismic.Repeatable<LinkField>",
+		"prismic.Repeatable<prismic.LinkField>",
 	);
 });

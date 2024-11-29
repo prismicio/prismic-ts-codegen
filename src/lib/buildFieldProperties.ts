@@ -170,7 +170,7 @@ function buildFieldProperty(
 
 				default: {
 					const type = args.field.config?.repeat
-						? "prismic.Repeatable<LinkField>"
+						? "prismic.Repeatable<prismic.LinkField>"
 						: "prismic.LinkField";
 					code = addLine(`${name}: ${type};`, code);
 					break;
