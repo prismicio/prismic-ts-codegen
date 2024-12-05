@@ -60,8 +60,8 @@
 		"quick-lru": "^6.1.1"
 	},
 	"devDependencies": {
-		"@prismicio/client": "7.13.0-alpha.0",
-		"@prismicio/mock": "0.5.0-alpha.1",
+		"@prismicio/client": "7.13.0",
+		"@prismicio/mock": "0.5.0",
 		"@size-limit/preset-small-lib": "^8.2.6",
 		"@trivago/prettier-plugin-sort-imports": "^4.1.1",
 		"@types/common-tags": "^1.8.1",
@@ -99,8 +99,5 @@
 	},
 	"publishConfig": {
 		"access": "public"
-	},
-	"overrides": {
-		"@prismicio/client": "7.13.0-alpha.0"
 	}
 }
