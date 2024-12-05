@@ -165,12 +165,15 @@ function buildFieldProperty(
 
 				case "media": {
 					code = addLine(`${name}: prismic.LinkToMediaField;`, code);
-
 					break;
 				}
 
 				default: {
-					code = addLine(`${name}: prismic.LinkField;`, code);
+					const type = args.field.config?.repeat
+						? "prismic.Repeatable<prismic.LinkField>"
+						: "prismic.LinkField";
+					code = addLine(`${name}: ${type};`, code);
+					break;
 				}
 			}
 
