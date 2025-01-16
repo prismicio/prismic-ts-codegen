@@ -147,7 +147,7 @@ function buildFieldProperty(
 				Array.isArray(args.field.config.variants) &&
 				args.field.config.variants.length > 0
 					? args.field.config.variants
-							.map((variant) => `"${variant.replaceAll('"', '\\"')}"`)
+							.map((variant) => `"${variant.replace(/\"/g, '\\"')}"`)
 							.join(" | ")
 					: "never";
 
