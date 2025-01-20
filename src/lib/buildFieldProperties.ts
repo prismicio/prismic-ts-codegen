@@ -141,6 +141,16 @@ function buildFieldProperty(
 		}
 
 		case "Link": {
+			const variants =
+				args.field.config &&
+				"variants" in args.field.config &&
+				Array.isArray(args.field.config.variants) &&
+				args.field.config.variants.length > 0
+					? args.field.config.variants
+							.map((variant) => `"${variant.replace(/\"/g, '\\"')}"`)
+							.join(" | ")
+					: "never";
+
 			switch (args.field.config?.select) {
 				case "document": {
 					if (
@@ -164,14 +174,20 @@ function buildFieldProperty(
 				}
 
 				case "media": {
-					code = addLine(`${name}: prismic.LinkToMediaField;`, code);
+					code = addLine(
+						`${name}: prismic.LinkToMediaField<prismic.FieldState, ${variants}>;`,
+						code,
+					);
 					break;
 				}
 
 				default: {
-					const type = args.field.config?.repeat
-						? "prismic.Repeatable<prismic.LinkField>"
-						: "prismic.LinkField";
+					let type = `prismic.LinkField<string, string, unknown, prismic.FieldState, ${variants}>`;
+
+					if (args.field.config?.repeat) {
+						type = `prismic.Repeatable<${type}>`;
+					}
+
 					code = addLine(`${name}: ${type};`, code);
 					break;
 				}
