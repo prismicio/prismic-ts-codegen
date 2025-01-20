@@ -1,6 +1,6 @@
 {
 	"name": "prismic-ts-codegen",
-	"version": "0.1.23",
+	"version": "0.1.24",
 	"description": "An experimental Prismic model-to-TypeScript-type generator",
 	"keywords": [
 		"typescript",
