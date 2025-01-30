@@ -25,6 +25,7 @@ export const FIELD_DOCUMENTATION_URLS: Record<
 	Link: "https://prismic.io/docs/field#link-content-relationship",
 	Embed: "https://prismic.io/docs/field#embed",
 	GeoPoint: "https://prismic.io/docs/field#geopoint",
+	Table: "https://prismic.io/docs/field#table",
 	Group: "https://prismic.io/docs/field#group",
 	IntegrationFields: "https://prismic.io/docs/field#integration",
 	Slices: "https://prismic.io/docs/field#slices",
