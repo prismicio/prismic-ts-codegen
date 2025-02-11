@@ -244,6 +244,12 @@ function buildFieldProperty(
 			break;
 		}
 
+		case "Table": {
+			code = addLine(`${name}: prismic.TableField;`, code);
+
+			break;
+		}
+
 		case "Text": {
 			code = addLine(`${name}: prismic.KeyTextField;`, code);
 
