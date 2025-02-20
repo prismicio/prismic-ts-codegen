@@ -51,8 +51,8 @@ export type Config = {
 		 * repositories, set `includeCreateClientInterface` to `true` for the
 		 * primary repository and `false` or any other repository. The generated
 		 * `AllDocumentTypes` type for non-primary repositories can be provided to
-		 * `@prismicio/client`'s `creatClient()` function as its only type parameter
-		 * to type the client.
+		 * `@prismicio/client`'s `createClient()` function as its only type
+		 * parameter to type the client.
 		 *
 		 * @defaultValue `true`
 		 */
