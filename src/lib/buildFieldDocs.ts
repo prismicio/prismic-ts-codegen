@@ -63,6 +63,43 @@ function getHumanReadableFieldType(
 	}
 }
 
+type getDocumentationURLArgs = {
+	field: CustomTypeModelField;
+};
+
+function getDocumentationURL(args: getDocumentationURLArgs) {
+	switch (args.field.type) {
+		case "Link": {
+			const urls = FIELD_DOCUMENTATION_URLS.Link;
+
+			switch (args.field.config?.select) {
+				case "document": {
+					return urls.contentRelationship;
+				}
+
+				case "media": {
+					return urls.linkToMedia;
+				}
+
+				default: {
+					return urls.link;
+				}
+			}
+		}
+
+		default: {
+			const url =
+				FIELD_DOCUMENTATION_URLS[
+					args.field.type as keyof typeof FIELD_DOCUMENTATION_URLS
+				];
+
+			if (typeof url === "string") {
+				return url;
+			}
+		}
+	}
+}
+
 type BuildFieldDocsArgs = {
 	name: string;
 	field: CustomTypeModelField;
@@ -121,10 +158,7 @@ export function buildFieldDocs(args: BuildFieldDocsArgs): string {
 		result = addLine(` * - **Tab**: ${args.tabName}`, result);
 	}
 
-	const documentationURL =
-		FIELD_DOCUMENTATION_URLS[
-			args.field.type as keyof typeof FIELD_DOCUMENTATION_URLS
-		];
+	const documentationURL = getDocumentationURL({ field: args.field });
 	if (documentationURL) {
 		result = addLine(` * - **Documentation**: ${documentationURL}`, result);
 	}
