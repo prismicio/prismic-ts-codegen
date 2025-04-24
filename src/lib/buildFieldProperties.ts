@@ -203,19 +203,7 @@ function buildFieldProperty(
 		}
 
 		case "StructuredText": {
-			const isTitleField =
-				args.field.config &&
-				"single" in args.field.config &&
-				args.field.config.single &&
-				args.field.config.single
-					.split(",")
-					.every((blockType) => /heading/.test(blockType));
-
-			if (isTitleField) {
-				code = addLine(`${name}: prismic.TitleField;`, code);
-			} else {
-				code = addLine(`${name}: prismic.RichTextField;`, code);
-			}
+			code = addLine(`${name}: prismic.RichTextField;`, code);
 
 			break;
 		}
