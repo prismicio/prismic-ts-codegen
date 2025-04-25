@@ -18,15 +18,7 @@ function getHumanReadableFieldType(
 ): string {
 	switch (args.field.type) {
 		case "StructuredText": {
-			const isTitleField =
-				args.field.config &&
-				"single" in args.field.config &&
-				args.field.config.single &&
-				args.field.config.single
-					.split(",")
-					.every((blockType) => /heading/.test(blockType));
-
-			return isTitleField ? "Title" : "Rich Text";
+			return "Rich Text";
 		}
 
 		case "IntegrationFields": {

@@ -83,12 +83,12 @@ export interface AcDocumentDataGroupItem {
 	/**
 	 * Morbi field in *Ac → Vulputate*
 	 *
-	 * - **Field Type**: Title
+	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: Porta non pulvinar
 	 * - **API ID Path**: ac.group[].nulla
 	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
 	 */
-	nulla: prismic.TitleField;
+	nulla: prismic.RichTextField;
 }
 
 /**
@@ -188,12 +188,12 @@ export interface AcDocumentDataSliceZoneFooSlicePrimary {
 	/**
 	 * Nec field in *Ac → Slice zone → Volutpat Blandit → Primary*
 	 *
-	 * - **Field Type**: Title
+	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: Gravida fermentum et
 	 * - **API ID Path**: ac.sliceZone[].foo.primary.velit
 	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
 	 */
-	velit: prismic.TitleField;
+	velit: prismic.RichTextField;
 }
 
 /**
@@ -293,12 +293,12 @@ export interface AcDocumentDataSliceZoneFooSliceItem {
 	/**
 	 * Sit field in *Ac → Slice zone → Volutpat Blandit → Items*
 	 *
-	 * - **Field Type**: Title
+	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: At tempor commodo
 	 * - **API ID Path**: ac.sliceZone[].foo.items.et
 	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
 	 */
-	et: prismic.TitleField;
+	et: prismic.RichTextField;
 }
 
 /**
@@ -403,13 +403,13 @@ interface AcDocumentData {
 	/**
 	 * Vel field in *Ac*
 	 *
-	 * - **Field Type**: Title
+	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: Ultrices iaculis nunc
 	 * - **API ID Path**: ac.diam_quam
 	 * - **Tab**: Main
 	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
 	 */
-	diam_quam: prismic.TitleField;
+	diam_quam: prismic.RichTextField;
 	
 	/**
 	 * Vulputate field in *Ac*
@@ -587,12 +587,12 @@ export interface ImperdietDocumentDataSliceZoneFooSlicePrimary {
 	/**
 	 * Massa field in *Imperdiet → Slice zone → Tellus Mauris → Primary*
 	 *
-	 * - **Field Type**: Title
+	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: Elementum pulvinar etiam
 	 * - **API ID Path**: imperdiet.sliceZone[].foo.primary.pellentesque_habitant
 	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
 	 */
-	pellentesque_habitant: prismic.TitleField;
+	pellentesque_habitant: prismic.RichTextField;
 }
 
 /**
@@ -730,13 +730,13 @@ interface ImperdietDocumentData {
 	/**
 	 * Morbi field in *Imperdiet*
 	 *
-	 * - **Field Type**: Title
+	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: Ante metus dictum
 	 * - **API ID Path**: imperdiet.ultrices_dui
 	 * - **Tab**: Main
 	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
 	 */
-	ultrices_dui: prismic.TitleField;
+	ultrices_dui: prismic.RichTextField;
 	
 	/**
 	 * Neque field in *Imperdiet*
@@ -869,12 +869,12 @@ export interface VenenatisDocumentDataGroupItem {
 	/**
 	 * A field in *Venenatis → Amet*
 	 *
-	 * - **Field Type**: Title
+	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: Venenatis cras sed
 	 * - **API ID Path**: venenatis.group[].dignissim_enim
 	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
 	 */
-	dignissim_enim: prismic.TitleField;
+	dignissim_enim: prismic.RichTextField;
 }
 
 /**
@@ -1193,12 +1193,12 @@ export interface SedDocumentDataGroupItem {
 	/**
 	 * Lacus field in *Sed → At*
 	 *
-	 * - **Field Type**: Title
+	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: Risus quis varius
 	 * - **API ID Path**: sed.group[].cras_fermentum
 	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
 	 */
-	cras_fermentum: prismic.TitleField;
+	cras_fermentum: prismic.RichTextField;
 }
 
 /**
@@ -1343,12 +1343,12 @@ export interface SedDocumentDataSliceZoneFooSliceItem {
 	/**
 	 * Egestas field in *Sed → Slice zone → Nulla At → Items*
 	 *
-	 * - **Field Type**: Title
+	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: Nam libero justo
 	 * - **API ID Path**: sed.sliceZone[].foo.items.tempus_quam
 	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
 	 */
-	tempus_quam: prismic.TitleField;
+	tempus_quam: prismic.RichTextField;
 }
 
 /**
@@ -1646,12 +1646,12 @@ export interface EtDocumentDataSliceZoneFooSlicePrimary {
 	/**
 	 * Sem field in *Et → Slice zone → Nibh Praesent → Primary*
 	 *
-	 * - **Field Type**: Title
+	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: Pretium quam vulputate
 	 * - **API ID Path**: et.sliceZone[].foo.primary.ullamcorper_eget
 	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
 	 */
-	ullamcorper_eget: prismic.TitleField;
+	ullamcorper_eget: prismic.RichTextField;
 }
 
 /**
@@ -1741,12 +1741,12 @@ export interface EtDocumentDataSliceZoneFooSliceItem {
 	/**
 	 * Habitasse field in *Et → Slice zone → Nibh Praesent → Items*
 	 *
-	 * - **Field Type**: Title
+	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: Elit duis tristique
 	 * - **API ID Path**: et.sliceZone[].foo.items.rhoncus_aenean
 	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
 	 */
-	rhoncus_aenean: prismic.TitleField;
+	rhoncus_aenean: prismic.RichTextField;
 }
 
 /**
@@ -1948,12 +1948,12 @@ export interface HendreritSliceNequePrimary {
 	/**
 	 * Tellus field in *Hendrerit → Neque → Primary*
 	 *
-	 * - **Field Type**: Title
+	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: Imperdiet dui accumsan
 	 * - **API ID Path**: hendrerit.neque.primary.ac
 	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
 	 */
-	ac: prismic.TitleField;
+	ac: prismic.RichTextField;
 }
 
 /**
@@ -2151,12 +2151,12 @@ export interface AtSliceBlanditPrimary {
 	/**
 	 * Mi field in *At → Blandit → Primary*
 	 *
-	 * - **Field Type**: Title
+	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: Amet consectetur adipiscing
 	 * - **API ID Path**: at.blandit.primary.placerat_egestas
 	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
 	 */
-	placerat_egestas: prismic.TitleField;
+	placerat_egestas: prismic.RichTextField;
 }
 
 /**
@@ -2256,12 +2256,12 @@ export interface AtSliceBlanditItem {
 	/**
 	 * Semper field in *At → Items*
 	 *
-	 * - **Field Type**: Title
+	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: Morbi leo urna
 	 * - **API ID Path**: at.items[].non
 	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
 	 */
-	non: prismic.TitleField;
+	non: prismic.RichTextField;
 }
 
 /**
@@ -2374,12 +2374,12 @@ export interface DolorSliceEuPrimary {
 	/**
 	 * Sed field in *Dolor → Eu → Primary*
 	 *
-	 * - **Field Type**: Title
+	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: Quis lectus nulla
 	 * - **API ID Path**: dolor.eu.primary.morbi
 	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
 	 */
-	morbi: prismic.TitleField;
+	morbi: prismic.RichTextField;
 }
 
 /**
@@ -2652,12 +2652,12 @@ export interface CondimentumSliceUrnaItem {
 	/**
 	 * Consectetur field in *Condimentum → Items*
 	 *
-	 * - **Field Type**: Title
+	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: Adipiscing elit ut
 	 * - **API ID Path**: condimentum.items[].faucibus_turpis
 	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
 	 */
-	faucibus_turpis: prismic.TitleField;
+	faucibus_turpis: prismic.RichTextField;
 }
 
 /**
@@ -2865,12 +2865,12 @@ export interface PraesentSliceDolorItem {
 	/**
 	 * Sit field in *Praesent → Items*
 	 *
-	 * - **Field Type**: Title
+	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: Lacus sed viverra
 	 * - **API ID Path**: praesent.items[].dui
 	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
 	 */
-	dui: prismic.TitleField;
+	dui: prismic.RichTextField;
 }
 
 /**
