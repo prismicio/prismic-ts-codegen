@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.27-alpha.0](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.25...v0.1.27-alpha.0) (2025-06-20)
+
+
+### Bug Fixes
+
+* replace `TitleField` with `RichTextField` ([#72](https://github.com/prismicio/prismic-ts-codegen/issues/72)) ([635779e](https://github.com/prismicio/prismic-ts-codegen/commit/635779e4b1c122443fb68f7b4ba5493a149390df))
+* update documentation URLs to the latest version ([#71](https://github.com/prismicio/prismic-ts-codegen/issues/71)) ([488f9b9](https://github.com/prismicio/prismic-ts-codegen/commit/488f9b98a7ac1f25fc6608e25dbeb3e20d2c38b7))
+
+
+### Documentation
+
+* fix typos ([a91cfc6](https://github.com/prismicio/prismic-ts-codegen/commit/a91cfc63d317fbd8fb60257c10fda070b507fdb7))
+
+
+### Chore
+
+* **release:** 0.1.26 ([5e3584a](https://github.com/prismicio/prismic-ts-codegen/commit/5e3584a12f52b725f5d595126331dcbf54520355))
+* update mock dev dep ([bf68780](https://github.com/prismicio/prismic-ts-codegen/commit/bf68780642fe475356d2442dcc8acbde6f7ae580))
+* update mock dev dep ([dba2e30](https://github.com/prismicio/prismic-ts-codegen/commit/dba2e3062a67c3177fbdc8ffbc5061cb104cd616))
+
 ### [0.1.26](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.25...v0.1.26) (2025-04-25)
 
 
