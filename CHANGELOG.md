@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.27-alpha.1](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.27-alpha.0...v0.1.27-alpha.1) (2025-06-23)
+
+
+### Features
+
+* precisely type new content relationships ([0fd15a4](https://github.com/prismicio/prismic-ts-codegen/commit/0fd15a42f72d3aad8128225d416e8a81cc0e2d97))
+
 ### [0.1.27-alpha.0](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.25...v0.1.27-alpha.0) (2025-06-20)
 
 
