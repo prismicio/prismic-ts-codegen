@@ -6,6 +6,50 @@ import type * as prismicClient from \\"@prismicio/client\\";
 
 type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
 
+
+type PickNewContentRelationshipFieldData<
+	TRelationship extends prismic.CustomTypeLevel1 | prismic.CustomTypeLevel2 | prismic.GroupLevel1 | prismic.GroupLevel2,
+	TData extends Record<string, prismic.AnyRegularField | prismic.GroupField | prismic.NestedGroupField | prismic.SliceZone>,
+	TLang extends string
+> = |
+	// Content relationship fields
+	{
+		[TSubRelationship in Extract<
+			TRelationship[\\"fields\\"][number], prismic.ContentRelationshipLevel1
+		> as TSubRelationship[\\"id\\"]]:
+			NewContentRelationshipField<TSubRelationship[\\"customtypes\\"], TLang>;
+	} &
+	// Group
+	{
+		[TGroup in Extract<
+			TRelationship[\\"fields\\"][number], prismic.GroupLevel1 | prismic.GroupLevel2
+		> as TGroup[\\"id\\"]]:
+			TData[TGroup[\\"id\\"]] extends prismic.GroupField<infer TGroupData>
+				? prismic.GroupField<PickNewContentRelationshipFieldData<TGroup, TGroupData, TLang>>
+				: never
+	} &
+	// Other fields
+	{
+		[TFieldKey in Extract<TRelationship[\\"fields\\"][number], string>]:
+			TFieldKey extends keyof TData ? TData[TFieldKey] : never;
+	};
+
+type NewContentRelationshipField<
+	TCustomType extends readonly (prismic.CustomTypeLevel1 | string)[] | readonly (prismic.CustomTypeLevel2 | string)[],
+	TLang extends string = string
+> = {
+	[ID in Exclude<TCustomType[number], string>[\\"id\\"]]:
+		prismic.ContentRelationshipField<
+			ID,
+			TLang,
+			PickNewContentRelationshipFieldData<
+				Extract<TCustomType[number], { id: ID }>,
+				Extract<prismic.Content.AllDocumentTypes, { type: ID }>[\\"data\\"],
+				TLang
+			>
+		>
+}[Exclude<TCustomType[number], string>[\\"id\\"]];
+
 /**
  * Item in *Ac → Vulputate*
  */
