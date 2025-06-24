@@ -89,17 +89,20 @@ type PickContentRelationshipFieldData<
 	};
 
 type ContentRelationshipFieldWithData<
-	TCustomType extends (prismic.CustomTypeModelFetchCustomTypeLevel1 | string) | (prismic.CustomTypeModelFetchCustomTypeLevel2 | string),
+	TCustomType extends readonly (prismic.CustomTypeModelFetchCustomTypeLevel1 | string)[] | readonly (prismic.CustomTypeModelFetchCustomTypeLevel2 | string)[],
 	TLang extends string = string
-> = prismic.ContentRelationshipField<
-		ID,
-		TLang,
-		PickContentRelationshipFieldData<
-			Extract<TCustomType[number], { id: ID }>,
-			Extract<prismic.Content.AllDocumentTypes, { type: ID }>["data"],
-			TLang
+> = {
+	[ID in Exclude<TCustomType[number], string>["id"]]:
+		prismic.ContentRelationshipField<
+			ID,
+			TLang,
+			PickContentRelationshipFieldData<
+				Extract<TCustomType[number], { id: ID }>,
+				Extract<prismic.Content.AllDocumentTypes, { type: ID }>["data"],
+				TLang
+			>
 		>
-	>;
+}[Exclude<TCustomType[number], string>["id"]];
 `,
 		code,
 	);

@@ -164,9 +164,9 @@ function buildFieldProperty(
 									return `prismic.ContentRelationshipField<"${type}">`;
 								}
 
-								return `ContentRelationshipFieldWithData<${JSON.stringify(
+								return `ContentRelationshipFieldWithData<${JSON.stringify([
 									type,
-								)}>`;
+								])}>`;
 							}),
 						);
 
