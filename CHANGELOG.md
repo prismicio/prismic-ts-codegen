@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.27-alpha.2](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.27-alpha.1...v0.1.27-alpha.2) (2025-06-24)
+
+
+### Chore
+
+* remove tests ([f896817](https://github.com/prismicio/prismic-ts-codegen/commit/f896817effe3fe40b065b0f730d3a3a11c3a3339))
+* rename customtype config types ([156491f](https://github.com/prismicio/prismic-ts-codegen/commit/156491f90ad185b63539948fcc0b3d42d19b8d1a))
+* rename types ([f7c19b0](https://github.com/prismicio/prismic-ts-codegen/commit/f7c19b081802d8e4d80612aa4ef7fd9059b936c1))
+* update client dep ([db64d92](https://github.com/prismicio/prismic-ts-codegen/commit/db64d92ea0a68a7c26469f114244a567c82f21e4))
+
+
+### Refactor
+
+* CR type union ([d8c5c65](https://github.com/prismicio/prismic-ts-codegen/commit/d8c5c654e7ebb34f2fa290ded493a1f3a82df333))
+
 ### [0.1.27-alpha.1](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.27-alpha.0...v0.1.27-alpha.1) (2025-06-23)
 
 
