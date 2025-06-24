@@ -62,21 +62,21 @@ export function generateTypes(config: GenerateTypesConfig = {}): string {
 	code = addSection(
 		`
 type PickNewContentRelationshipFieldData<
-	TRelationship extends prismic.CustomTypeLevel1 | prismic.CustomTypeLevel2 | prismic.GroupLevel1 | prismic.GroupLevel2,
+	TRelationship extends prismic.CustomTypeModelFetchCustomTypeLevel1 | prismic.CustomTypeModelFetchCustomTypeLevel2 | prismic.CustomTypeModelFetchGroupLevel1 | prismic.CustomTypeModelFetchGroupLevel2,
 	TData extends Record<string, prismic.AnyRegularField | prismic.GroupField | prismic.NestedGroupField | prismic.SliceZone>,
 	TLang extends string
 > = |
 	// Content relationship fields
 	{
 		[TSubRelationship in Extract<
-			TRelationship["fields"][number], prismic.ContentRelationshipLevel1
+			TRelationship["fields"][number], prismic.CustomTypeModelFetchContentRelationshipLevel1
 		> as TSubRelationship["id"]]:
 			NewContentRelationshipField<TSubRelationship["customtypes"], TLang>;
 	} &
 	// Group
 	{
 		[TGroup in Extract<
-			TRelationship["fields"][number], prismic.GroupLevel1 | prismic.GroupLevel2
+			TRelationship["fields"][number], prismic.CustomTypeModelFetchGroupLevel1 | prismic.CustomTypeModelFetchGroupLevel2
 		> as TGroup["id"]]:
 			TData[TGroup["id"]] extends prismic.GroupField<infer TGroupData>
 				? prismic.GroupField<PickNewContentRelationshipFieldData<TGroup, TGroupData, TLang>>
@@ -89,7 +89,7 @@ type PickNewContentRelationshipFieldData<
 	};
 
 type NewContentRelationshipField<
-	TCustomType extends readonly (prismic.CustomTypeLevel1 | string)[] | readonly (prismic.CustomTypeLevel2 | string)[],
+	TCustomType extends readonly (prismic.CustomTypeModelFetchCustomTypeLevel1 | string)[] | readonly (prismic.CustomTypeModelFetchCustomTypeLevel2 | string)[],
 	TLang extends string = string
 > = {
 	[ID in Exclude<TCustomType[number], string>["id"]]:
