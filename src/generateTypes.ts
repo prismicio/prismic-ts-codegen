@@ -61,7 +61,7 @@ export function generateTypes(config: GenerateTypesConfig = {}): string {
 
 	code = addSection(
 		`
-type PickNewContentRelationshipFieldData<
+type PickContentRelationshipFieldData<
 	TRelationship extends prismic.CustomTypeModelFetchCustomTypeLevel1 | prismic.CustomTypeModelFetchCustomTypeLevel2 | prismic.CustomTypeModelFetchGroupLevel1 | prismic.CustomTypeModelFetchGroupLevel2,
 	TData extends Record<string, prismic.AnyRegularField | prismic.GroupField | prismic.NestedGroupField | prismic.SliceZone>,
 	TLang extends string
@@ -71,7 +71,7 @@ type PickNewContentRelationshipFieldData<
 		[TSubRelationship in Extract<
 			TRelationship["fields"][number], prismic.CustomTypeModelFetchContentRelationshipLevel1
 		> as TSubRelationship["id"]]:
-			NewContentRelationshipField<TSubRelationship["customtypes"], TLang>;
+			ContentRelationshipFieldWithData<TSubRelationship["customtypes"], TLang>;
 	} &
 	// Group
 	{
@@ -79,7 +79,7 @@ type PickNewContentRelationshipFieldData<
 			TRelationship["fields"][number], prismic.CustomTypeModelFetchGroupLevel1 | prismic.CustomTypeModelFetchGroupLevel2
 		> as TGroup["id"]]:
 			TData[TGroup["id"]] extends prismic.GroupField<infer TGroupData>
-				? prismic.GroupField<PickNewContentRelationshipFieldData<TGroup, TGroupData, TLang>>
+				? prismic.GroupField<PickContentRelationshipFieldData<TGroup, TGroupData, TLang>>
 				: never
 	} &
 	// Other fields
@@ -88,7 +88,7 @@ type PickNewContentRelationshipFieldData<
 			TFieldKey extends keyof TData ? TData[TFieldKey] : never;
 	};
 
-type NewContentRelationshipField<
+type ContentRelationshipFieldWithData<
 	TCustomType extends readonly (prismic.CustomTypeModelFetchCustomTypeLevel1 | string)[] | readonly (prismic.CustomTypeModelFetchCustomTypeLevel2 | string)[],
 	TLang extends string = string
 > = {
@@ -96,7 +96,7 @@ type NewContentRelationshipField<
 		prismic.ContentRelationshipField<
 			ID,
 			TLang,
-			PickNewContentRelationshipFieldData<
+			PickContentRelationshipFieldData<
 				Extract<TCustomType[number], { id: ID }>,
 				Extract<prismic.Content.AllDocumentTypes, { type: ID }>["data"],
 				TLang

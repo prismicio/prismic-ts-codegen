@@ -173,7 +173,7 @@ function buildFieldProperty(
 								  )}>`
 								: "",
 							customTypeObjects.length
-								? `NewContentRelationshipField<${JSON.stringify(
+								? `ContentRelationshipFieldWithData<${JSON.stringify(
 										customTypeObjects,
 								  )}>`
 								: "",
