@@ -35,7 +35,7 @@ it("is correctly typed with array of objects", (ctx) => {
 
 	expectToHaveFieldType(
 		model,
-		'ContentRelationshipFieldWithData<{"id":"foo","type":"custom"}> | ContentRelationshipFieldWithData<{"id":"bar","type":"custom"}>',
+		'ContentRelationshipFieldWithData<[{"id":"foo","type":"custom"}]> | ContentRelationshipFieldWithData<[{"id":"bar","type":"custom"}]>',
 	);
 });
 
@@ -51,7 +51,7 @@ it("is correctly typed with mixed array", (ctx) => {
 
 	expectToHaveFieldType(
 		model,
-		'prismic.ContentRelationshipField<"foo"> | ContentRelationshipFieldWithData<{"id":"bar","type":"custom"}>',
+		'prismic.ContentRelationshipField<"foo"> | ContentRelationshipFieldWithData<[{"id":"bar","type":"custom"}]>',
 	);
 });
 
