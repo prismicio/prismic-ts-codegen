@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [0.1.27](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.27-alpha.3...v0.1.27) (2025-06-25)
 
+
+### Chore
+
+* **release:** 0.1.27 ([30c332a](https://github.com/prismicio/prismic-ts-codegen/commit/30c332a99803c4106b657c5aa6beca711a8c1900))
+
+### [0.1.27](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.27-alpha.3...v0.1.27) (2025-06-25)
+
 ### [0.1.27-alpha.3](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.27-alpha.2...v0.1.27-alpha.3) (2025-06-25)
 
 
