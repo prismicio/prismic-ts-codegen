@@ -27,9 +27,11 @@ it("is correctly typed with array of objects", (ctx) => {
 	// Manually set the customtypes to objects to test the new functionality
 
 	// Disabled eslint because prismic-mock is outdated
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	(model.config as any).customtypes = [
+	// @ts-expect-error - Waiting for `@prismicio/mock` to support object-based `customtypes`
+	model.config.customtypes = [
+		// @ts-expect-error - Waiting for `@prismicio/mock` to support object-based `customtypes`
 		{ id: "foo", type: "custom" },
+		// @ts-expect-error - Waiting for `@prismicio/mock` to support object-based `customtypes`
 		{ id: "bar", type: "custom" },
 	];
 
