@@ -158,14 +158,19 @@ function buildFieldProperty(
 						args.field.config.customtypes &&
 						args.field.config.customtypes.length > 0
 					) {
-						const customTypeIDsUnion = buildUnion(
-							args.field.config.customtypes.map((type) => `"${type}"`),
+						const contentRelationshipUnion = buildUnion(
+							args.field.config.customtypes.map((type) => {
+								if (typeof type === "string") {
+									return `prismic.ContentRelationshipField<"${type}">`;
+								}
+
+								return `ContentRelationshipFieldWithData<${JSON.stringify([
+									type,
+								])}>`;
+							}),
 						);
 
-						code = addLine(
-							`${name}: prismic.ContentRelationshipField<${customTypeIDsUnion}>;`,
-							code,
-						);
+						code = addLine(`${name}: ${contentRelationshipUnion};`, code);
 					} else {
 						code = addLine(`${name}: prismic.ContentRelationshipField;`, code);
 					}

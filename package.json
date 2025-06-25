@@ -1,6 +1,6 @@
 {
 	"name": "prismic-ts-codegen",
-	"version": "0.1.27-alpha.0",
+	"version": "0.1.27-alpha.3",
 	"description": "An experimental Prismic model-to-TypeScript-type generator",
 	"keywords": [
 		"typescript",
@@ -60,7 +60,7 @@
 		"quick-lru": "^6.1.2"
 	},
 	"devDependencies": {
-		"@prismicio/client": "7.16.1",
+		"@prismicio/client": "7.18.0",
 		"@prismicio/mock": "0.7.1",
 		"@size-limit/preset-small-lib": "^8.2.6",
 		"@trivago/prettier-plugin-sort-imports": "^4.3.0",
