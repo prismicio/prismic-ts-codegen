@@ -46,8 +46,8 @@ it("is correctly typed with mixed array", (ctx) => {
 	// Manually set the customtypes to mixed types
 
 	// Disabled eslint because prismic-mock is outdated
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	(model.config as any).customtypes = ["foo", { id: "bar", type: "custom" }];
+	// @ts-expect-error - Waiting for `@prismicio/mock` to support object-based `customtypes`
+	model.config.customtypes = ["foo", { id: "bar", type: "custom" }];
 
 	expectToHaveFieldType(
 		model,
