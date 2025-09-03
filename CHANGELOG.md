@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.28-alpha.0](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.27...v0.1.28-alpha.0) (2025-09-03)
+
+
+### Bug Fixes
+
+* correctly export type definitions ([260345a](https://github.com/prismicio/prismic-ts-codegen/commit/260345a17271bdfb718fc0fa7fad02c737dc73b0))
+
 ### [0.1.27](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.27-alpha.3...v0.1.27) (2025-06-25)
 
 
