@@ -2,6 +2,61 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.28-alpha.9](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.28-alpha.8...v0.1.28-alpha.9) (2025-09-03)
+
+
+### Features
+
+* type import ([c4a68d3](https://github.com/prismicio/prismic-ts-codegen/commit/c4a68d3883c4c1b00c9383972696992a88292b60))
+
+### [0.1.28-alpha.8](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.28-alpha.7...v0.1.28-alpha.8) (2025-09-03)
+
+
+### Bug Fixes
+
+* test patched version of client ([3ae33ea](https://github.com/prismicio/prismic-ts-codegen/commit/3ae33ea286dbfa27899267a093952ec0c5149e4e))
+
+### [0.1.28-alpha.7](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.28-alpha.6...v0.1.28-alpha.7) (2025-09-03)
+
+
+### Bug Fixes
+
+* test patched version of client ([ead0ea0](https://github.com/prismicio/prismic-ts-codegen/commit/ead0ea0cce231890aa4e7be06d5737b6fd993fc8))
+
+### [0.1.28-alpha.6](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.28-alpha.5...v0.1.28-alpha.6) (2025-09-03)
+
+
+### Bug Fixes
+
+* test patched version of client ([5ae45b6](https://github.com/prismicio/prismic-ts-codegen/commit/5ae45b614dba4142b2f33b7c91c7f3fedca749ca))
+
+### [0.1.28-alpha.5](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.28-alpha.4...v0.1.28-alpha.5) (2025-09-03)
+
+
+### Bug Fixes
+
+* remove type import keyword ([c804868](https://github.com/prismicio/prismic-ts-codegen/commit/c804868ac2550e324905fb29e24d6cee9e0e4254))
+
+### [0.1.28-alpha.4](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.28-alpha.3...v0.1.28-alpha.4) (2025-09-03)
+
+
+### Features
+
+* consistent path ([4541f81](https://github.com/prismicio/prismic-ts-codegen/commit/4541f816f955395ab4f11bc1e6e7aac46bf120cf))
+
+### [0.1.28-alpha.3](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.28-alpha.2...v0.1.28-alpha.3) (2025-09-03)
+
+### [0.1.28-alpha.2](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.28-alpha.1...v0.1.28-alpha.2) (2025-09-03)
+
+### [0.1.28-alpha.1](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.28-alpha.0...v0.1.28-alpha.1) (2025-09-03)
+
+### [0.1.28-alpha.0](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.27...v0.1.28-alpha.0) (2025-09-03)
+
+
+### Bug Fixes
+
+* correctly export type definitions ([260345a](https://github.com/prismicio/prismic-ts-codegen/commit/260345a17271bdfb718fc0fa7fad02c737dc73b0))
+
 ### [0.1.27](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.27-alpha.3...v0.1.27) (2025-06-25)
 
 

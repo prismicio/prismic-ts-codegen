@@ -30,7 +30,7 @@ export const FIELD_DOCUMENTATION_URLS = {
 	Choice: "https://prismic.io/docs/slices",
 } satisfies Record<
 	Exclude<
-		(typeof CustomTypeModelFieldType)[keyof typeof CustomTypeModelFieldType],
+		CustomTypeModelFieldType[keyof CustomTypeModelFieldType],
 		"Range" | "Separator"
 	>,
 	string | Record<string, string>
