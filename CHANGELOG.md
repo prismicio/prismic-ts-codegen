@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.28-alpha.3](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.28-alpha.2...v0.1.28-alpha.3) (2025-09-03)
+
 ### [0.1.28-alpha.2](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.28-alpha.1...v0.1.28-alpha.2) (2025-09-03)
 
 ### [0.1.28-alpha.1](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.28-alpha.0...v0.1.28-alpha.1) (2025-09-03)
