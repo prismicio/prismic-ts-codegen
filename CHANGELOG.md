@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.28-alpha.8](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.28-alpha.7...v0.1.28-alpha.8) (2025-09-03)
+
+
+### Bug Fixes
+
+* test patched version of client ([3ae33ea](https://github.com/prismicio/prismic-ts-codegen/commit/3ae33ea286dbfa27899267a093952ec0c5149e4e))
+
 ### [0.1.28-alpha.7](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.28-alpha.6...v0.1.28-alpha.7) (2025-09-03)
 
 
