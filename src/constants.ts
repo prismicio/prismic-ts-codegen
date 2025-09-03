@@ -1,4 +1,4 @@
-import type { CustomTypeModelFieldType } from "@prismicio/client";
+import { CustomTypeModelFieldType } from "@prismicio/client";
 
 export const CUSTOM_TYPES_DOCUMENTATION_URL =
 	"https://prismic.io/docs/content-modeling";
