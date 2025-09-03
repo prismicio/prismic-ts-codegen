@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.28-alpha.5](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.28-alpha.4...v0.1.28-alpha.5) (2025-09-03)
+
+
+### Bug Fixes
+
+* remove type import keyword ([c804868](https://github.com/prismicio/prismic-ts-codegen/commit/c804868ac2550e324905fb29e24d6cee9e0e4254))
+
 ### [0.1.28-alpha.4](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.28-alpha.3...v0.1.28-alpha.4) (2025-09-03)
 
 
