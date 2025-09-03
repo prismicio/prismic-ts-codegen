@@ -1,4 +1,4 @@
-import { CustomTypeModelFieldType } from "@prismicio/client";
+import type { CustomTypeModelFieldType } from "@prismicio/client";
 
 export const CUSTOM_TYPES_DOCUMENTATION_URL =
 	"https://prismic.io/docs/content-modeling";
@@ -30,7 +30,7 @@ export const FIELD_DOCUMENTATION_URLS = {
 	Choice: "https://prismic.io/docs/slices",
 } satisfies Record<
 	Exclude<
-		(typeof CustomTypeModelFieldType)[keyof typeof CustomTypeModelFieldType],
+		CustomTypeModelFieldType[keyof CustomTypeModelFieldType],
 		"Range" | "Separator"
 	>,
 	string | Record<string, string>
