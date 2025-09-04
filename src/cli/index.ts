@@ -128,7 +128,6 @@ const main = async () => {
 						config.clientIntegration?.includeContentNamespace ?? true,
 				},
 				typesProvider,
-				prependNonEditableHeader: false,
 			});
 
 			const fileContents = `${NON_EDITABLE_FILE_HEADER}\n\n${types}`;
