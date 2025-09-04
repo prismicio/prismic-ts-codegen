@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.28-alpha.10](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.27...v0.1.28-alpha.10) (2025-09-04)
+
+
+### Features
+
+* prepend non editable banner ([73ab5f9](https://github.com/prismicio/prismic-ts-codegen/commit/73ab5f9ed0c4d649ae35a93a61b514d956c5a96b))
+
+
+### Refactor
+
+* only export const ([8419551](https://github.com/prismicio/prismic-ts-codegen/commit/8419551f014557f1ba17d9d1868a05f753185d4d))
+
+
+### Chore
+
+* **release:** 0.1.28-alpha.0 ([36c35c0](https://github.com/prismicio/prismic-ts-codegen/commit/36c35c0f7184b49a893012b366ce172afe375507))
+* **release:** 0.1.28-alpha.1 ([9ec25a3](https://github.com/prismicio/prismic-ts-codegen/commit/9ec25a36b89634f5dcfa6574fbd5a72f958249ed))
+* **release:** 0.1.28-alpha.2 ([7742982](https://github.com/prismicio/prismic-ts-codegen/commit/7742982b8f5ef44cea3894acad7932dee5a02203))
+* **release:** 0.1.28-alpha.3 ([7a867bd](https://github.com/prismicio/prismic-ts-codegen/commit/7a867bdabb6439cde1b937749ec4b46c6b9f1ba6))
+* **release:** 0.1.28-alpha.4 ([bed06e8](https://github.com/prismicio/prismic-ts-codegen/commit/bed06e8706a782f10d55479566b86cfdf5cc50fe))
+* **release:** 0.1.28-alpha.5 ([d20d9ee](https://github.com/prismicio/prismic-ts-codegen/commit/d20d9ee05afb48cf348ba7e50e7f96ccca3d7207))
+* **release:** 0.1.28-alpha.6 ([64d35e9](https://github.com/prismicio/prismic-ts-codegen/commit/64d35e9a8f5e13c81862184edaaf681425bae63f))
+* **release:** 0.1.28-alpha.7 ([f129108](https://github.com/prismicio/prismic-ts-codegen/commit/f12910860a779529a5a68f83066e54a3347d1fe6))
+* **release:** 0.1.28-alpha.8 ([4ce3623](https://github.com/prismicio/prismic-ts-codegen/commit/4ce3623a531a4077232ba9fb9a45fc5bb58d0c7d))
+* **release:** 0.1.28-alpha.9 ([57e61cd](https://github.com/prismicio/prismic-ts-codegen/commit/57e61cdeafbf1bea084c1e956e5c285abcbf63f4))
+
 ### [0.1.28-alpha.9](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.27...v0.1.28-alpha.9) (2025-09-04)
 
 
