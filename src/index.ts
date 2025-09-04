@@ -7,3 +7,5 @@ export type { DetectTypesProviderConfig } from "./detectTypesProvider";
 // The CLI configuration type is exported at the root level for ease of access.
 // It is not used in the the library's code.
 export type { Config } from "./cli/types";
+
+export { NON_EDITABLE_FILE_HEADER } from "./cli/constants";

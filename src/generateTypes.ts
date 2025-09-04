@@ -10,6 +10,8 @@ import { buildUnion } from "./lib/buildUnion";
 
 import { FieldConfigs } from "./types";
 
+import { NON_EDITABLE_FILE_HEADER } from "./cli/constants";
+
 export type TypesProvider = "@prismicio/client" | "@prismicio/types";
 
 const cache = new QuickLRU<string, unknown>({ maxSize: 1000 });
@@ -25,13 +27,19 @@ export type GenerateTypesConfig = {
 		includeContentNamespace?: boolean;
 	};
 	cache?: boolean;
+	prependNonEditableHeader?: boolean;
 };
 
 export function generateTypes(config: GenerateTypesConfig = {}): string {
 	const fieldConfigs = config.fieldConfigs || {};
 	const shouldUseCache = config.cache ?? true;
+	const prependNonEditableHeader = config.prependNonEditableHeader ?? true;
 
 	let code = "";
+
+	if (prependNonEditableHeader) {
+		code = addSection(NON_EDITABLE_FILE_HEADER, code);
+	}
 
 	const typesProvider = config.typesProvider || "@prismicio/types";
 	let clientImportName = "prismic";
