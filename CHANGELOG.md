@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.28-alpha.3](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.27...v0.1.28-alpha.3) (2025-09-04)
+
+
+### Features
+
+* prepend non editable banner ([73ab5f9](https://github.com/prismicio/prismic-ts-codegen/commit/73ab5f9ed0c4d649ae35a93a61b514d956c5a96b))
+
+
+### Refactor
+
+* only export const ([8419551](https://github.com/prismicio/prismic-ts-codegen/commit/8419551f014557f1ba17d9d1868a05f753185d4d))
+
+
+### Chore
+
+* **release:** 0.1.28-alpha.0 ([36c35c0](https://github.com/prismicio/prismic-ts-codegen/commit/36c35c0f7184b49a893012b366ce172afe375507))
+* **release:** 0.1.28-alpha.1 ([9ec25a3](https://github.com/prismicio/prismic-ts-codegen/commit/9ec25a36b89634f5dcfa6574fbd5a72f958249ed))
+* **release:** 0.1.28-alpha.2 ([7742982](https://github.com/prismicio/prismic-ts-codegen/commit/7742982b8f5ef44cea3894acad7932dee5a02203))
+
 ### [0.1.28-alpha.2](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.27...v0.1.28-alpha.2) (2025-09-04)
 
 
