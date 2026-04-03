@@ -29,10 +29,6 @@
 			"import": "./dist/index.js",
 			"require": "./dist/index.cjs"
 		},
-		"./cli": {
-			"import": "./dist/cli.js",
-			"require": "./dist/cli.cjs"
-		},
 		"./package.json": "./package.json"
 	},
 	"publishConfig": {
