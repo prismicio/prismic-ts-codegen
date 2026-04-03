@@ -2,9 +2,7 @@ import type { CustomTypeModel } from "@prismicio/client";
 import { source } from "common-tags";
 
 import { buildTypeName } from "../lib/buildTypeName";
-
 import { AuxiliaryType, FieldConfigs } from "../types";
-
 import { buildFieldProperties } from "./buildFieldProperties";
 import { getHumanReadableModelName } from "./getHumanReadableModelName";
 

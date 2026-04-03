@@ -2,10 +2,8 @@ import type { SharedSliceModel } from "@prismicio/client";
 import { source, stripIndent } from "common-tags";
 import QuickLRU from "quick-lru";
 
-import { AuxiliaryType, FieldConfigs, FieldPath } from "../types";
-
 import { SHARED_SLICES_DOCUMENTATION_URL } from "../constants";
-
+import { AuxiliaryType, FieldConfigs, FieldPath } from "../types";
 import { addSection } from "./addSection";
 import { buildFieldProperties } from "./buildFieldProperties";
 import { buildTypeName } from "./buildTypeName";
@@ -56,10 +54,7 @@ export function buildSharedSliceType(
 		const variationName = buildTypeName(name, variationModel.id);
 
 		let primaryInterfaceName: string | undefined;
-		if (
-			variationModel.primary &&
-			Object.keys(variationModel.primary).length > 0
-		) {
+		if (variationModel.primary && Object.keys(variationModel.primary).length > 0) {
 			primaryInterfaceName = buildTypeName(variationName, "Primary");
 
 			const path: FieldPath = [
@@ -167,13 +162,9 @@ export function buildSharedSliceType(
 				 * - **Description**: ${variationModel.description || "*None*"}
 				 * - **Documentation**: ${SHARED_SLICES_DOCUMENTATION_URL}
 				 */
-				export type ${variationName} = prismic.SharedSliceVariation<"${
-				variationModel.id
-			}", ${
-				primaryInterfaceName
-					? `Simplify<${primaryInterfaceName}>`
-					: `Record<string, never>`
-			}, ${itemInterfaceName ? `Simplify<${itemInterfaceName}>` : `never`}>;
+				export type ${variationName} = prismic.SharedSliceVariation<"${variationModel.id}", ${
+					primaryInterfaceName ? `Simplify<${primaryInterfaceName}>` : `Record<string, never>`
+				}, ${itemInterfaceName ? `Simplify<${itemInterfaceName}>` : `never`}>;
 			`,
 			code,
 		);
@@ -192,9 +183,7 @@ export function buildSharedSliceType(
 			/**
 			 * Slice variation for *${humanReadableName}*
 			 */
-			type ${variationUnionName} = ${
-			variationNames.length > 0 ? variationsUnion : "never"
-		}
+			type ${variationUnionName} = ${variationNames.length > 0 ? variationsUnion : "never"}
 		`,
 		code,
 	);
@@ -208,9 +197,7 @@ export function buildSharedSliceType(
 			 * - **Description**: ${args.model.description || "*None*"}
 			 * - **Documentation**: ${SHARED_SLICES_DOCUMENTATION_URL}
 			 */
-			export type ${name} = prismic.SharedSlice<"${
-			args.model.id
-		}", ${variationUnionName}>;
+			export type ${name} = prismic.SharedSlice<"${args.model.id}", ${variationUnionName}>;
 		`,
 		code,
 	);

@@ -1,8 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`outputs correct code style 1`] = `
-"import type * as prismic from \\"@prismicio/types\\";
-import type * as prismicClient from \\"@prismicio/client\\";
+"import type * as prismic from "@prismicio/types";
+import type * as prismicClient from "@prismicio/client";
 
 type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
 
@@ -15,22 +15,22 @@ type PickContentRelationshipFieldData<
 	// Content relationship fields
 	{
 		[TSubRelationship in Extract<
-			TRelationship[\\"fields\\"][number], prismic.CustomTypeModelFetchContentRelationshipLevel1
-		> as TSubRelationship[\\"id\\"]]:
-			ContentRelationshipFieldWithData<TSubRelationship[\\"customtypes\\"], TLang>;
+			TRelationship["fields"][number], prismic.CustomTypeModelFetchContentRelationshipLevel1
+		> as TSubRelationship["id"]]:
+			ContentRelationshipFieldWithData<TSubRelationship["customtypes"], TLang>;
 	} &
 	// Group
 	{
 		[TGroup in Extract<
-			TRelationship[\\"fields\\"][number], prismic.CustomTypeModelFetchGroupLevel1 | prismic.CustomTypeModelFetchGroupLevel2
-		> as TGroup[\\"id\\"]]:
-			TData[TGroup[\\"id\\"]] extends prismic.GroupField<infer TGroupData>
+			TRelationship["fields"][number], prismic.CustomTypeModelFetchGroupLevel1 | prismic.CustomTypeModelFetchGroupLevel2
+		> as TGroup["id"]]:
+			TData[TGroup["id"]] extends prismic.GroupField<infer TGroupData>
 				? prismic.GroupField<PickContentRelationshipFieldData<TGroup, TGroupData, TLang>>
 				: never
 	} &
 	// Other fields
 	{
-		[TFieldKey in Extract<TRelationship[\\"fields\\"][number], string>]:
+		[TFieldKey in Extract<TRelationship["fields"][number], string>]:
 			TFieldKey extends keyof TData ? TData[TFieldKey] : never;
 	};
 
@@ -38,17 +38,17 @@ type ContentRelationshipFieldWithData<
 	TCustomType extends readonly (prismic.CustomTypeModelFetchCustomTypeLevel1 | string)[] | readonly (prismic.CustomTypeModelFetchCustomTypeLevel2 | string)[],
 	TLang extends string = string
 > = {
-	[ID in Exclude<TCustomType[number], string>[\\"id\\"]]:
+	[ID in Exclude<TCustomType[number], string>["id"]]:
 		prismic.ContentRelationshipField<
 			ID,
 			TLang,
 			PickContentRelationshipFieldData<
 				Extract<TCustomType[number], { id: ID }>,
-				Extract<prismic.Content.AllDocumentTypes, { type: ID }>[\\"data\\"],
+				Extract<prismic.Content.AllDocumentTypes, { type: ID }>["data"],
 				TLang
 			>
 		>
-}[Exclude<TCustomType[number], string>[\\"id\\"]];
+}[Exclude<TCustomType[number], string>["id"]];
 
 /**
  * Item in *Ac → Vulputate*
@@ -348,7 +348,7 @@ export interface AcDocumentDataSliceZoneFooSliceItem {
 /**
  * Slice for *Ac → Slice zone*
  */
-export type AcDocumentDataSliceZoneFooSlice = prismic.Slice<\\"foo\\", Simplify<AcDocumentDataSliceZoneFooSlicePrimary>, Simplify<AcDocumentDataSliceZoneFooSliceItem>>
+export type AcDocumentDataSliceZoneFooSlice = prismic.Slice<"foo", Simplify<AcDocumentDataSliceZoneFooSlicePrimary>, Simplify<AcDocumentDataSliceZoneFooSliceItem>>
 
 type AcDocumentDataSliceZoneSlice = AcDocumentDataSliceZoneFooSlice
 
@@ -487,7 +487,7 @@ interface AcDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type AcDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<AcDocumentData>, \\"ac\\", Lang>;
+export type AcDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<AcDocumentData>, "ac", Lang>;
 
 /**
  * Item in *Imperdiet → Neque*
@@ -697,7 +697,7 @@ export interface ImperdietDocumentDataSliceZoneFooSliceItem {
 /**
  * Slice for *Imperdiet → Slice zone*
  */
-export type ImperdietDocumentDataSliceZoneFooSlice = prismic.Slice<\\"foo\\", Simplify<ImperdietDocumentDataSliceZoneFooSlicePrimary>, Simplify<ImperdietDocumentDataSliceZoneFooSliceItem>>
+export type ImperdietDocumentDataSliceZoneFooSlice = prismic.Slice<"foo", Simplify<ImperdietDocumentDataSliceZoneFooSlicePrimary>, Simplify<ImperdietDocumentDataSliceZoneFooSliceItem>>
 
 type ImperdietDocumentDataSliceZoneSlice = ImperdietDocumentDataSliceZoneFooSlice
 
@@ -814,7 +814,7 @@ interface ImperdietDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type ImperdietDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<ImperdietDocumentData>, \\"imperdiet\\", Lang>;
+export type ImperdietDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<ImperdietDocumentData>, "imperdiet", Lang>;
 
 /**
  * Item in *Venenatis → Amet*
@@ -1094,7 +1094,7 @@ export interface VenenatisDocumentDataSliceZoneFooSliceItem {
 /**
  * Slice for *Venenatis → Slice zone*
  */
-export type VenenatisDocumentDataSliceZoneFooSlice = prismic.Slice<\\"foo\\", Simplify<VenenatisDocumentDataSliceZoneFooSlicePrimary>, Simplify<VenenatisDocumentDataSliceZoneFooSliceItem>>
+export type VenenatisDocumentDataSliceZoneFooSlice = prismic.Slice<"foo", Simplify<VenenatisDocumentDataSliceZoneFooSlicePrimary>, Simplify<VenenatisDocumentDataSliceZoneFooSliceItem>>
 
 type VenenatisDocumentDataSliceZoneSlice = VenenatisDocumentDataSliceZoneFooSlice
 
@@ -1178,7 +1178,7 @@ interface VenenatisDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type VenenatisDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<VenenatisDocumentData>, \\"venenatis\\", Lang>;
+export type VenenatisDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<VenenatisDocumentData>, "venenatis", Lang>;
 
 /**
  * Item in *Sed → At*
@@ -1398,7 +1398,7 @@ export interface SedDocumentDataSliceZoneFooSliceItem {
 /**
  * Slice for *Sed → Slice zone*
  */
-export type SedDocumentDataSliceZoneFooSlice = prismic.Slice<\\"foo\\", Simplify<SedDocumentDataSliceZoneFooSlicePrimary>, Simplify<SedDocumentDataSliceZoneFooSliceItem>>
+export type SedDocumentDataSliceZoneFooSlice = prismic.Slice<"foo", Simplify<SedDocumentDataSliceZoneFooSlicePrimary>, Simplify<SedDocumentDataSliceZoneFooSliceItem>>
 
 type SedDocumentDataSliceZoneSlice = SedDocumentDataSliceZoneFooSlice
 
@@ -1526,7 +1526,7 @@ interface SedDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type SedDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<SedDocumentData>, \\"sed\\", Lang>;
+export type SedDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<SedDocumentData>, "sed", Lang>;
 
 /**
  * Item in *Et → Viverra*
@@ -1796,7 +1796,7 @@ export interface EtDocumentDataSliceZoneFooSliceItem {
 /**
  * Slice for *Et → Slice zone*
  */
-export type EtDocumentDataSliceZoneFooSlice = prismic.Slice<\\"foo\\", Simplify<EtDocumentDataSliceZoneFooSlicePrimary>, Simplify<EtDocumentDataSliceZoneFooSliceItem>>
+export type EtDocumentDataSliceZoneFooSlice = prismic.Slice<"foo", Simplify<EtDocumentDataSliceZoneFooSlicePrimary>, Simplify<EtDocumentDataSliceZoneFooSliceItem>>
 
 type EtDocumentDataSliceZoneSlice = EtDocumentDataSliceZoneFooSlice
 
@@ -1891,7 +1891,7 @@ interface EtDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type EtDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<EtDocumentData>, \\"et\\", Lang>;
+export type EtDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<EtDocumentData>, "et", Lang>;
 
 export type AllDocumentTypes = AcDocument | ImperdietDocument | VenenatisDocument | SedDocument | EtDocument;
 
@@ -2112,7 +2112,7 @@ export interface HendreritSliceNequeItem {
  * - **Description**: Massa eget egestas purus viverra accumsan
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type HendreritSliceNeque = prismic.SharedSliceVariation<\\"neque\\", Simplify<HendreritSliceNequePrimary>, Simplify<HendreritSliceNequeItem>>;
+export type HendreritSliceNeque = prismic.SharedSliceVariation<"neque", Simplify<HendreritSliceNequePrimary>, Simplify<HendreritSliceNequeItem>>;
 
 /**
  * Slice variation for *Hendrerit*
@@ -2126,7 +2126,7 @@ type HendreritSliceVariation = HendreritSliceNeque
  * - **Description**: Vitae suscipit tellus mauris a diam maecenas sed enim
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type HendreritSlice = prismic.SharedSlice<\\"hendrerit\\", HendreritSliceVariation>;
+export type HendreritSlice = prismic.SharedSlice<"hendrerit", HendreritSliceVariation>;
 
 /**
  * Primary content in *At → Blandit → Primary*
@@ -2315,7 +2315,7 @@ export interface AtSliceBlanditItem {
  * - **Description**: Sit amet consectetur adipiscing elit pellentesque habitant morbi
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type AtSliceBlandit = prismic.SharedSliceVariation<\\"blandit\\", Simplify<AtSliceBlanditPrimary>, Simplify<AtSliceBlanditItem>>;
+export type AtSliceBlandit = prismic.SharedSliceVariation<"blandit", Simplify<AtSliceBlanditPrimary>, Simplify<AtSliceBlanditItem>>;
 
 /**
  * Slice variation for *At*
@@ -2329,7 +2329,7 @@ type AtSliceVariation = AtSliceBlandit
  * - **Description**: Phasellus vestibulum lorem sed risus ultricies tristique nulla aliquet
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type AtSlice = prismic.SharedSlice<\\"at\\", AtSliceVariation>;
+export type AtSlice = prismic.SharedSlice<"at", AtSliceVariation>;
 
 /**
  * Primary content in *Dolor → Eu → Primary*
@@ -2528,7 +2528,7 @@ export interface DolorSliceEuItem {
  * - **Description**: Penatibus et magnis dis parturient montes nascetur
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type DolorSliceEu = prismic.SharedSliceVariation<\\"eu\\", Simplify<DolorSliceEuPrimary>, Simplify<DolorSliceEuItem>>;
+export type DolorSliceEu = prismic.SharedSliceVariation<"eu", Simplify<DolorSliceEuPrimary>, Simplify<DolorSliceEuItem>>;
 
 /**
  * Slice variation for *Dolor*
@@ -2542,7 +2542,7 @@ type DolorSliceVariation = DolorSliceEu
  * - **Description**: Amet nulla facilisi morbi tempus iaculis urna
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type DolorSlice = prismic.SharedSlice<\\"dolor\\", DolorSliceVariation>;
+export type DolorSlice = prismic.SharedSlice<"dolor", DolorSliceVariation>;
 
 /**
  * Primary content in *Condimentum → Urna → Primary*
@@ -2711,7 +2711,7 @@ export interface CondimentumSliceUrnaItem {
  * - **Description**: Scelerisque fermentum dui faucibus ornare quam viverra
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type CondimentumSliceUrna = prismic.SharedSliceVariation<\\"urna\\", Simplify<CondimentumSliceUrnaPrimary>, Simplify<CondimentumSliceUrnaItem>>;
+export type CondimentumSliceUrna = prismic.SharedSliceVariation<"urna", Simplify<CondimentumSliceUrnaPrimary>, Simplify<CondimentumSliceUrnaItem>>;
 
 /**
  * Slice variation for *Condimentum*
@@ -2725,7 +2725,7 @@ type CondimentumSliceVariation = CondimentumSliceUrna
  * - **Description**: Imperdiet proin fermentum leo vel orci porta
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type CondimentumSlice = prismic.SharedSlice<\\"condimentum\\", CondimentumSliceVariation>;
+export type CondimentumSlice = prismic.SharedSlice<"condimentum", CondimentumSliceVariation>;
 
 /**
  * Primary content in *Praesent → Dolor → Primary*
@@ -2924,7 +2924,7 @@ export interface PraesentSliceDolorItem {
  * - **Description**: Tincidunt vitae semper quis lectus nulla at
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type PraesentSliceDolor = prismic.SharedSliceVariation<\\"dolor\\", Simplify<PraesentSliceDolorPrimary>, Simplify<PraesentSliceDolorItem>>;
+export type PraesentSliceDolor = prismic.SharedSliceVariation<"dolor", Simplify<PraesentSliceDolorPrimary>, Simplify<PraesentSliceDolorItem>>;
 
 /**
  * Slice variation for *Praesent*
@@ -2938,9 +2938,9 @@ type PraesentSliceVariation = PraesentSliceDolor
  * - **Description**: Turpis massa sed elementum tempus egestas sed
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type PraesentSlice = prismic.SharedSlice<\\"praesent\\", PraesentSliceVariation>;
+export type PraesentSlice = prismic.SharedSlice<"praesent", PraesentSliceVariation>;
 
-declare module \\"@prismicio/client\\" {
+declare module "@prismicio/client" {
 	interface CreateClient {
 		(repositoryNameOrEndpoint: string, options?: prismicClient.ClientConfig): prismicClient.Client<AllDocumentTypes>;
 	}

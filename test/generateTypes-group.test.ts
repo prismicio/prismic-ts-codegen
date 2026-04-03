@@ -1,9 +1,8 @@
 import { expect, it } from "vitest";
 
+import * as lib from "../src";
 import { expectToHaveDocs } from "./__testutils__/expectToHaveDocs";
 import { parseSourceFile } from "./__testutils__/parseSourceFile";
-
-import * as lib from "../src";
 
 it("correctly typed", (ctx) => {
 	const model = ctx.mock.model.customType({
@@ -20,9 +19,7 @@ it("correctly typed", (ctx) => {
 
 	const types = lib.generateTypes({ customTypeModels: [model] });
 	const file = parseSourceFile(types);
-	const groupProperty = file
-		.getInterfaceOrThrow("FooDocumentData")
-		.getPropertyOrThrow("bar");
+	const groupProperty = file.getInterfaceOrThrow("FooDocumentData").getPropertyOrThrow("bar");
 
 	expect(groupProperty.getTypeNodeOrThrow().getText()).toBe(
 		"prismic.GroupField<Simplify<FooDocumentDataBarItem>>",
@@ -48,12 +45,12 @@ it("creates an interface for a group item containing its fields", (ctx) => {
 
 	expect(itemInterface.isExported()).toBe(true);
 
-	expect(
-		itemInterface.getPropertyOrThrow("baz").getTypeNodeOrThrow().getText(),
-	).toBe("prismic.KeyTextField");
-	expect(
-		itemInterface.getPropertyOrThrow("qux").getTypeNodeOrThrow().getText(),
-	).toBe("prismic.SelectField");
+	expect(itemInterface.getPropertyOrThrow("baz").getTypeNodeOrThrow().getText()).toBe(
+		"prismic.KeyTextField",
+	);
+	expect(itemInterface.getPropertyOrThrow("qux").getTypeNodeOrThrow().getText()).toBe(
+		"prismic.SelectField",
+	);
 });
 
 it("supports nested groups", (ctx) => {
@@ -83,22 +80,14 @@ it("supports nested groups", (ctx) => {
 		"prismic.NestedGroupField<Simplify<FooDocumentDataBarBazItem>>",
 	);
 
-	const nestedGroupItemInterface = file.getInterfaceOrThrow(
-		"FooDocumentDataBarBazItem",
-	);
+	const nestedGroupItemInterface = file.getInterfaceOrThrow("FooDocumentDataBarBazItem");
 	expect(nestedGroupItemInterface.isExported()).toBe(true);
-	expect(
-		nestedGroupItemInterface
-			.getPropertyOrThrow("qux")
-			.getTypeNodeOrThrow()
-			.getText(),
-	).toBe("prismic.KeyTextField");
-	expect(
-		nestedGroupItemInterface
-			.getPropertyOrThrow("quux")
-			.getTypeNodeOrThrow()
-			.getText(),
-	).toBe("prismic.SelectField");
+	expect(nestedGroupItemInterface.getPropertyOrThrow("qux").getTypeNodeOrThrow().getText()).toBe(
+		"prismic.KeyTextField",
+	);
+	expect(nestedGroupItemInterface.getPropertyOrThrow("quux").getTypeNodeOrThrow().getText()).toBe(
+		"prismic.SelectField",
+	);
 });
 
 it("prefixes Group types starting with a number using an underscore prefix", (ctx) => {
@@ -116,9 +105,7 @@ it("prefixes Group types starting with a number using an underscore prefix", (ct
 	const types = lib.generateTypes({ customTypeModels: [model] });
 	const file = parseSourceFile(types);
 
-	const groupProperty = file
-		.getInterfaceOrThrow("_123DocumentData")
-		.getPropertyOrThrow('"456"');
+	const groupProperty = file.getInterfaceOrThrow("_123DocumentData").getPropertyOrThrow('"456"');
 
 	expect(groupProperty.getTypeNodeOrThrow().getText()).toBe(
 		"prismic.GroupField<Simplify<_123DocumentData456Item>>",
@@ -142,10 +129,7 @@ it("handles hyphenated fields", (ctx) => {
 	const itemInterface = file.getInterfaceOrThrow("FooDocumentDataBarItem");
 
 	expect(
-		itemInterface
-			.getPropertyOrThrow('"hyphenated-field"')
-			.getTypeNodeOrThrow()
-			.getText(),
+		itemInterface.getPropertyOrThrow('"hyphenated-field"').getTypeNodeOrThrow().getText(),
 	).toBe("prismic.KeyTextField");
 });
 

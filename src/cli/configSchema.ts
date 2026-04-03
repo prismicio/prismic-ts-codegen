@@ -42,10 +42,7 @@ export const configSchema = Joi.object<Config>({
 
 	fields: Joi.object({
 		embed: Joi.object({
-			providerTypes: Joi.object().pattern(
-				Joi.string(),
-				Joi.string().required(),
-			),
+			providerTypes: Joi.object().pattern(Joi.string(), Joi.string().required()),
 		}),
 		integrationFields: Joi.object({
 			catalogTypes: Joi.object().pattern(Joi.string(), Joi.string().required()),

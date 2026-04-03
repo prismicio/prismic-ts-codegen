@@ -2,10 +2,8 @@ import type { CustomTypeModel } from "@prismicio/client";
 import { source } from "common-tags";
 import QuickLRU from "quick-lru";
 
-import { AuxiliaryType, FieldConfigs } from "../types";
-
 import { CUSTOM_TYPES_DOCUMENTATION_URL } from "../constants";
-
+import { AuxiliaryType, FieldConfigs } from "../types";
 import { addSection } from "./addSection";
 import { buildCustomTypeDataType } from "./buildCustomTypeDataType";
 import { buildTypeName } from "./buildTypeName";
@@ -81,8 +79,8 @@ export function buildCustomTypeType(
 			 * @typeParam Lang - Language API ID of the document.
 			 */
 			export type ${name}<Lang extends string = ${langDefault}> = prismic.${baseDocumentType}<Simplify<${
-			dataType.name
-		}>, "${args.model.id}", Lang>;
+				dataType.name
+			}>, "${args.model.id}", Lang>;
 		`,
 		code,
 	);

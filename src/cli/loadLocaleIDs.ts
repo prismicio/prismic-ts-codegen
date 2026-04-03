@@ -12,9 +12,7 @@ type LoadLocalesConfig =
 			fetchFromRepository?: boolean;
 	  };
 
-export const loadLocaleIDs = async (
-	config: LoadLocalesConfig,
-): Promise<string[]> => {
+export const loadLocaleIDs = async (config: LoadLocalesConfig): Promise<string[]> => {
 	const localeIDs = new Set<string>(config.localeIDs || []);
 
 	if ("repositoryName" in config && config.fetchFromRepository) {

@@ -1,10 +1,10 @@
-import { stripIndent } from "common-tags";
 import { existsSync, writeFileSync } from "fs";
-import meow from "meow";
 import { resolve as resolvePath } from "path";
 
-import { detectTypesProvider, generateTypes } from "../index";
+import { stripIndent } from "common-tags";
+import meow from "meow";
 
+import { detectTypesProvider, generateTypes } from "../index";
 import { configSchema } from "./configSchema";
 import { NON_EDITABLE_FILE_HEADER } from "./constants";
 import { loadConfig } from "./loadConfig";
@@ -78,9 +78,7 @@ const main = async () => {
 
 		if (config && !error) {
 			const { customTypeModels, sharedSliceModels } = await loadModels({
-				localPaths: Array.isArray(config.models)
-					? config.models
-					: config.models?.files,
+				localPaths: Array.isArray(config.models) ? config.models : config.models?.files,
 				repositoryName: config.repositoryName,
 				customTypesAPIToken: config.customTypesAPIToken,
 				fetchFromRepository:
@@ -90,9 +88,7 @@ const main = async () => {
 			});
 
 			const localeIDs = await loadLocaleIDs({
-				localeIDs: Array.isArray(config.locales)
-					? config.locales
-					: config.locales?.ids,
+				localeIDs: Array.isArray(config.locales) ? config.locales : config.locales?.ids,
 				repositoryName: config.repositoryName,
 				accessToken: config.accessToken,
 				fetchFromRepository:
@@ -101,15 +97,11 @@ const main = async () => {
 					config.locales.fetchFromRepository,
 			});
 
-			const typesProvider =
-				config.typesProvider || (await detectTypesProvider());
+			const typesProvider = config.typesProvider || (await detectTypesProvider());
 
 			const hasCustomTypeModels = customTypeModels.length > 0;
 
-			if (
-				config.clientIntegration?.includeCreateClientInterface &&
-				!hasCustomTypeModels
-			) {
+			if (config.clientIntegration?.includeCreateClientInterface && !hasCustomTypeModels) {
 				console.info(
 					"[INFO]: prismic-ts-codegen was configured to automatically integrate with `@prismicio/client`, but the integration was not generated because no Custom Type models were found. Automatic integration requires at least one Custom Type model.",
 				);
@@ -122,10 +114,9 @@ const main = async () => {
 				fieldConfigs: config.fields,
 				clientIntegration: {
 					includeCreateClientInterface: hasCustomTypeModels
-						? config.clientIntegration?.includeCreateClientInterface ?? true
+						? (config.clientIntegration?.includeCreateClientInterface ?? true)
 						: false,
-					includeContentNamespace:
-						config.clientIntegration?.includeContentNamespace ?? true,
+					includeContentNamespace: config.clientIntegration?.includeContentNamespace ?? true,
 				},
 				typesProvider,
 			});

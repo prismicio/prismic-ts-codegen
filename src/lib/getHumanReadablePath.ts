@@ -1,5 +1,4 @@
 import { FieldPath } from "../types";
-
 import { getHumanReadableModelName } from "./getHumanReadableModelName";
 
 type GetHumanReadablePathArgs = {

@@ -1,19 +1,15 @@
 import { expect, it } from "vitest";
 
-import { parseSourceFile } from "./__testutils__/parseSourceFile";
-
 import * as lib from "../src";
+import { parseSourceFile } from "./__testutils__/parseSourceFile";
 
 it("imports @prismicio/types as prismic as the default types provider", () => {
 	const res = lib.generateTypes();
 	const file = parseSourceFile(res);
 
-	const importDeclaration =
-		file.getImportDeclarationOrThrow("@prismicio/types");
+	const importDeclaration = file.getImportDeclarationOrThrow("@prismicio/types");
 
-	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe(
-		"prismic",
-	);
+	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe("prismic");
 	expect(importDeclaration.isTypeOnly()).toBe(true);
 });
 
@@ -21,12 +17,9 @@ it("imports @prismicio/client as prismic if the `@prismicio/client` types provid
 	const res = lib.generateTypes({ typesProvider: "@prismicio/client" });
 	const file = parseSourceFile(res);
 
-	const importDeclaration =
-		file.getImportDeclarationOrThrow("@prismicio/client");
+	const importDeclaration = file.getImportDeclarationOrThrow("@prismicio/client");
 
-	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe(
-		"prismic",
-	);
+	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe("prismic");
 	expect(importDeclaration.isTypeOnly()).toBe(true);
 });
 
@@ -34,12 +27,9 @@ it("imports @prismicio/types as prismic if the `@prismicio/types` types provider
 	const res = lib.generateTypes({ typesProvider: "@prismicio/types" });
 	const file = parseSourceFile(res);
 
-	const importDeclaration =
-		file.getImportDeclarationOrThrow("@prismicio/types");
+	const importDeclaration = file.getImportDeclarationOrThrow("@prismicio/types");
 
-	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe(
-		"prismic",
-	);
+	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe("prismic");
 	expect(importDeclaration.isTypeOnly()).toBe(true);
 });
 
@@ -54,9 +44,7 @@ it("includes AllDocumentTypes type alias if Custom Types are provided", (ctx) =>
 	const file = parseSourceFile(res);
 	const typeAlias = file.getTypeAliasOrThrow("AllDocumentTypes");
 
-	expect(typeAlias.getTypeNodeOrThrow().getText()).toBe(
-		"FooDocument | BarDocument",
-	);
+	expect(typeAlias.getTypeNodeOrThrow().getText()).toBe("FooDocument | BarDocument");
 	expect(typeAlias.isExported()).toBe(true);
 });
 
@@ -70,12 +58,9 @@ it("includes @prismicio/client module declaration including a CreateClient inter
 
 	const file = parseSourceFile(res);
 
-	const importDeclaration =
-		file.getImportDeclarationOrThrow("@prismicio/client");
+	const importDeclaration = file.getImportDeclarationOrThrow("@prismicio/client");
 
-	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe(
-		"prismicClient",
-	);
+	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe("prismicClient");
 	expect(importDeclaration.isTypeOnly()).toBe(true);
 
 	const createClientInterface = file
@@ -93,15 +78,10 @@ it("includes @prismicio/client module declaration including a CreateClient inter
 			.getText(),
 	).toBe(`string`);
 
-	expect(
-		firstCallSignature
-			.getParameterOrThrow("options")
-			.getTypeNodeOrThrow()
-			.getText(),
-	).toBe(`prismicClient.ClientConfig`);
-	expect(firstCallSignature.getParameterOrThrow("options").isOptional()).toBe(
-		true,
+	expect(firstCallSignature.getParameterOrThrow("options").getTypeNodeOrThrow().getText()).toBe(
+		`prismicClient.ClientConfig`,
 	);
+	expect(firstCallSignature.getParameterOrThrow("options").isOptional()).toBe(true);
 
 	expect(firstCallSignature.getReturnTypeNodeOrThrow().getText()).toBe(
 		"prismicClient.Client<AllDocumentTypes>",
@@ -126,9 +106,7 @@ it("includes untyped `@prismicio/client` in CreateClient interface if no Custom 
 		.getInterfaceOrThrow("CreateClient");
 	const callSignatures = createClientInterface.getCallSignatures();
 
-	expect(callSignatures[0].getReturnTypeNodeOrThrow().getText()).toBe(
-		"prismicClient.Client",
-	);
+	expect(callSignatures[0].getReturnTypeNodeOrThrow().getText()).toBe("prismicClient.Client");
 });
 
 it("includes @prismicio/client module declaration including a CreateWriteClient interface if configured", (ctx) => {
@@ -141,12 +119,9 @@ it("includes @prismicio/client module declaration including a CreateWriteClient 
 
 	const file = parseSourceFile(res);
 
-	const importDeclaration =
-		file.getImportDeclarationOrThrow("@prismicio/client");
+	const importDeclaration = file.getImportDeclarationOrThrow("@prismicio/client");
 
-	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe(
-		"prismicClient",
-	);
+	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe("prismicClient");
 	expect(importDeclaration.isTypeOnly()).toBe(true);
 
 	const createWriteClientInterface = file
@@ -164,15 +139,10 @@ it("includes @prismicio/client module declaration including a CreateWriteClient 
 			.getText(),
 	).toBe(`string`);
 
-	expect(
-		firstCallSignature
-			.getParameterOrThrow("options")
-			.getTypeNodeOrThrow()
-			.getText(),
-	).toBe(`prismicClient.WriteClientConfig`);
-	expect(firstCallSignature.getParameterOrThrow("options").isOptional()).toBe(
-		false,
+	expect(firstCallSignature.getParameterOrThrow("options").getTypeNodeOrThrow().getText()).toBe(
+		`prismicClient.WriteClientConfig`,
 	);
+	expect(firstCallSignature.getParameterOrThrow("options").isOptional()).toBe(false);
 
 	expect(firstCallSignature.getReturnTypeNodeOrThrow().getText()).toBe(
 		"prismicClient.WriteClient<AllDocumentTypes>",
@@ -197,9 +167,7 @@ it("includes untyped `@prismicio/client` in CreateWriteClient interface if no Cu
 		.getInterfaceOrThrow("CreateWriteClient");
 	const callSignatures = createWriteClientInterface.getCallSignatures();
 
-	expect(callSignatures[0].getReturnTypeNodeOrThrow().getText()).toBe(
-		"prismicClient.WriteClient",
-	);
+	expect(callSignatures[0].getReturnTypeNodeOrThrow().getText()).toBe("prismicClient.WriteClient");
 });
 
 it("includes @prismicio/client module declaration including a CreateMigration interface if configured", (ctx) => {
@@ -212,12 +180,9 @@ it("includes @prismicio/client module declaration including a CreateMigration in
 
 	const file = parseSourceFile(res);
 
-	const importDeclaration =
-		file.getImportDeclarationOrThrow("@prismicio/client");
+	const importDeclaration = file.getImportDeclarationOrThrow("@prismicio/client");
 
-	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe(
-		"prismicClient",
-	);
+	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe("prismicClient");
 	expect(importDeclaration.isTypeOnly()).toBe(true);
 
 	const createMigrationInterface = file
@@ -251,9 +216,7 @@ it("includes untyped `@prismicio/client` in CreateMigration interface if no Cust
 		.getInterfaceOrThrow("CreateMigration");
 	const callSignatures = createMigrationInterface.getCallSignatures();
 
-	expect(callSignatures[0].getReturnTypeNodeOrThrow().getText()).toBe(
-		"prismicClient.Migration",
-	);
+	expect(callSignatures[0].getReturnTypeNodeOrThrow().getText()).toBe("prismicClient.Migration");
 });
 
 it("includes @prismicio/client Content namespace containing all document and Slice types if configured", (ctx) => {
@@ -271,15 +234,11 @@ it("includes @prismicio/client Content namespace containing all document and Sli
 	});
 
 	const file = parseSourceFile(res);
-	const contentNamespace = file
-		.getModuleOrThrow('"@prismicio/client"')
-		.getModuleOrThrow("Content");
+	const contentNamespace = file.getModuleOrThrow('"@prismicio/client"').getModuleOrThrow("Content");
 
-	const exportSymbolNames = contentNamespace
-		.getExportSymbols()
-		.map((exportSymbol) => {
-			return exportSymbol.getName();
-		});
+	const exportSymbolNames = contentNamespace.getExportSymbols().map((exportSymbol) => {
+		return exportSymbol.getName();
+	});
 
 	// Documents
 	expect(exportSymbolNames.includes("FooDocument")).toBe(true);
@@ -300,15 +259,11 @@ it("includes empty @prismicio/client Content namespace if configured and no mode
 	});
 
 	const file = parseSourceFile(res);
-	const contentNamespace = file
-		.getModuleOrThrow('"@prismicio/client"')
-		.getModuleOrThrow("Content");
+	const contentNamespace = file.getModuleOrThrow('"@prismicio/client"').getModuleOrThrow("Content");
 
-	const exportSymbolNames = contentNamespace
-		.getExportSymbols()
-		.map((exportSymbol) => {
-			return exportSymbol.getName();
-		});
+	const exportSymbolNames = contentNamespace.getExportSymbols().map((exportSymbol) => {
+		return exportSymbol.getName();
+	});
 
 	expect(exportSymbolNames.length).toBe(0);
 });
@@ -324,12 +279,9 @@ it("imports @prismicio/client as `prismicClient` if the `@prismicio/types` types
 
 	const file = parseSourceFile(res);
 
-	const importDeclaration =
-		file.getImportDeclarationOrThrow("@prismicio/client");
+	const importDeclaration = file.getImportDeclarationOrThrow("@prismicio/client");
 
-	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe(
-		"prismicClient",
-	);
+	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe("prismicClient");
 	expect(importDeclaration.isTypeOnly()).toBe(true);
 
 	const createClientInterface = file
@@ -340,12 +292,9 @@ it("imports @prismicio/client as `prismicClient` if the `@prismicio/types` types
 
 	expect(callSignatures.length).toBe(1);
 
-	expect(
-		firstCallSignature
-			.getParameterOrThrow("options")
-			.getTypeNodeOrThrow()
-			.getText(),
-	).toBe(`prismicClient.ClientConfig`);
+	expect(firstCallSignature.getParameterOrThrow("options").getTypeNodeOrThrow().getText()).toBe(
+		`prismicClient.ClientConfig`,
+	);
 
 	expect(firstCallSignature.getReturnTypeNodeOrThrow().getText()).toBe(
 		"prismicClient.Client<AllDocumentTypes>",
@@ -367,12 +316,9 @@ it("uses the existing prismic import if the `@prismicio/client` types provider i
 
 	const file = parseSourceFile(res);
 
-	const importDeclaration =
-		file.getImportDeclarationOrThrow("@prismicio/client");
+	const importDeclaration = file.getImportDeclarationOrThrow("@prismicio/client");
 
-	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe(
-		"prismic",
-	);
+	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe("prismic");
 	expect(importDeclaration.isTypeOnly()).toBe(true);
 
 	const createClientInterface = file
@@ -383,12 +329,9 @@ it("uses the existing prismic import if the `@prismicio/client` types provider i
 
 	expect(callSignatures.length).toBe(1);
 
-	expect(
-		firstCallSignature
-			.getParameterOrThrow("options")
-			.getTypeNodeOrThrow()
-			.getText(),
-	).toBe(`prismic.ClientConfig`);
+	expect(firstCallSignature.getParameterOrThrow("options").getTypeNodeOrThrow().getText()).toBe(
+		`prismic.ClientConfig`,
+	);
 
 	expect(firstCallSignature.getReturnTypeNodeOrThrow().getText()).toBe(
 		"prismic.Client<AllDocumentTypes>",
@@ -410,12 +353,9 @@ it("uses the existing prismic import if the `@prismicio/client` types provider i
 
 	const file = parseSourceFile(res);
 
-	const importDeclaration =
-		file.getImportDeclarationOrThrow("@prismicio/client");
+	const importDeclaration = file.getImportDeclarationOrThrow("@prismicio/client");
 
-	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe(
-		"prismic",
-	);
+	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe("prismic");
 	expect(importDeclaration.isTypeOnly()).toBe(true);
 
 	const createWriteClientInterface = file
@@ -426,12 +366,9 @@ it("uses the existing prismic import if the `@prismicio/client` types provider i
 
 	expect(callSignatures.length).toBe(1);
 
-	expect(
-		firstCallSignature
-			.getParameterOrThrow("options")
-			.getTypeNodeOrThrow()
-			.getText(),
-	).toBe(`prismic.WriteClientConfig`);
+	expect(firstCallSignature.getParameterOrThrow("options").getTypeNodeOrThrow().getText()).toBe(
+		`prismic.WriteClientConfig`,
+	);
 
 	expect(firstCallSignature.getReturnTypeNodeOrThrow().getText()).toBe(
 		"prismic.WriteClient<AllDocumentTypes>",
@@ -453,12 +390,9 @@ it("uses the existing prismic import if the `@prismicio/client` types provider i
 
 	const file = parseSourceFile(res);
 
-	const importDeclaration =
-		file.getImportDeclarationOrThrow("@prismicio/client");
+	const importDeclaration = file.getImportDeclarationOrThrow("@prismicio/client");
 
-	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe(
-		"prismic",
-	);
+	expect(importDeclaration.getNamespaceImportOrThrow().getText()).toBe("prismic");
 	expect(importDeclaration.isTypeOnly()).toBe(true);
 
 	const createMigrationInterface = file

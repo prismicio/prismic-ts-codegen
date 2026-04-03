@@ -7,16 +7,10 @@ import type {
 
 type GetModelHumanNameArgs = {
 	name: string;
-	model:
-		| CustomTypeModel
-		| SharedSliceModel
-		| CustomTypeModelField
-		| CustomTypeModelSlice;
+	model: CustomTypeModel | SharedSliceModel | CustomTypeModelField | CustomTypeModelSlice;
 };
 
-export const getHumanReadableModelName = (
-	args: GetModelHumanNameArgs,
-): string => {
+export const getHumanReadableModelName = (args: GetModelHumanNameArgs): string => {
 	if ("json" in args.model) {
 		// Custom type model
 
