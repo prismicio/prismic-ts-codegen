@@ -1,10 +1,10 @@
-import { FieldPath } from "../types";
+import type { FieldPath } from "../types";
 
 type GetAPIIDPathArgs = {
 	path: FieldPath;
 };
 
-export function getAPIIDPath(args: GetAPIIDPathArgs) {
+export function getAPIIDPath(args: GetAPIIDPathArgs): string {
 	let result = "";
 
 	for (let i = 0; i < args.path.length; i++) {

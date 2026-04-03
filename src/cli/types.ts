@@ -1,4 +1,4 @@
-import { TypesProvider } from "../generateTypes";
+import type { TypesProvider } from "../generateTypes";
 
 /** Configuration to control the generated types. */
 export type Config = {
@@ -76,7 +76,7 @@ export type Config = {
 	 * @example
 	 * 	```ts
 	 * 	["en-us", "fr-fr"];
-	 * 	```
+	 * 	```;
 	 *
 	 * @example
 	 * 	```ts
@@ -84,7 +84,7 @@ export type Config = {
 	 * 	"ids": ["en-us", "fr-fr"],
 	 * 	"fetchFromRepository": true
 	 * 	}
-	 * 	```
+	 * 	```;
 	 */
 	locales?:
 		| string[]
@@ -96,7 +96,7 @@ export type Config = {
 				 * @example
 				 * 	```ts
 				 * 	["en-us", "fr-fr"];
-				 * 	```
+				 * 	```;
 				 */
 				ids?: string[];
 
@@ -143,7 +143,7 @@ export type Config = {
 			 * 	"Twitter": "import('./types').OEmbedTwitter"
 			 * 	"Vimeo": "import('./types').OEmbedVimeo"
 			 * 	}
-			 * 	```
+			 * 	```;
 			 */
 			providerTypes?: Record<string, string>;
 		};
@@ -160,7 +160,7 @@ export type Config = {
 			 * 	"shopify_products": "import('./types').IntegrationFieldShopifyProduct"
 			 * 	"mux_videos": "import('./types').IntegrationFieldMuxVideo"
 			 * 	}
-			 * 	```
+			 * 	```;
 			 */
 			catalogTypes?: Record<string, string>;
 		};

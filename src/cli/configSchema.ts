@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-import { Config } from "./types";
+import type { Config } from "./types";
 
 export const configSchema = Joi.object<Config>({
 	repositoryName: Joi.string()

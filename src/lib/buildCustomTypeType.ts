@@ -3,7 +3,7 @@ import { source } from "common-tags";
 import QuickLRU from "quick-lru";
 
 import { CUSTOM_TYPES_DOCUMENTATION_URL } from "../constants";
-import { AuxiliaryType, FieldConfigs } from "../types";
+import type { AuxiliaryType, FieldConfigs } from "../types";
 import { addSection } from "./addSection";
 import { buildCustomTypeDataType } from "./buildCustomTypeDataType";
 import { buildTypeName } from "./buildTypeName";

@@ -1,11 +1,11 @@
-import { FieldPath } from "../types";
+import type { FieldPath } from "../types";
 import { getHumanReadableModelName } from "./getHumanReadableModelName";
 
 type GetHumanReadablePathArgs = {
 	path: FieldPath;
 };
 
-export function getHumanReadablePath(args: GetHumanReadablePathArgs) {
+export function getHumanReadablePath(args: GetHumanReadablePathArgs): string {
 	return args.path
 		.map((element) => {
 			if (element.label) {

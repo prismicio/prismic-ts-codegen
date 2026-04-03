@@ -3,7 +3,7 @@ import { source, stripIndent } from "common-tags";
 import QuickLRU from "quick-lru";
 
 import { SHARED_SLICES_DOCUMENTATION_URL } from "../constants";
-import { AuxiliaryType, FieldConfigs, FieldPath } from "../types";
+import type { AuxiliaryType, FieldConfigs, FieldPath } from "../types";
 import { addSection } from "./addSection";
 import { buildFieldProperties } from "./buildFieldProperties";
 import { buildTypeName } from "./buildTypeName";

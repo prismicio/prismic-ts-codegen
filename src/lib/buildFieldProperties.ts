@@ -1,7 +1,7 @@
 import { type CustomTypeModelField, CustomTypeModelFieldType } from "@prismicio/client";
 import { source, stripIndent } from "common-tags";
 
-import { AuxiliaryType, FieldConfigs, FieldPath } from "../types";
+import type { AuxiliaryType, FieldConfigs, FieldPath } from "../types";
 import { addLine } from "./addLine";
 import { addSection } from "./addSection";
 import { buildFieldDocs } from "./buildFieldDocs";

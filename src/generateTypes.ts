@@ -7,7 +7,7 @@ import { addSection } from "./lib/addSection";
 import { buildCustomTypeType } from "./lib/buildCustomTypeType";
 import { buildSharedSliceType } from "./lib/buildSharedSliceType";
 import { buildUnion } from "./lib/buildUnion";
-import { FieldConfigs } from "./types";
+import type { FieldConfigs } from "./types";
 
 export type TypesProvider = "@prismicio/client" | "@prismicio/types";
 

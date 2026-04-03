@@ -1,7 +1,7 @@
 import type { CustomTypeModelField } from "@prismicio/client";
 
 import { FIELD_DOCUMENTATION_URLS } from "../constants";
-import { FieldPath } from "../types";
+import type { FieldPath } from "../types";
 import { addLine } from "./addLine";
 import { getAPIIDPath } from "./getAPIIDPath";
 import { getHumanReadableModelName } from "./getHumanReadableModelName";

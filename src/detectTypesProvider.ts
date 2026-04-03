@@ -1,6 +1,6 @@
 import { createRequire } from "node:module";
 
-import { TypesProvider } from "./generateTypes";
+import type { TypesProvider } from "./generateTypes";
 
 export type DetectTypesProviderConfig = {
 	cwd?: string;
