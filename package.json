@@ -56,11 +56,11 @@
 		"common-tags": "^1.8.2",
 		"fast-glob": "^3.3.3",
 		"jiti": "^1.21.7",
-		"joi": "^17.13.3",
 		"meow": "~12.0.1",
 		"node-fetch": "^3.3.2",
 		"pascal-case": "^3.1.2",
-		"quick-lru": "^6.1.2"
+		"quick-lru": "^6.1.2",
+		"zod": "^4.3.6"
 	},
 	"devDependencies": {
 		"@prismicio/client": "7.18.0",

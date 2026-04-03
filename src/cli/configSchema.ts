@@ -1,52 +1,55 @@
-import Joi from "joi";
+import { z } from "zod";
 
-import type { Config } from "./types";
+export const configSchema = z.object({
+	repositoryName: z.string().optional(),
+	accessToken: z.string().optional(),
+	customTypesAPIToken: z.string().optional(),
 
-export const configSchema = Joi.object<Config>({
-	// oxlint-ignore no-thenable -- Joi's `.when()` config uses `then` as a property, not a Promise thenable.
-	repositoryName: Joi.string()
-		.when("locales.fetchFromRepository", {
-			is: true,
-			then: Joi.required(),
+	output: z.string().optional(),
+
+	typesProvider: z
+		.enum(["@prismicio/client", "@prismicio/types"])
+		.optional(),
+
+	clientIntegration: z
+		.object({
+			includeCreateClientInterface: z.boolean().optional(),
+			includeContentNamespace: z.boolean().optional(),
 		})
-		.when("models.fetchFromRepository", {
-			is: true,
-			then: Joi.required(),
-		}),
-	accessToken: Joi.string(),
-	customTypesAPIToken: Joi.string(),
+		.optional(),
 
-	output: Joi.string(),
+	locales: z
+		.union([
+			z.array(z.string()),
+			z.object({
+				ids: z.array(z.string()).optional(),
+				fetchFromRepository: z.boolean().optional(),
+			}),
+		])
+		.optional(),
 
-	typesProvider: Joi.string().allow("@prismicio/client", "@prismicio/client"),
+	models: z
+		.union([
+			z.array(z.string()),
+			z.object({
+				files: z.array(z.string()).optional(),
+				fetchFromRepository: z.boolean().optional(),
+			}),
+		])
+		.optional(),
 
-	clientIntegration: Joi.object({
-		includeCreateClientInterface: Joi.boolean(),
-		includeContentNamespace: Joi.boolean(),
-	}),
-
-	locales: Joi.alternatives(
-		Joi.array().items(Joi.string().required()),
-		Joi.object({
-			ids: Joi.array().items(Joi.string().required()),
-			fetchFromRepository: Joi.boolean(),
-		}),
-	),
-
-	models: Joi.alternatives(
-		Joi.array().items(Joi.string()),
-		Joi.object({
-			files: Joi.array().items(Joi.string()),
-			fetchFromRepository: Joi.boolean(),
-		}),
-	),
-
-	fields: Joi.object({
-		embed: Joi.object({
-			providerTypes: Joi.object().pattern(Joi.string(), Joi.string().required()),
-		}),
-		integrationFields: Joi.object({
-			catalogTypes: Joi.object().pattern(Joi.string(), Joi.string().required()),
-		}),
-	}),
+	fields: z
+		.object({
+			embed: z
+				.object({
+					providerTypes: z.record(z.string(), z.string()).optional(),
+				})
+				.optional(),
+			integrationFields: z
+				.object({
+					catalogTypes: z.record(z.string(), z.string()).optional(),
+				})
+				.optional(),
+		})
+		.optional(),
 });

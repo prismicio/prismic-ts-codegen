@@ -74,9 +74,10 @@ const main = async () => {
 	} else {
 		const unvalidatedConfig = loadConfig({ path: cli.flags.config });
 
-		const { value: config, error } = configSchema.validate(unvalidatedConfig);
+		const result = configSchema.safeParse(unvalidatedConfig);
 
-		if (config && !error) {
+		if (result.success) {
+			const config = result.data;
 			const { customTypeModels, sharedSliceModels } = await loadModels({
 				localPaths: Array.isArray(config.models) ? config.models : config.models?.files,
 				repositoryName: config.repositoryName,
@@ -131,10 +132,8 @@ const main = async () => {
 				process.stdout.write(types + "\n");
 			}
 		} else {
-			if (error) {
-				console.error(error.message);
-				process.exit(1);
-			}
+			console.error(result.error.message);
+			process.exit(1);
 		}
 	}
 };
