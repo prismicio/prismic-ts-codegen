@@ -3,6 +3,7 @@ import Joi from "joi";
 import type { Config } from "./types";
 
 export const configSchema = Joi.object<Config>({
+	// oxlint-ignore no-thenable -- Joi's `.when()` config uses `then` as a property, not a Promise thenable.
 	repositoryName: Joi.string()
 		.when("locales.fetchFromRepository", {
 			is: true,

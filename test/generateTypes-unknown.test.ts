@@ -1,4 +1,4 @@
-import * as prismic from "@prismicio/client";
+import type * as prismic from "@prismicio/client";
 import { it } from "vitest";
 
 import { expectToHaveDocs } from "./__testutils__/expectToHaveDocs";
