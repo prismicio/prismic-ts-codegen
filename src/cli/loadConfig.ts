@@ -3,7 +3,7 @@ import { resolve as resolvePath } from "path";
 
 import _jiti from "jiti";
 
-import type { Config } from "./types";
+import type { Config } from "./configSchema";
 
 const jiti = _jiti(process.cwd());
 
