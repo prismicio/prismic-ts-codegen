@@ -1,11 +1,9 @@
 import type { SharedSliceModel } from "@prismicio/client";
 import { source, stripIndent } from "common-tags";
-import QuickLRU from "quick-lru";
-
-import { AuxiliaryType, FieldConfigs, FieldPath } from "../types";
+import type QuickLRU from "quick-lru";
 
 import { SHARED_SLICES_DOCUMENTATION_URL } from "../constants";
-
+import type { AuxiliaryType, FieldConfigs, FieldPath } from "../types";
 import { addSection } from "./addSection";
 import { buildFieldProperties } from "./buildFieldProperties";
 import { buildTypeName } from "./buildTypeName";
@@ -29,7 +27,7 @@ type BuildSharedSliceTypeReturnValue = {
 };
 
 export function buildSharedSliceType(
-	args: BuildSharedSliceTypeArgs,
+	args: BuildSharedSliceTypeArgs
 ): BuildSharedSliceTypeReturnValue {
 	if (args.cache) {
 		const key = getCacheKey([args.model, args.fieldConfigs]);
@@ -106,7 +104,7 @@ export function buildSharedSliceType(
 						${docs}
 						export interface ${primaryInterfaceName} {}
 					`,
-				code,
+				code
 			);
 		}
 
@@ -154,7 +152,7 @@ export function buildSharedSliceType(
 						${docs}
 						export interface ${itemInterfaceName} {}
 					`,
-				code,
+				code
 			);
 		}
 
@@ -175,7 +173,7 @@ export function buildSharedSliceType(
 					: `Record<string, never>`
 			}, ${itemInterfaceName ? `Simplify<${itemInterfaceName}>` : `never`}>;
 			`,
-			code,
+			code
 		);
 
 		variationNames.push(variationName);
@@ -196,7 +194,7 @@ export function buildSharedSliceType(
 			variationNames.length > 0 ? variationsUnion : "never"
 		}
 		`,
-		code,
+		code
 	);
 
 	code = addSection(
@@ -212,7 +210,7 @@ export function buildSharedSliceType(
 			args.model.id
 		}", ${variationUnionName}>;
 		`,
-		code,
+		code
 	);
 
 	const result = {

@@ -1,6 +1,6 @@
-import { afterEach, expect, it, vi } from "vitest";
-
 import { createRequire } from "node:module";
+
+import { afterEach, expect, it, vi } from "vitest";
 
 import { detectTypesProvider } from "../src";
 

@@ -1,7 +1,8 @@
-import * as prismicCT from "@prismicio/custom-types-client";
-import type { CustomTypeModel, SharedSliceModel } from "@prismicio/client";
-import fg from "fast-glob";
 import { readFileSync } from "fs";
+
+import type { CustomTypeModel, SharedSliceModel } from "@prismicio/client";
+import * as prismicCT from "@prismicio/custom-types-client";
+import fg from "fast-glob";
 import fetch from "node-fetch";
 
 const isCustomTypeModel = (input: unknown): input is CustomTypeModel => {
@@ -38,9 +39,7 @@ type LoadModelsReturnType = {
 	sharedSliceModels: SharedSliceModel[];
 };
 
-export const loadModels = async (
-	config: LoadModelsConfig,
-): Promise<LoadModelsReturnType> => {
+export const loadModels = async (config: LoadModelsConfig): Promise<LoadModelsReturnType> => {
 	const customTypeModels: Record<string, CustomTypeModel> = {};
 	const sharedSliceModels: Record<string, SharedSliceModel> = {};
 
@@ -52,11 +51,10 @@ export const loadModels = async (
 		});
 
 		if (config.fetchFromRepository) {
-			const [remoteCustomTypeModels, remoteSharedSliceModels] =
-				await Promise.all([
-					customTypesClient.getAllCustomTypes(),
-					customTypesClient.getAllSharedSlices(),
-				]);
+			const [remoteCustomTypeModels, remoteSharedSliceModels] = await Promise.all([
+				customTypesClient.getAllCustomTypes(),
+				customTypesClient.getAllSharedSlices(),
+			]);
 
 			for (const customTypeModel of remoteCustomTypeModels) {
 				customTypeModels[customTypeModel.id] = customTypeModel;

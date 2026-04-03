@@ -1,6 +1,5 @@
+import type * as prismic from "@prismicio/client";
 import { it } from "vitest";
-
-import * as prismic from "@prismicio/client";
 
 import { expectToHaveDocs } from "./__testutils__/expectToHaveDocs";
 import { expectToHaveFieldType } from "./__testutils__/expectToHaveFieldType";

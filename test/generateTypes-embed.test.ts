@@ -1,12 +1,10 @@
+import { stripIndent } from "common-tags";
 import { expect, it } from "vitest";
 
-import { stripIndent } from "common-tags";
-
+import * as lib from "../src";
 import { expectToHaveDocs } from "./__testutils__/expectToHaveDocs";
 import { expectToHaveFieldType } from "./__testutils__/expectToHaveFieldType";
 import { parseSourceFile } from "./__testutils__/parseSourceFile";
-
-import * as lib from "../src";
 
 it("is correctly typed", (ctx) => {
 	expectToHaveFieldType(ctx.mock.model.embed(), "prismic.EmbedField");
@@ -32,13 +30,9 @@ it("can be customized with provider-specific types", (ctx) => {
 		},
 	});
 	const file = parseSourceFile(res);
-	const property = file
-		.getInterfaceOrThrow("FooDocumentData")
-		.getPropertyOrThrow("bar");
+	const property = file.getInterfaceOrThrow("FooDocumentData").getPropertyOrThrow("bar");
 
-	expect(
-		property.getTypeNodeOrThrow().getText({ trimLeadingIndentation: true }),
-	).toBe(
+	expect(property.getTypeNodeOrThrow().getText({ trimLeadingIndentation: true })).toBe(
 		stripIndent`
 			prismic.EmbedField<prismic.AnyOEmbed & prismic.OEmbedExtra & (({ provider_name: "YouTube" } & YouTubeType) | ({ provider_name: "Vimeo" } & VimeoType))>
 		`,

@@ -1,8 +1,7 @@
 import { expect, it } from "vitest";
 
-import { parseSourceFile } from "./__testutils__/parseSourceFile";
-
 import * as lib from "../src";
+import { parseSourceFile } from "./__testutils__/parseSourceFile";
 
 it("correctly typed", (ctx) => {
 	const model = ctx.mock.model.customType({
@@ -33,9 +32,7 @@ it("correctly typed", (ctx) => {
 
 	const types = lib.generateTypes({ customTypeModels: [model] });
 	const file = parseSourceFile(types);
-	const sliceZoneProperty = file
-		.getInterfaceOrThrow("FooDocumentData")
-		.getPropertyOrThrow("bar");
+	const sliceZoneProperty = file.getInterfaceOrThrow("FooDocumentData").getPropertyOrThrow("bar");
 
 	expect(sliceZoneProperty.getTypeNodeOrThrow().getText()).toBe(
 		"prismic.SliceZone<FooDocumentDataBarSlice>",
@@ -157,10 +154,7 @@ it("handles Slices with no fields", (ctx) => {
 	const file = parseSourceFile(types);
 
 	expect(
-		file
-			.getTypeAliasOrThrow("FooDocumentDataBarBazSlice")
-			.getTypeNodeOrThrow()
-			.getText(),
+		file.getTypeAliasOrThrow("FooDocumentDataBarBazSlice").getTypeNodeOrThrow().getText(),
 	).toBe('prismic.Slice<"baz", Record<string, never>, never>');
 });
 
@@ -184,13 +178,8 @@ it("handles Slices with no primary fields", (ctx) => {
 	const file = parseSourceFile(types);
 
 	expect(
-		file
-			.getTypeAliasOrThrow("FooDocumentDataBarBazSlice")
-			.getTypeNodeOrThrow()
-			.getText(),
-	).toBe(
-		'prismic.Slice<"baz", Record<string, never>, Simplify<FooDocumentDataBarBazSliceItem>>',
-	);
+		file.getTypeAliasOrThrow("FooDocumentDataBarBazSlice").getTypeNodeOrThrow().getText(),
+	).toBe('prismic.Slice<"baz", Record<string, never>, Simplify<FooDocumentDataBarBazSliceItem>>');
 });
 
 it("handles Slices with no item fields", (ctx) => {
@@ -213,13 +202,8 @@ it("handles Slices with no item fields", (ctx) => {
 	const file = parseSourceFile(types);
 
 	expect(
-		file
-			.getTypeAliasOrThrow("FooDocumentDataBarBazSlice")
-			.getTypeNodeOrThrow()
-			.getText(),
-	).toBe(
-		'prismic.Slice<"baz", Simplify<FooDocumentDataBarBazSlicePrimary>, never>',
-	);
+		file.getTypeAliasOrThrow("FooDocumentDataBarBazSlice").getTypeNodeOrThrow().getText(),
+	).toBe('prismic.Slice<"baz", Simplify<FooDocumentDataBarBazSlicePrimary>, never>');
 });
 
 it("creates an interface for a Slice's primary fields", (ctx) => {
@@ -244,12 +228,10 @@ it("creates an interface for a Slice's primary fields", (ctx) => {
 	const types = lib.generateTypes({ customTypeModels: [model] });
 	const file = parseSourceFile(types);
 
-	const primaryInterface = file.getInterfaceOrThrow(
-		"FooDocumentDataBarBazSlicePrimary",
+	const primaryInterface = file.getInterfaceOrThrow("FooDocumentDataBarBazSlicePrimary");
+	expect(primaryInterface.getPropertyOrThrow("abc").getTypeNodeOrThrow().getText()).toBe(
+		"prismic.KeyTextField",
 	);
-	expect(
-		primaryInterface.getPropertyOrThrow("abc").getTypeNodeOrThrow().getText(),
-	).toBe("prismic.KeyTextField");
 });
 
 it("creates an interface for a Slice's items fields", (ctx) => {
@@ -274,15 +256,13 @@ it("creates an interface for a Slice's items fields", (ctx) => {
 	const types = lib.generateTypes({ customTypeModels: [model] });
 	const file = parseSourceFile(types);
 
-	const itemInterface = file.getInterfaceOrThrow(
-		"FooDocumentDataBarBazSliceItem",
-	);
+	const itemInterface = file.getInterfaceOrThrow("FooDocumentDataBarBazSliceItem");
 
 	expect(itemInterface.isExported()).toBe(true);
 
-	expect(
-		itemInterface.getPropertyOrThrow("def").getTypeNodeOrThrow().getText(),
-	).toBe("prismic.SelectField");
+	expect(itemInterface.getPropertyOrThrow("def").getTypeNodeOrThrow().getText()).toBe(
+		"prismic.SelectField",
+	);
 });
 
 it("handles hyphenated fields", (ctx) => {
@@ -307,25 +287,15 @@ it("handles hyphenated fields", (ctx) => {
 	const types = lib.generateTypes({ customTypeModels: [model] });
 	const file = parseSourceFile(types);
 
-	const primaryInterface = file.getInterfaceOrThrow(
-		"FooDocumentDataBarBazSlicePrimary",
-	);
-	const itemInterface = file.getInterfaceOrThrow(
-		"FooDocumentDataBarBazSliceItem",
-	);
+	const primaryInterface = file.getInterfaceOrThrow("FooDocumentDataBarBazSlicePrimary");
+	const itemInterface = file.getInterfaceOrThrow("FooDocumentDataBarBazSliceItem");
 
 	expect(
-		primaryInterface
-			.getPropertyOrThrow('"hyphenated-field"')
-			.getTypeNodeOrThrow()
-			.getText(),
+		primaryInterface.getPropertyOrThrow('"hyphenated-field"').getTypeNodeOrThrow().getText(),
 	).toBe("prismic.KeyTextField");
 
 	expect(
-		itemInterface
-			.getPropertyOrThrow('"hyphenated-field"')
-			.getTypeNodeOrThrow()
-			.getText(),
+		itemInterface.getPropertyOrThrow('"hyphenated-field"').getTypeNodeOrThrow().getText(),
 	).toBe("prismic.SelectField");
 });
 
@@ -361,9 +331,7 @@ it("prefixes types starting with a number with an underscore", (ctx) => {
 		"prismic.SliceZone<_123DocumentData456Slice>",
 	);
 
-	expect(sliceTypeAlias.getTypeNodeOrThrow().getText()).toBe(
-		"_123DocumentData456789Slice",
-	);
+	expect(sliceTypeAlias.getTypeNodeOrThrow().getText()).toBe("_123DocumentData456789Slice");
 
 	expect(sliceType.isExported()).toBe(true);
 

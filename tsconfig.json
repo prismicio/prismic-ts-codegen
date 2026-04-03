@@ -5,15 +5,16 @@
 
 		"target": "esnext",
 		"module": "esnext",
-		"declaration": false,
-		"moduleResolution": "node",
+		"declaration": true,
+		"declarationMap": true,
+		"moduleResolution": "bundler",
 		"resolveJsonModule": true,
 		"allowSyntheticDefaultImports": true,
 		"esModuleInterop": true,
 
 		"forceConsistentCasingInFileNames": true,
 		"jsx": "preserve",
-		"lib": ["esnext", "dom"],
+		"lib": ["esnext", "dom", "dom.iterable"],
 		"types": ["node"]
 	},
 	"exclude": ["node_modules", "dist", "examples"]

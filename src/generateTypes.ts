@@ -7,8 +7,7 @@ import { addSection } from "./lib/addSection";
 import { buildCustomTypeType } from "./lib/buildCustomTypeType";
 import { buildSharedSliceType } from "./lib/buildSharedSliceType";
 import { buildUnion } from "./lib/buildUnion";
-
-import { FieldConfigs } from "./types";
+import type { FieldConfigs } from "./types";
 
 export type TypesProvider = "@prismicio/client" | "@prismicio/types";
 
@@ -47,17 +46,11 @@ export function generateTypes(config: GenerateTypesConfig = {}): string {
 
 			// This import declaration would be a duplicate if the types
 			// provider is @prismicio/client.
-			code = addLine(
-				`import type * as ${clientImportName} from "@prismicio/client";`,
-				code,
-			);
+			code = addLine(`import type * as ${clientImportName} from "@prismicio/client";`, code);
 		}
 	}
 
-	code = addSection(
-		`type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };`,
-		code,
-	);
+	code = addSection(`type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };`, code);
 
 	code = addSection(
 		`

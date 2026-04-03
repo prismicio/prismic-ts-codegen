@@ -1,9 +1,7 @@
 import type { CustomTypeModelField } from "@prismicio/client";
 
-import { FieldPath } from "../types";
-
 import { FIELD_DOCUMENTATION_URLS } from "../constants";
-
+import type { FieldPath } from "../types";
 import { addLine } from "./addLine";
 import { getAPIIDPath } from "./getAPIIDPath";
 import { getHumanReadableModelName } from "./getHumanReadableModelName";
@@ -13,9 +11,7 @@ type GetFieldHumanReadableTypeArgs = {
 	field: CustomTypeModelField;
 };
 
-function getHumanReadableFieldType(
-	args: GetFieldHumanReadableTypeArgs,
-): string {
+function getHumanReadableFieldType(args: GetFieldHumanReadableTypeArgs): string {
 	switch (args.field.type) {
 		case "StructuredText": {
 			return "Rich Text";
@@ -24,9 +20,7 @@ function getHumanReadableFieldType(
 		case "IntegrationFields": {
 			const catalog = args.field.config?.catalog;
 
-			return `Integration Fields (Catalog: ${
-				catalog ? `\`${catalog}\`` : "*unknown*"
-			})`;
+			return `Integration Fields (Catalog: ${catalog ? `\`${catalog}\`` : "*unknown*"})`;
 		}
 
 		case "Link": {
@@ -81,9 +75,7 @@ function getDocumentationURL(args: getDocumentationURLArgs) {
 
 		default: {
 			const url =
-				FIELD_DOCUMENTATION_URLS[
-					args.field.type as keyof typeof FIELD_DOCUMENTATION_URLS
-				];
+				FIELD_DOCUMENTATION_URLS[args.field.type as keyof typeof FIELD_DOCUMENTATION_URLS];
 
 			if (typeof url === "string") {
 				return url;
@@ -111,19 +103,14 @@ export function buildFieldDocs(args: BuildFieldDocsArgs): string {
 		field: args.field,
 	});
 
-	result = addLine(
-		` * ${humanReadableName} field in *${humanReadablePath}*`,
-		result,
-	);
+	result = addLine(` * ${humanReadableName} field in *${humanReadablePath}*`, result);
 
 	result = addLine(" *", result);
 
 	result = addLine(` * - **Field Type**: ${humanReadableFieldType}`, result);
 
 	const placeholder =
-		(args.field.config &&
-			"placeholder" in args.field.config &&
-			args.field.config.placeholder) ||
+		(args.field.config && "placeholder" in args.field.config && args.field.config.placeholder) ||
 		`*None*`;
 	result = addLine(` * - **Placeholder**: ${placeholder}`, result);
 
@@ -135,10 +122,7 @@ export function buildFieldDocs(args: BuildFieldDocsArgs): string {
 		const stringifiedDefaultValue =
 			typeof defaultValue === "boolean" ? `${defaultValue}` : defaultValue;
 
-		result = addLine(
-			` * - **Default Value**: ${stringifiedDefaultValue}`,
-			result,
-		);
+		result = addLine(` * - **Default Value**: ${stringifiedDefaultValue}`, result);
 	}
 
 	const apiIDPath = getAPIIDPath({

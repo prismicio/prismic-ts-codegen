@@ -1,8 +1,7 @@
 import { expect, it } from "vitest";
 
-import { parseSourceFile } from "./__testutils__/parseSourceFile";
-
 import * as lib from "../src";
+import { parseSourceFile } from "./__testutils__/parseSourceFile";
 
 it("generates a Custom Type type", (ctx) => {
 	const res = lib.generateTypes({
@@ -96,13 +95,9 @@ it("data interface is empty record type alias if no data fields are defined", (c
 
 	const file = parseSourceFile(res);
 
-	expect(
-		file.getInterfaceOrThrow("NoFieldsDocumentData").getMembers(),
-	).toStrictEqual([]);
+	expect(file.getInterfaceOrThrow("NoFieldsDocumentData").getMembers()).toStrictEqual([]);
 
-	expect(
-		file.getInterfaceOrThrow("OnlyUidDocumentData").getMembers(),
-	).toStrictEqual([]);
+	expect(file.getInterfaceOrThrow("OnlyUidDocumentData").getMembers()).toStrictEqual([]);
 });
 
 it("includes specific lang IDs if given", (ctx) => {
@@ -137,10 +132,7 @@ it("handles hyphenated fields", (ctx) => {
 	const dataInterface = file.getInterfaceOrThrow("FooDocumentData");
 
 	expect(
-		dataInterface
-			.getPropertyOrThrow('"hyphenated-field"')
-			.getTypeNodeOrThrow()
-			.getText(),
+		dataInterface.getPropertyOrThrow('"hyphenated-field"').getTypeNodeOrThrow().getText(),
 	).toBe("prismic.KeyTextField");
 });
 
@@ -159,12 +151,9 @@ it("handles fields starting with a number", (ctx) => {
 	const file = parseSourceFile(res);
 	const dataInterface = file.getInterfaceOrThrow("FooDocumentData");
 
-	expect(
-		dataInterface
-			.getPropertyOrThrow('"3d_noodle"')
-			.getTypeNodeOrThrow()
-			.getText(),
-	).toBe("prismic.KeyTextField");
+	expect(dataInterface.getPropertyOrThrow('"3d_noodle"').getTypeNodeOrThrow().getText()).toBe(
+		"prismic.KeyTextField",
+	);
 });
 
 it("prefixes types starting with a number with an underscore", (ctx) => {

@@ -1,6 +1,6 @@
 import { createRequire } from "node:module";
 
-import { TypesProvider } from "./generateTypes";
+import type { TypesProvider } from "./generateTypes";
 
 export type DetectTypesProviderConfig = {
 	cwd?: string;
@@ -10,9 +10,8 @@ export type DetectTypesProviderConfig = {
  * Detects which types provider should be used for a project.
  *
  * @param config - Configures the detection.
- *
  * @returns The types provider identifier to use, or `undefined` if on cannot be
- *   determined.
+ * determined.
  */
 export const detectTypesProvider = async (
 	config: DetectTypesProviderConfig = {},
@@ -22,11 +21,7 @@ export const detectTypesProvider = async (
 	const require = createRequire(cwd.endsWith("/") ? cwd : cwd + "/");
 
 	try {
-		if (
-			Number.parseInt(
-				require("@prismicio/client/package.json").version.split(".")[0],
-			) >= 7
-		) {
+		if (Number.parseInt(require("@prismicio/client/package.json").version.split(".")[0]) >= 7) {
 			return "@prismicio/client";
 		}
 	} catch {

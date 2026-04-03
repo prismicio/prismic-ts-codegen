@@ -1,16 +1,14 @@
+import type * as prismic from "@prismicio/client";
+import * as prismicM from "@prismicio/mock";
 import { expect } from "vitest";
 
-import * as prismic from "@prismicio/client";
-import * as prismicM from "@prismicio/mock";
-
-import { parseSourceFile } from "./parseSourceFile";
-
 import * as lib from "../../src";
+import { parseSourceFile } from "./parseSourceFile";
 
 export function expectToHaveFieldType(
 	model: prismic.CustomTypeModelField,
 	expectedFieldType: string,
-) {
+): void {
 	const res = lib.generateTypes({
 		customTypeModels: [
 			prismicM.model.customType({
@@ -24,11 +22,7 @@ export function expectToHaveFieldType(
 	});
 
 	const file = parseSourceFile(res);
-	const property = file
-		.getInterfaceOrThrow("FooDocumentData")
-		.getPropertyOrThrow("bar");
+	const property = file.getInterfaceOrThrow("FooDocumentData").getPropertyOrThrow("bar");
 
-	expect(property.getTypeNodeOrThrow().getText(), expectedFieldType).toBe(
-		expectedFieldType,
-	);
+	expect(property.getTypeNodeOrThrow().getText(), expectedFieldType).toBe(expectedFieldType);
 }

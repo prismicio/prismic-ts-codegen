@@ -1,6 +1,6 @@
+import type { MockFactory } from "@prismicio/mock";
+import { createMockFactory } from "@prismicio/mock";
 import { beforeEach } from "vitest";
-
-import { MockFactory, createMockFactory } from "@prismicio/mock";
 
 declare module "vitest" {
 	export interface TestContext {
@@ -9,5 +9,5 @@ declare module "vitest" {
 }
 
 beforeEach((ctx) => {
-	ctx.mock = createMockFactory({ seed: ctx.meta.name });
+	ctx.mock = createMockFactory({ seed: ctx.task.name });
 });

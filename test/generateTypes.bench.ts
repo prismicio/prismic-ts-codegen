@@ -1,7 +1,6 @@
-import { bench, describe } from "vitest";
-
-import * as v0_1_11 from "prismic-ts-codegen-v0-1-11";
 import { createMockFactory } from "@prismicio/mock";
+import * as v0_1_11 from "prismic-ts-codegen-v0-1-11";
+import { bench, describe } from "vitest";
 
 import * as src from "../src";
 

@@ -1,11 +1,9 @@
 import type { CustomTypeModel } from "@prismicio/client";
 import { source } from "common-tags";
-import QuickLRU from "quick-lru";
-
-import { AuxiliaryType, FieldConfigs } from "../types";
+import type QuickLRU from "quick-lru";
 
 import { CUSTOM_TYPES_DOCUMENTATION_URL } from "../constants";
-
+import type { AuxiliaryType, FieldConfigs } from "../types";
 import { addSection } from "./addSection";
 import { buildCustomTypeDataType } from "./buildCustomTypeDataType";
 import { buildTypeName } from "./buildTypeName";
@@ -29,7 +27,7 @@ type BuildCustomTypeTypeReturnValue = {
 };
 
 export function buildCustomTypeType(
-	args: BuildCustomTypeTypesArgs,
+	args: BuildCustomTypeTypesArgs
 ): BuildCustomTypeTypeReturnValue {
 	if (args.cache) {
 		const key = getCacheKey(args.model);
@@ -84,7 +82,7 @@ export function buildCustomTypeType(
 			dataType.name
 		}>, "${args.model.id}", Lang>;
 		`,
-		code,
+		code
 	);
 
 	const result = {

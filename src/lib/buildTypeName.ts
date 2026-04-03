@@ -1,6 +1,6 @@
 import { pascalCase, pascalCaseTransformMerge } from "pascal-case";
 
-export const buildTypeName = (...parts: string[]) => {
+export const buildTypeName = (...parts: string[]): string => {
 	let name = pascalCase(parts.filter(Boolean).join(" "), {
 		transform: pascalCaseTransformMerge,
 	});

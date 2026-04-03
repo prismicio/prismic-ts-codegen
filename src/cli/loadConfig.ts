@@ -1,23 +1,19 @@
 import { existsSync } from "fs";
-import _jiti from "jiti";
 import { resolve as resolvePath } from "path";
 
-import type { Config } from "./types";
+import _jiti from "jiti";
+
+import type { Config } from "./configSchema";
 
 const jiti = _jiti(process.cwd());
 
 const loadModuleWithJiti = <TModule>(id: string): TModule => {
 	const mod = jiti(id) as TModule | { default: TModule };
 
-	return typeof mod === "object" && mod !== null && "default" in mod
-		? mod.default
-		: mod;
+	return typeof mod === "object" && mod !== null && "default" in mod ? mod.default : mod;
 };
 
-const DEFAULT_CONFIG_PATHS = [
-	"prismicCodegen.config.ts",
-	"prismicCodegen.config.js",
-];
+const DEFAULT_CONFIG_PATHS = ["prismicCodegen.config.ts", "prismicCodegen.config.js"];
 
 type LoadConfigConfig = {
 	path?: string;

@@ -18,10 +18,7 @@ it("supports variants", (ctx) => {
 	const model = ctx.mock.model.linkToMedia();
 	model.config.variants = ["foo", "bar"];
 
-	expectToHaveFieldType(
-		model,
-		'prismic.LinkToMediaField<prismic.FieldState, "foo" | "bar">',
-	);
+	expectToHaveFieldType(model, 'prismic.LinkToMediaField<prismic.FieldState, "foo" | "bar">');
 });
 
 it("escapes variants", (ctx) => {

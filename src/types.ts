@@ -6,11 +6,7 @@ import type {
 } from "@prismicio/client";
 
 export type PathElement<
-	Model extends
-		| CustomTypeModel
-		| SharedSliceModel
-		| CustomTypeModelField
-		| CustomTypeModelSlice,
+	Model extends CustomTypeModel | SharedSliceModel | CustomTypeModelField | CustomTypeModelSlice,
 > = {
 	name: string;
 	model?: Model;

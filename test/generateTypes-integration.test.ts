@@ -1,16 +1,12 @@
 import { expect, it } from "vitest";
 
+import * as lib from "../src";
 import { expectToHaveDocs } from "./__testutils__/expectToHaveDocs";
 import { expectToHaveFieldType } from "./__testutils__/expectToHaveFieldType";
 import { parseSourceFile } from "./__testutils__/parseSourceFile";
 
-import * as lib from "../src";
-
 it("is correctly typed", (ctx) => {
-	expectToHaveFieldType(
-		ctx.mock.model.integration(),
-		"prismic.IntegrationField",
-	);
+	expectToHaveFieldType(ctx.mock.model.integration(), "prismic.IntegrationField");
 });
 
 it("can be customized with catalog-specific types", (ctx) => {
@@ -36,12 +32,12 @@ it("can be customized with catalog-specific types", (ctx) => {
 	const file = parseSourceFile(types);
 	const dataInterface = file.getInterfaceOrThrow("FooDocumentData");
 
-	expect(
-		dataInterface.getPropertyOrThrow("bar").getTypeNodeOrThrow().getText(),
-	).toBe("prismic.IntegrationField<AbcType>");
-	expect(
-		dataInterface.getPropertyOrThrow("baz").getTypeNodeOrThrow().getText(),
-	).toBe("prismic.IntegrationField<DefType>");
+	expect(dataInterface.getPropertyOrThrow("bar").getTypeNodeOrThrow().getText()).toBe(
+		"prismic.IntegrationField<AbcType>",
+	);
+	expect(dataInterface.getPropertyOrThrow("baz").getTypeNodeOrThrow().getText()).toBe(
+		"prismic.IntegrationField<DefType>",
+	);
 });
 
 it("is correctly documented", (ctx) => {

@@ -1,11 +1,7 @@
-import {
-	type CustomTypeModelField,
-	CustomTypeModelFieldType,
-} from "@prismicio/client";
+import { type CustomTypeModelField, CustomTypeModelFieldType } from "@prismicio/client";
 import { source, stripIndent } from "common-tags";
 
-import { AuxiliaryType, FieldConfigs, FieldPath } from "../types";
-
+import type { AuxiliaryType, FieldConfigs, FieldPath } from "../types";
 import { addLine } from "./addLine";
 import { addSection } from "./addSection";
 import { buildFieldDocs } from "./buildFieldDocs";
@@ -27,9 +23,7 @@ type BuildFieldPropertyReturnType = {
 	contentTypeNames: string[];
 };
 
-function buildFieldProperty(
-	args: BuildFieldPropertyArgs,
-): BuildFieldPropertyReturnType {
+function buildFieldProperty(args: BuildFieldPropertyArgs): BuildFieldPropertyReturnType {
 	let code = buildFieldDocs({
 		name: args.name,
 		field: args.field,
@@ -41,9 +35,7 @@ function buildFieldProperty(
 	const contentTypeNames: string[] = [];
 
 	const name =
-		args.name.includes("-") ||
-		args.name.includes(":") ||
-		/^[0-9]/.test(args.name)
+		args.name.includes("-") || args.name.includes(":") || /^[0-9]/.test(args.name)
 			? `"${args.name}"`
 			: args.name;
 
@@ -76,12 +68,9 @@ function buildFieldProperty(
 
 			if (args.fieldConfigs.embed?.providerTypes) {
 				for (const providerType in args.fieldConfigs.embed?.providerTypes) {
-					const configuredProviderType =
-						args.fieldConfigs.embed?.providerTypes[providerType];
+					const configuredProviderType = args.fieldConfigs.embed?.providerTypes[providerType];
 
-					providerTypes.push(
-						`({ provider_name: "${providerType}" } & ${configuredProviderType})`,
-					);
+					providerTypes.push(`({ provider_name: "${providerType}" } & ${configuredProviderType})`);
 				}
 			}
 
@@ -92,7 +81,7 @@ function buildFieldProperty(
 					? addLine(
 							`${name}: prismic.EmbedField<prismic.AnyOEmbed & prismic.OEmbedExtra & (${providerTypesUnion})>`,
 							code,
-					  )
+						)
 					: addLine(`${name}: prismic.EmbedField`, code);
 
 			break;
@@ -105,10 +94,7 @@ function buildFieldProperty(
 		}
 
 		case "Image": {
-			if (
-				args.field.config?.thumbnails &&
-				args.field.config.thumbnails.length > 0
-			) {
+			if (args.field.config?.thumbnails && args.field.config.thumbnails.length > 0) {
 				const thumbnailNames = buildUnion(
 					args.field.config.thumbnails.map((thumb) => `"${thumb.name}"`),
 				);
@@ -123,16 +109,11 @@ function buildFieldProperty(
 
 		case "IntegrationFields": {
 			const catalogType = args.field.config?.catalog
-				? args.fieldConfigs.integrationFields?.catalogTypes?.[
-						args.field.config.catalog
-				  ]
+				? args.fieldConfigs.integrationFields?.catalogTypes?.[args.field.config.catalog]
 				: undefined;
 
 			if (catalogType) {
-				code = addLine(
-					`${name}: prismic.IntegrationField<${catalogType}>;`,
-					code,
-				);
+				code = addLine(`${name}: prismic.IntegrationField<${catalogType}>;`, code);
 			} else {
 				code = addLine(`${name}: prismic.IntegrationField;`, code);
 			}
@@ -147,7 +128,7 @@ function buildFieldProperty(
 				Array.isArray(args.field.config.variants) &&
 				args.field.config.variants.length > 0
 					? args.field.config.variants
-							.map((variant) => `"${variant.replace(/\"/g, '\\"')}"`)
+							.map((variant) => `"${variant.replace(/"/g, '\\"')}"`)
 							.join(" | ")
 					: "never";
 
@@ -164,9 +145,7 @@ function buildFieldProperty(
 									return `prismic.ContentRelationshipField<"${type}">`;
 								}
 
-								return `ContentRelationshipFieldWithData<${JSON.stringify([
-									type,
-								])}>`;
+								return `ContentRelationshipFieldWithData<${JSON.stringify([type])}>`;
 							}),
 						);
 
@@ -214,22 +193,16 @@ function buildFieldProperty(
 		}
 
 		case "Select": {
-			const options: string[] =
-				args.field.config?.options?.map((option) => `"${option}"`) || [];
+			const options: string[] = args.field.config?.options?.map((option) => `"${option}"`) || [];
 			const optionsType = options.length ? buildUnion(options) : "string";
 
 			const hasDefault = Boolean(args.field.config?.default_value);
 
 			if (hasDefault) {
-				code = addLine(
-					`${name}: prismic.SelectField<${optionsType}, "filled">;`,
-					code,
-				);
+				code = addLine(`${name}: prismic.SelectField<${optionsType}, "filled">;`, code);
 			} else {
 				code = addLine(
-					`${name}: prismic.SelectField${
-						options.length > 0 ? `<${optionsType}>` : ""
-					};`,
+					`${name}: prismic.SelectField${options.length > 0 ? `<${optionsType}>` : ""};`,
 					code,
 				);
 			}
@@ -323,15 +296,9 @@ function buildFieldProperty(
 			contentTypeNames.push(itemName);
 
 			if (isNestedGroup) {
-				code = addLine(
-					`${name}: prismic.NestedGroupField<Simplify<${itemName}>>;`,
-					code,
-				);
+				code = addLine(`${name}: prismic.NestedGroupField<Simplify<${itemName}>>;`, code);
 			} else {
-				code = addLine(
-					`${name}: prismic.GroupField<Simplify<${itemName}>>;`,
-					code,
-				);
+				code = addLine(`${name}: prismic.GroupField<Simplify<${itemName}>>;`, code);
 			}
 
 			break;
@@ -367,10 +334,7 @@ function buildFieldProperty(
 						);
 
 						let primaryInterfaceName: string | undefined;
-						if (
-							choice["non-repeat"] &&
-							Object.keys(choice["non-repeat"]).length > 0
-						) {
+						if (choice["non-repeat"] && Object.keys(choice["non-repeat"]).length > 0) {
 							primaryInterfaceName = buildTypeName(sliceName, "Primary");
 
 							const path: FieldPath = [
@@ -411,11 +375,8 @@ function buildFieldProperty(
 											}
 										`,
 										primaryCode,
-								  )
-								: addLine(
-										`export interface ${primaryInterfaceName} {}`,
-										primaryCode,
-								  );
+									)
+								: addLine(`export interface ${primaryInterfaceName} {}`, primaryCode);
 
 							auxiliaryTypes.push({
 								name: primaryInterfaceName,
@@ -466,7 +427,7 @@ function buildFieldProperty(
 											}
 										`,
 										itemCode,
-								  )
+									)
 								: addLine(`export interface ${itemInterfaceName} {}`, itemCode);
 
 							auxiliaryTypes.push({
@@ -491,12 +452,10 @@ function buildFieldProperty(
 									})}*
 								 */
 								export type ${sliceName} = prismic.Slice<"${choiceID}", ${
-								primaryInterfaceName
-									? `Simplify<${primaryInterfaceName}>`
-									: `Record<string, never>`
-							}, ${
-								itemInterfaceName ? `Simplify<${itemInterfaceName}>` : `never`
-							}>
+									primaryInterfaceName
+										? `Simplify<${primaryInterfaceName}>`
+										: `Record<string, never>`
+								}, ${itemInterfaceName ? `Simplify<${itemInterfaceName}>` : `never`}>
 							`,
 						});
 

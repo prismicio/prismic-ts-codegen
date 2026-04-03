@@ -1,8 +1,7 @@
 import { expect, it } from "vitest";
 
-import { parseSourceFile } from "./__testutils__/parseSourceFile";
-
 import * as lib from "../src";
+import { parseSourceFile } from "./__testutils__/parseSourceFile";
 
 it("correctly typed", (ctx) => {
 	const model = ctx.mock.model.sharedSlice({
@@ -69,9 +68,7 @@ it("creates a type alias to a union of all Slice variation types", (ctx) => {
 	const file = parseSourceFile(types);
 	const sliceTypeAlias = file.getTypeAliasOrThrow("FooSliceVariation");
 
-	expect(sliceTypeAlias.getTypeNodeOrThrow().getText()).toBe(
-		"FooSliceBar | FooSliceBaz",
-	);
+	expect(sliceTypeAlias.getTypeNodeOrThrow().getText()).toBe("FooSliceBar | FooSliceBaz");
 });
 
 it("creates a type alias for each Slice variation", (ctx) => {
@@ -126,9 +123,9 @@ it("handles Slice variations with no fields", (ctx) => {
 	const types = lib.generateTypes({ sharedSliceModels: [model] });
 	const file = parseSourceFile(types);
 
-	expect(
-		file.getTypeAliasOrThrow("FooSliceBar").getTypeNodeOrThrow().getText(),
-	).toBe('prismic.SharedSliceVariation<"bar", Record<string, never>, never>');
+	expect(file.getTypeAliasOrThrow("FooSliceBar").getTypeNodeOrThrow().getText()).toBe(
+		'prismic.SharedSliceVariation<"bar", Record<string, never>, never>',
+	);
 });
 
 it("handles Slice variations with no primary fields", (ctx) => {
@@ -147,9 +144,7 @@ it("handles Slice variations with no primary fields", (ctx) => {
 	const types = lib.generateTypes({ sharedSliceModels: [model] });
 	const file = parseSourceFile(types);
 
-	expect(
-		file.getTypeAliasOrThrow("FooSliceBar").getTypeNodeOrThrow().getText(),
-	).toBe(
+	expect(file.getTypeAliasOrThrow("FooSliceBar").getTypeNodeOrThrow().getText()).toBe(
 		'prismic.SharedSliceVariation<"bar", Record<string, never>, Simplify<FooSliceBarItem>>',
 	);
 });
@@ -170,9 +165,7 @@ it("handles Slice variations with no item fields", (ctx) => {
 	const types = lib.generateTypes({ sharedSliceModels: [model] });
 	const file = parseSourceFile(types);
 
-	expect(
-		file.getTypeAliasOrThrow("FooSliceBar").getTypeNodeOrThrow().getText(),
-	).toBe(
+	expect(file.getTypeAliasOrThrow("FooSliceBar").getTypeNodeOrThrow().getText()).toBe(
 		'prismic.SharedSliceVariation<"bar", Simplify<FooSliceBarPrimary>, never>',
 	);
 });
@@ -197,9 +190,9 @@ it("creates an interface for a Slice variation's primary fields", (ctx) => {
 	const file = parseSourceFile(types);
 
 	const primaryInterface = file.getInterfaceOrThrow("FooSliceBarPrimary");
-	expect(
-		primaryInterface.getPropertyOrThrow("abc").getTypeNodeOrThrow().getText(),
-	).toBe("prismic.KeyTextField");
+	expect(primaryInterface.getPropertyOrThrow("abc").getTypeNodeOrThrow().getText()).toBe(
+		"prismic.KeyTextField",
+	);
 });
 
 it("handles group fields in a Slice variation's primary fields", (ctx) => {
@@ -221,15 +214,15 @@ it("handles group fields in a Slice variation's primary fields", (ctx) => {
 	const file = parseSourceFile(types);
 
 	const primaryInterface = file.getInterfaceOrThrow("FooSliceBarPrimary");
-	expect(
-		primaryInterface.getPropertyOrThrow("baz").getTypeNodeOrThrow().getText(),
-	).toBe("prismic.GroupField<Simplify<FooSliceBarPrimaryBazItem>>");
+	expect(primaryInterface.getPropertyOrThrow("baz").getTypeNodeOrThrow().getText()).toBe(
+		"prismic.GroupField<Simplify<FooSliceBarPrimaryBazItem>>",
+	);
 
 	const itemInterface = file.getInterfaceOrThrow("FooSliceBarPrimaryBazItem");
 	expect(itemInterface.isExported()).toBe(true);
-	expect(
-		itemInterface.getPropertyOrThrow("qux").getTypeNodeOrThrow().getText(),
-	).toBe("prismic.KeyTextField");
+	expect(itemInterface.getPropertyOrThrow("qux").getTypeNodeOrThrow().getText()).toBe(
+		"prismic.KeyTextField",
+	);
 });
 
 it("handles nested group fields in a Slice variation's primary fields", (ctx) => {
@@ -258,20 +251,15 @@ it("handles nested group fields in a Slice variation's primary fields", (ctx) =>
 
 	const itemInterface = file.getInterfaceOrThrow("FooSliceBarPrimaryBazItem");
 	expect(itemInterface.isExported()).toBe(true);
-	expect(
-		itemInterface.getPropertyOrThrow("qux").getTypeNodeOrThrow().getText(),
-	).toBe("prismic.NestedGroupField<Simplify<FooSliceBarPrimaryBazQuxItem>>");
-
-	const nestedItemInterface = file.getInterfaceOrThrow(
-		"FooSliceBarPrimaryBazQuxItem",
+	expect(itemInterface.getPropertyOrThrow("qux").getTypeNodeOrThrow().getText()).toBe(
+		"prismic.NestedGroupField<Simplify<FooSliceBarPrimaryBazQuxItem>>",
 	);
+
+	const nestedItemInterface = file.getInterfaceOrThrow("FooSliceBarPrimaryBazQuxItem");
 	expect(nestedItemInterface.isExported()).toBe(true);
-	expect(
-		nestedItemInterface
-			.getPropertyOrThrow("quux")
-			.getTypeNodeOrThrow()
-			.getText(),
-	).toBe("prismic.KeyTextField");
+	expect(nestedItemInterface.getPropertyOrThrow("quux").getTypeNodeOrThrow().getText()).toBe(
+		"prismic.KeyTextField",
+	);
 });
 
 it("creates an interface for a Slice variation's items fields", (ctx) => {
@@ -297,9 +285,9 @@ it("creates an interface for a Slice variation's items fields", (ctx) => {
 
 	expect(itemInterface.isExported()).toBe(true);
 
-	expect(
-		itemInterface.getPropertyOrThrow("def").getTypeNodeOrThrow().getText(),
-	).toBe("prismic.SelectField");
+	expect(itemInterface.getPropertyOrThrow("def").getTypeNodeOrThrow().getText()).toBe(
+		"prismic.SelectField",
+	);
 });
 
 it("handles Shared Slice with no variations", (ctx) => {
@@ -311,16 +299,13 @@ it("handles Shared Slice with no variations", (ctx) => {
 	const types = lib.generateTypes({ sharedSliceModels: [model] });
 	const file = parseSourceFile(types);
 
-	expect(
-		file.getTypeAliasOrThrow("FooSlice").getTypeNodeOrThrow().getText(),
-	).toBe('prismic.SharedSlice<"foo", FooSliceVariation>');
+	expect(file.getTypeAliasOrThrow("FooSlice").getTypeNodeOrThrow().getText()).toBe(
+		'prismic.SharedSlice<"foo", FooSliceVariation>',
+	);
 
-	expect(
-		file
-			.getTypeAliasOrThrow("FooSliceVariation")
-			.getTypeNodeOrThrow()
-			.getText(),
-	).toBe("never");
+	expect(file.getTypeAliasOrThrow("FooSliceVariation").getTypeNodeOrThrow().getText()).toBe(
+		"never",
+	);
 });
 
 it("handles hyphenated fields", (ctx) => {
@@ -346,17 +331,11 @@ it("handles hyphenated fields", (ctx) => {
 	const itemInterface = file.getInterfaceOrThrow("FooSliceBarItem");
 
 	expect(
-		primaryInterface
-			.getPropertyOrThrow('"hyphenated-field"')
-			.getTypeNodeOrThrow()
-			.getText(),
+		primaryInterface.getPropertyOrThrow('"hyphenated-field"').getTypeNodeOrThrow().getText(),
 	).toBe("prismic.KeyTextField");
 
 	expect(
-		itemInterface
-			.getPropertyOrThrow('"hyphenated-field"')
-			.getTypeNodeOrThrow()
-			.getText(),
+		itemInterface.getPropertyOrThrow('"hyphenated-field"').getTypeNodeOrThrow().getText(),
 	).toBe("prismic.SelectField");
 });
 
@@ -383,8 +362,7 @@ it("prefixes types starting with a number with an underscore", (ctx) => {
 	const file = parseSourceFile(types);
 
 	const sliceTypeAlias = file.getTypeAliasOrThrow("_123Slice");
-	const sliceVariationTypeAlias =
-		file.getTypeAliasOrThrow("_123SliceVariation");
+	const sliceVariationTypeAlias = file.getTypeAliasOrThrow("_123SliceVariation");
 
 	expect(sliceTypeAlias.getTypeNodeOrThrow().getText()).toBe(
 		'prismic.SharedSlice<"123", _123SliceVariation>',
