@@ -22,7 +22,10 @@
 	],
 	"type": "module",
 	"exports": {
-		".": "./dist/index.mjs",
+		".": {
+			"types": "./dist/index.d.mts",
+			"default": "./dist/index.mjs"
+		},
 		"./package.json": "./package.json"
 	},
 	"publishConfig": {
