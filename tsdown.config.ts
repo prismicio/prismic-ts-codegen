@@ -7,6 +7,7 @@ export default defineConfig({
 	},
 	format: "esm",
 	platform: "node",
+	dts: true,
 	unbundle: true,
 	sourcemap: true,
 	exports: {
