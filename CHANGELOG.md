@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.30](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.29...v0.1.30) (2026-04-21)
+
+
+### Bug Fixes
+
+* crash from change to ESM ([#80](https://github.com/prismicio/prismic-ts-codegen/issues/80)) ([28371ca](https://github.com/prismicio/prismic-ts-codegen/commit/28371cada1b5f0accc9d228350352901b531d085))
+
 ## [0.1.29](https://github.com/prismicio/prismic-ts-codegen/compare/v0.1.28...v0.1.29) (2026-04-03)
 
 
