@@ -21,7 +21,6 @@
 		"bin"
 	],
 	"type": "module",
-	"types": "./dist/index.d.cts",
 	"exports": {
 		".": "./dist/index.mjs",
 		"./package.json": "./package.json"
