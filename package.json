@@ -21,14 +21,9 @@
 		"bin"
 	],
 	"type": "module",
-	"main": "./dist/index.cjs",
-	"module": "./dist/index.js",
 	"types": "./dist/index.d.cts",
 	"exports": {
-		".": {
-			"import": "./dist/index.js",
-			"require": "./dist/index.cjs"
-		},
+		".": "./dist/index.mjs",
 		"./package.json": "./package.json"
 	},
 	"publishConfig": {

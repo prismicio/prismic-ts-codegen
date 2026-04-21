@@ -5,8 +5,8 @@ export default defineConfig({
 		index: "./src/index.ts",
 		cli: "./src/cli/index.ts",
 	},
-	format: ["esm", "cjs"],
-	platform: "neutral",
+	format: "esm",
+	platform: "node",
 	unbundle: true,
 	sourcemap: true,
 	exports: {
