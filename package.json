@@ -42,42 +42,35 @@
 		"bench:watch": "vitest bench"
 	},
 	"dependencies": {
-		"@prismicio/custom-types-client": "^1.3.1",
-		"common-tags": "^1.8.2",
-		"fast-glob": "^3.3.3",
-		"jiti": "^1.21.7",
-		"meow": "~12.0.1",
-		"node-fetch": "^3.3.2",
-		"pascal-case": "^3.1.2",
-		"quick-lru": "^6.1.2",
-		"zod": "^4.3.6"
+		"change-case": "^5.4.4",
+		"dedent": "^1.7.2",
+		"jiti": "^2.7.0",
+		"quick-lru": "^7.3.0",
+		"tinyglobby": "^0.2.17",
+		"zod": "^4.6.5"
 	},
 	"devDependencies": {
-		"@prismicio/client": "7.18.0",
-		"@prismicio/mock": "0.7.1",
-		"@types/common-tags": "^1.8.1",
-		"@types/node": "^25.5.2",
-		"@vitest/coverage-v8": "^4.1.2",
-		"oxfmt": "^0.43.0",
-		"oxlint": "^1.58.0",
-		"prismic-ts-codegen-v0-1-11": "npm:prismic-ts-codegen@0.1.11",
-		"tsdown": "^0.21.7",
-		"typescript": "^6.0.2",
-		"vitest": "^4.1.2"
+		"@prismicio/client": "7.22.3",
+		"@prismicio/mock": "0.7.2",
+		"@types/node": "^26.6.4",
+		"@vitest/coverage-v8": "^5.0.3",
+		"oxfmt": "^0.72.0",
+		"oxlint": "^1.87.0",
+		"ts-morph": "^28.0.0",
+		"tsdown": "^0.23.0",
+		"typescript": "^7.0.2",
+		"vitest": "^5.0.3"
 	},
 	"peerDependencies": {
 		"@prismicio/client": "^6.6 || ^7",
 		"@prismicio/types": "^0.2.8"
 	},
 	"peerDependenciesMeta": {
-		"@prismicio/client": {
-			"optional": true
-		},
 		"@prismicio/types": {
 			"optional": true
 		}
 	},
 	"engines": {
-		"node": ">=20"
+		"node": ">=22"
 	}
 }

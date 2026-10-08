@@ -1,5 +1,4 @@
 import type { CustomTypeModel, SharedSliceModel } from "@prismicio/client";
-import { source } from "common-tags";
 import QuickLRU from "quick-lru";
 
 import { addLine } from "./lib/addLine";
@@ -7,6 +6,7 @@ import { addSection } from "./lib/addSection";
 import { buildCustomTypeType } from "./lib/buildCustomTypeType";
 import { buildSharedSliceType } from "./lib/buildSharedSliceType";
 import { buildUnion } from "./lib/buildUnion";
+import { dedent } from "./lib/dedent";
 import type { FieldConfigs } from "./types";
 
 export type TypesProvider = "@prismicio/client" | "@prismicio/types";
@@ -207,7 +207,7 @@ type ContentRelationshipFieldWithData<
 
 		if (config.clientIntegration.includeContentNamespace) {
 			clientModuleCode = addSection(
-				source`
+				dedent`
 					namespace Content {
 						export type {
 							${contentTypeNames.join(",\n")}
@@ -219,7 +219,7 @@ type ContentRelationshipFieldWithData<
 		}
 
 		code = addSection(
-			source`
+			dedent`
 				declare module "@prismicio/client" {
 					${clientModuleCode}
 				}

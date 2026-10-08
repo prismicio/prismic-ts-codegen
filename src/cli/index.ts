@@ -1,18 +1,19 @@
 import { existsSync, writeFileSync } from "fs";
+import { parseArgs } from "node:util";
 import { resolve as resolvePath } from "path";
 
-import { stripIndent } from "common-tags";
-import meow from "meow";
-
+import packageJson from "../../package.json" with { type: "json" };
 import { detectTypesProvider, generateTypes } from "../index";
+import { dedent } from "../lib/dedent";
 import { configSchema } from "./configSchema";
 import { NON_EDITABLE_FILE_HEADER } from "./constants";
 import { loadConfig } from "./loadConfig";
 import { loadLocaleIDs } from "./loadLocaleIDs";
 import { loadModels } from "./loadModels";
 
-const cli = meow(
-	`
+const HELP = dedent`
+	${packageJson.description}
+
 	Usage:
 	    prismic-ts-codegen [options...]
 	    prismic-ts-codegen init [options...]
@@ -22,22 +23,37 @@ const cli = meow(
 
 	Options:
 	    -c, --config <path>  Path to a prismic-ts-codegen configuration file.
-	`,
-	{
-		importMeta: import.meta,
-		flags: {
-			config: {
-				type: "string",
-				shortFlag: "c",
-				isRequired: false,
-			},
-		},
-	},
-);
+	    -h, --help           Show this help.
+	    -v, --version        Show the version.
+`;
 
 const main = async () => {
-	if (cli.input[0] === "init") {
-		const configPath = cli.flags.config || "prismicCodegen.config.ts";
+	const {
+		positionals: [command],
+		values: { config: configFlag, help, version },
+	} = parseArgs({
+		options: {
+			config: { type: "string", short: "c" },
+			help: { type: "boolean", short: "h" },
+			version: { type: "boolean", short: "v" },
+		},
+		allowPositionals: true,
+		strict: false,
+	});
+	const configPathFlag = typeof configFlag === "string" ? configFlag : undefined;
+
+	if (help) {
+		console.info(`\n${HELP}\n`);
+		return;
+	}
+
+	if (version) {
+		console.info(packageJson.version);
+		return;
+	}
+
+	if (command === "init") {
+		const configPath = configPathFlag || "prismicCodegen.config.ts";
 
 		if (existsSync(configPath)) {
 			console.info(`\n${configPath} already exists.`);
@@ -45,7 +61,7 @@ const main = async () => {
 			let contents = "";
 
 			if (existsSync("slicemachine.config.json") || existsSync("sm.json")) {
-				contents = stripIndent`
+				contents = dedent`
 					import type { Config } from "prismic-ts-codegen";
 
 					const config: Config = {
@@ -56,7 +72,7 @@ const main = async () => {
 					export default config;
 				`;
 			} else {
-				contents = stripIndent`
+				contents = dedent`
 					import type { Config } from "prismic-ts-codegen";
 
 					const config: Config = {
@@ -72,7 +88,7 @@ const main = async () => {
 			console.info(`\nCreated prismic-ts-codegen config file: ${configPath}`);
 		}
 	} else {
-		const unvalidatedConfig = loadConfig({ path: cli.flags.config });
+		const unvalidatedConfig = await loadConfig({ path: configPathFlag });
 
 		const result = configSchema.safeParse(unvalidatedConfig);
 

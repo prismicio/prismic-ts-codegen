@@ -1,5 +1,4 @@
 import { type CustomTypeModelField, CustomTypeModelFieldType } from "@prismicio/client";
-import { source, stripIndent } from "common-tags";
 
 import type { AuxiliaryType, FieldConfigs, FieldPath } from "../types";
 import { addLine } from "./addLine";
@@ -7,6 +6,7 @@ import { addSection } from "./addSection";
 import { buildFieldDocs } from "./buildFieldDocs";
 import { buildTypeName } from "./buildTypeName";
 import { buildUnion } from "./buildUnion";
+import { dedent } from "./dedent";
 import { getHumanReadablePath } from "./getHumanReadablePath";
 
 type BuildFieldPropertyArgs = Pick<
@@ -284,7 +284,7 @@ function buildFieldProperty(args: BuildFieldPropertyArgs): BuildFieldPropertyRet
 
 			auxiliaryTypes.push({
 				name: itemName,
-				code: source`
+				code: dedent`
 					/**
 					 * Item in *${humanReadablePath}*
 					 */
@@ -362,14 +362,14 @@ function buildFieldProperty(args: BuildFieldPropertyArgs): BuildFieldPropertyRet
 							auxiliaryTypes.push(...primaryFieldProperties.auxiliaryTypes);
 							contentTypeNames.push(...primaryFieldProperties.contentTypeNames);
 
-							let primaryCode = stripIndent`
+							let primaryCode = dedent`
 								/**
 								 * Primary content in *${humanReadablePath}*
 								 */
 							`;
 							primaryCode = primaryFieldProperties.code
 								? addLine(
-										source`
+										dedent`
 											export interface ${primaryInterfaceName} {
 												${primaryFieldProperties.code}
 											}
@@ -414,14 +414,14 @@ function buildFieldProperty(args: BuildFieldPropertyArgs): BuildFieldPropertyRet
 							auxiliaryTypes.push(...itemFieldProperties.auxiliaryTypes);
 							contentTypeNames.push(...itemFieldProperties.contentTypeNames);
 
-							let itemCode = stripIndent`
+							let itemCode = dedent`
 								/**
 								 * Item content in *${humanReadablePath}*
 								 */
 							`;
 							itemCode = itemFieldProperties.code
 								? addLine(
-										source`
+										dedent`
 											export interface ${itemInterfaceName} {
 												${itemFieldProperties.code}
 											}
@@ -439,7 +439,7 @@ function buildFieldProperty(args: BuildFieldPropertyArgs): BuildFieldPropertyRet
 
 						auxiliaryTypes.push({
 							name: sliceName,
-							code: stripIndent`
+							code: dedent`
 								/**
 								 * Slice for *${getHumanReadablePath({
 										path: [

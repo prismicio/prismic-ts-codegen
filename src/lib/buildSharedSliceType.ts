@@ -1,5 +1,4 @@
 import type { SharedSliceModel } from "@prismicio/client";
-import { source, stripIndent } from "common-tags";
 import type QuickLRU from "quick-lru";
 
 import { SHARED_SLICES_DOCUMENTATION_URL } from "../constants";
@@ -8,6 +7,7 @@ import { addSection } from "./addSection";
 import { buildFieldProperties } from "./buildFieldProperties";
 import { buildTypeName } from "./buildTypeName";
 import { buildUnion } from "./buildUnion";
+import { dedent } from "./dedent";
 import { getCacheKey } from "./getCacheKey";
 import { getHumanReadableModelName } from "./getHumanReadableModelName";
 import { getHumanReadablePath } from "./getHumanReadablePath";
@@ -27,7 +27,7 @@ type BuildSharedSliceTypeReturnValue = {
 };
 
 export function buildSharedSliceType(
-	args: BuildSharedSliceTypeArgs
+	args: BuildSharedSliceTypeArgs,
 ): BuildSharedSliceTypeReturnValue {
 	if (args.cache) {
 		const key = getCacheKey([args.model, args.fieldConfigs]);
@@ -54,10 +54,7 @@ export function buildSharedSliceType(
 		const variationName = buildTypeName(name, variationModel.id);
 
 		let primaryInterfaceName: string | undefined;
-		if (
-			variationModel.primary &&
-			Object.keys(variationModel.primary).length > 0
-		) {
+		if (variationModel.primary && Object.keys(variationModel.primary).length > 0) {
 			primaryInterfaceName = buildTypeName(variationName, "Primary");
 
 			const path: FieldPath = [
@@ -86,7 +83,7 @@ export function buildSharedSliceType(
 
 			contentTypeNames.push(primaryInterfaceName);
 
-			const docs = stripIndent`
+			const docs = dedent`
 				/**
 				 * Primary content in *${humanReadablePath}*
 				 */
@@ -94,17 +91,17 @@ export function buildSharedSliceType(
 
 			code = addSection(
 				primaryFieldProperties.code
-					? source`
+					? dedent`
 						${docs}
 						export interface ${primaryInterfaceName} {
 							${primaryFieldProperties.code}
 						}
 					`
-					: source`
+					: dedent`
 						${docs}
 						export interface ${primaryInterfaceName} {}
 					`,
-				code
+				code,
 			);
 		}
 
@@ -134,7 +131,7 @@ export function buildSharedSliceType(
 
 			contentTypeNames.push(itemInterfaceName);
 
-			const docs = stripIndent`
+			const docs = dedent`
 				/**
 				 * Primary content in *${humanReadablePath}*
 				 */
@@ -142,22 +139,22 @@ export function buildSharedSliceType(
 
 			code = addSection(
 				itemFieldProperties.code
-					? source`
+					? dedent`
 						${docs}
 						export interface ${itemInterfaceName} {
 							${itemFieldProperties.code}
 						}
 					`
-					: source`
+					: dedent`
 						${docs}
 						export interface ${itemInterfaceName} {}
 					`,
-				code
+				code,
 			);
 		}
 
 		code = addSection(
-			source`
+			dedent`
 				/**
 				 * ${variationModel.name} variation for ${humanReadableName} Slice
 				 *
@@ -165,15 +162,11 @@ export function buildSharedSliceType(
 				 * - **Description**: ${variationModel.description || "*None*"}
 				 * - **Documentation**: ${SHARED_SLICES_DOCUMENTATION_URL}
 				 */
-				export type ${variationName} = prismic.SharedSliceVariation<"${
-				variationModel.id
-			}", ${
-				primaryInterfaceName
-					? `Simplify<${primaryInterfaceName}>`
-					: `Record<string, never>`
-			}, ${itemInterfaceName ? `Simplify<${itemInterfaceName}>` : `never`}>;
+				export type ${variationName} = prismic.SharedSliceVariation<"${variationModel.id}", ${
+					primaryInterfaceName ? `Simplify<${primaryInterfaceName}>` : `Record<string, never>`
+				}, ${itemInterfaceName ? `Simplify<${itemInterfaceName}>` : `never`}>;
 			`,
-			code
+			code,
 		);
 
 		variationNames.push(variationName);
@@ -186,19 +179,17 @@ export function buildSharedSliceType(
 	contentTypeNames.push(...variationNames);
 
 	code = addSection(
-		source`
+		dedent`
 			/**
 			 * Slice variation for *${humanReadableName}*
 			 */
-			type ${variationUnionName} = ${
-			variationNames.length > 0 ? variationsUnion : "never"
-		}
+			type ${variationUnionName} = ${variationNames.length > 0 ? variationsUnion : "never"}
 		`,
-		code
+		code,
 	);
 
 	code = addSection(
-		source`
+		dedent`
 			/**
 			 * ${humanReadableName} Shared Slice
 			 *
@@ -206,11 +197,9 @@ export function buildSharedSliceType(
 			 * - **Description**: ${args.model.description || "*None*"}
 			 * - **Documentation**: ${SHARED_SLICES_DOCUMENTATION_URL}
 			 */
-			export type ${name} = prismic.SharedSlice<"${
-			args.model.id
-		}", ${variationUnionName}>;
+			export type ${name} = prismic.SharedSlice<"${args.model.id}", ${variationUnionName}>;
 		`,
-		code
+		code,
 	);
 
 	const result = {

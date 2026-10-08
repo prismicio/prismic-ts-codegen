@@ -1,9 +1,7 @@
 import { readFileSync } from "fs";
 
 import type { CustomTypeModel, SharedSliceModel } from "@prismicio/client";
-import * as prismicCT from "@prismicio/custom-types-client";
-import fg from "fast-glob";
-import fetch from "node-fetch";
+import { glob } from "tinyglobby";
 
 const isCustomTypeModel = (input: unknown): input is CustomTypeModel => {
 	return typeof input === "object" && input !== null && "json" in input;
@@ -14,13 +12,36 @@ const isSharedSliceModel = (input: unknown): input is SharedSliceModel => {
 };
 
 const readJSONFromGlob = async <T>(globs: string): Promise<T[]> => {
-	const paths = await fg(globs.split(",").map((path) => path.trim()));
+	const paths = await glob(
+		globs.split(",").map((path) => path.trim()),
+		{ expandDirectories: false },
+	);
 
 	return paths.map((path) => {
 		const raw = readFileSync(path, "utf8");
 
 		return JSON.parse(raw);
 	});
+};
+
+const fetchCustomTypesAPI = async <T>(
+	path: string,
+	config: { repositoryName: string; customTypesAPIToken: string },
+): Promise<T[]> => {
+	const res = await fetch(new URL(path, "https://customtypes.prismic.io/"), {
+		headers: {
+			repository: config.repositoryName,
+			Authorization: `Bearer ${config.customTypesAPIToken}`,
+		},
+	});
+
+	if (!res.ok) {
+		throw new Error(
+			`Failed to fetch models from the Custom Types API (${res.status}): ${await res.text()}`,
+		);
+	}
+
+	return await res.json();
 };
 
 type LoadModelsConfig =
@@ -44,16 +65,10 @@ export const loadModels = async (config: LoadModelsConfig): Promise<LoadModelsRe
 	const sharedSliceModels: Record<string, SharedSliceModel> = {};
 
 	if ("customTypesAPIToken" in config) {
-		const customTypesClient = prismicCT.createClient({
-			repositoryName: config.repositoryName,
-			token: config.customTypesAPIToken,
-			fetch,
-		});
-
 		if (config.fetchFromRepository) {
 			const [remoteCustomTypeModels, remoteSharedSliceModels] = await Promise.all([
-				customTypesClient.getAllCustomTypes(),
-				customTypesClient.getAllSharedSlices(),
+				fetchCustomTypesAPI<CustomTypeModel>("customtypes", config),
+				fetchCustomTypesAPI<SharedSliceModel>("slices", config),
 			]);
 
 			for (const customTypeModel of remoteCustomTypeModels) {

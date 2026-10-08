@@ -1,7 +1,7 @@
-import { stripIndent } from "common-tags";
 import { expect, it } from "vitest";
 
 import * as lib from "../src";
+import { dedent } from "../src/lib/dedent";
 import { expectToHaveDocs } from "./__testutils__/expectToHaveDocs";
 import { expectToHaveFieldType } from "./__testutils__/expectToHaveFieldType";
 import { parseSourceFile } from "./__testutils__/parseSourceFile";
@@ -33,7 +33,7 @@ it("can be customized with provider-specific types", (ctx) => {
 	const property = file.getInterfaceOrThrow("FooDocumentData").getPropertyOrThrow("bar");
 
 	expect(property.getTypeNodeOrThrow().getText({ trimLeadingIndentation: true })).toBe(
-		stripIndent`
+		dedent`
 			prismic.EmbedField<prismic.AnyOEmbed & prismic.OEmbedExtra & (({ provider_name: "YouTube" } & YouTubeType) | ({ provider_name: "Vimeo" } & VimeoType))>
 		`,
 	);

@@ -1,5 +1,4 @@
 import type { CustomTypeModel } from "@prismicio/client";
-import { source } from "common-tags";
 import type QuickLRU from "quick-lru";
 
 import { CUSTOM_TYPES_DOCUMENTATION_URL } from "../constants";
@@ -9,6 +8,7 @@ import { buildCustomTypeDataType } from "./buildCustomTypeDataType";
 import { buildTypeName } from "./buildTypeName";
 import { buildUnion } from "./buildUnion";
 import { checkHasUIDField } from "./checkHasUIDFIeld";
+import { dedent } from "./dedent";
 import { getCacheKey } from "./getCacheKey";
 import { getHumanReadableModelName } from "./getHumanReadableModelName";
 
@@ -27,7 +27,7 @@ type BuildCustomTypeTypeReturnValue = {
 };
 
 export function buildCustomTypeType(
-	args: BuildCustomTypeTypesArgs
+	args: BuildCustomTypeTypesArgs,
 ): BuildCustomTypeTypeReturnValue {
 	if (args.cache) {
 		const key = getCacheKey(args.model);
@@ -68,7 +68,7 @@ export function buildCustomTypeType(
 	code = addSection(dataType.code, code);
 
 	code = addSection(
-		source`
+		dedent`
 			/**
 			 * ${humanReadableName} document from Prismic
 			 *
@@ -79,10 +79,10 @@ export function buildCustomTypeType(
 			 * @typeParam Lang - Language API ID of the document.
 			 */
 			export type ${name}<Lang extends string = ${langDefault}> = prismic.${baseDocumentType}<Simplify<${
-			dataType.name
-		}>, "${args.model.id}", Lang>;
+				dataType.name
+			}>, "${args.model.id}", Lang>;
 		`,
-		code
+		code,
 	);
 
 	const result = {
