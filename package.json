@@ -43,7 +43,7 @@
 	},
 	"dependencies": {
 		"change-case": "^5.4.4",
-		"common-tags": "^1.8.2",
+		"dedent": "^1.7.2",
 		"jiti": "^2.7.0",
 		"quick-lru": "^7.3.0",
 		"tinyglobby": "^0.2.17",
@@ -52,15 +52,14 @@
 	"devDependencies": {
 		"@prismicio/client": "7.22.3",
 		"@prismicio/mock": "0.7.2",
-		"@types/common-tags": "^1.8.4",
 		"@types/node": "^26.6.4",
-		"@vitest/coverage-v8": "^4.1.11",
+		"@vitest/coverage-v8": "^5.0.3",
 		"oxfmt": "^0.72.0",
 		"oxlint": "^1.87.0",
 		"prismic-ts-codegen-v0-1-11": "npm:prismic-ts-codegen@0.1.11",
 		"tsdown": "^0.23.0",
 		"typescript": "^7.0.2",
-		"vitest": "^4.1.11"
+		"vitest": "^5.0.3"
 	},
 	"peerDependencies": {
 		"@prismicio/client": "^6.6 || ^7",

@@ -1,9 +1,9 @@
 import type { CustomTypeModel } from "@prismicio/client";
-import { source } from "common-tags";
 
 import { buildTypeName } from "../lib/buildTypeName";
 import type { AuxiliaryType, FieldConfigs } from "../types";
 import { buildFieldProperties } from "./buildFieldProperties";
+import { dedent } from "./dedent";
 import { getHumanReadableModelName } from "./getHumanReadableModelName";
 
 type BuildCustomTypeDataTypeArgs = {
@@ -55,7 +55,7 @@ export function buildCustomTypeDataType(
 	}
 
 	if (fieldProperties) {
-		code = source`
+		code = dedent`
 			/**
 			 * Content for ${humanReadableName} documents
 			 */

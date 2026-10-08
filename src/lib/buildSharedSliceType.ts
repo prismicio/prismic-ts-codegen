@@ -1,5 +1,4 @@
 import type { SharedSliceModel } from "@prismicio/client";
-import { source, stripIndent } from "common-tags";
 import type QuickLRU from "quick-lru";
 
 import { SHARED_SLICES_DOCUMENTATION_URL } from "../constants";
@@ -8,6 +7,7 @@ import { addSection } from "./addSection";
 import { buildFieldProperties } from "./buildFieldProperties";
 import { buildTypeName } from "./buildTypeName";
 import { buildUnion } from "./buildUnion";
+import { dedent } from "./dedent";
 import { getCacheKey } from "./getCacheKey";
 import { getHumanReadableModelName } from "./getHumanReadableModelName";
 import { getHumanReadablePath } from "./getHumanReadablePath";
@@ -83,7 +83,7 @@ export function buildSharedSliceType(
 
 			contentTypeNames.push(primaryInterfaceName);
 
-			const docs = stripIndent`
+			const docs = dedent`
 				/**
 				 * Primary content in *${humanReadablePath}*
 				 */
@@ -91,13 +91,13 @@ export function buildSharedSliceType(
 
 			code = addSection(
 				primaryFieldProperties.code
-					? source`
+					? dedent`
 						${docs}
 						export interface ${primaryInterfaceName} {
 							${primaryFieldProperties.code}
 						}
 					`
-					: source`
+					: dedent`
 						${docs}
 						export interface ${primaryInterfaceName} {}
 					`,
@@ -131,7 +131,7 @@ export function buildSharedSliceType(
 
 			contentTypeNames.push(itemInterfaceName);
 
-			const docs = stripIndent`
+			const docs = dedent`
 				/**
 				 * Primary content in *${humanReadablePath}*
 				 */
@@ -139,13 +139,13 @@ export function buildSharedSliceType(
 
 			code = addSection(
 				itemFieldProperties.code
-					? source`
+					? dedent`
 						${docs}
 						export interface ${itemInterfaceName} {
 							${itemFieldProperties.code}
 						}
 					`
-					: source`
+					: dedent`
 						${docs}
 						export interface ${itemInterfaceName} {}
 					`,
@@ -154,7 +154,7 @@ export function buildSharedSliceType(
 		}
 
 		code = addSection(
-			source`
+			dedent`
 				/**
 				 * ${variationModel.name} variation for ${humanReadableName} Slice
 				 *
@@ -179,7 +179,7 @@ export function buildSharedSliceType(
 	contentTypeNames.push(...variationNames);
 
 	code = addSection(
-		source`
+		dedent`
 			/**
 			 * Slice variation for *${humanReadableName}*
 			 */
@@ -189,7 +189,7 @@ export function buildSharedSliceType(
 	);
 
 	code = addSection(
-		source`
+		dedent`
 			/**
 			 * ${humanReadableName} Shared Slice
 			 *

@@ -1,5 +1,4 @@
 import type { CustomTypeModel } from "@prismicio/client";
-import { source } from "common-tags";
 import type QuickLRU from "quick-lru";
 
 import { CUSTOM_TYPES_DOCUMENTATION_URL } from "../constants";
@@ -9,6 +8,7 @@ import { buildCustomTypeDataType } from "./buildCustomTypeDataType";
 import { buildTypeName } from "./buildTypeName";
 import { buildUnion } from "./buildUnion";
 import { checkHasUIDField } from "./checkHasUIDFIeld";
+import { dedent } from "./dedent";
 import { getCacheKey } from "./getCacheKey";
 import { getHumanReadableModelName } from "./getHumanReadableModelName";
 
@@ -68,7 +68,7 @@ export function buildCustomTypeType(
 	code = addSection(dataType.code, code);
 
 	code = addSection(
-		source`
+		dedent`
 			/**
 			 * ${humanReadableName} document from Prismic
 			 *

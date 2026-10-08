@@ -2,17 +2,16 @@ import { existsSync, writeFileSync } from "fs";
 import { parseArgs } from "node:util";
 import { resolve as resolvePath } from "path";
 
-import { stripIndent } from "common-tags";
-
 import packageJson from "../../package.json" with { type: "json" };
 import { detectTypesProvider, generateTypes } from "../index";
+import { dedent } from "../lib/dedent";
 import { configSchema } from "./configSchema";
 import { NON_EDITABLE_FILE_HEADER } from "./constants";
 import { loadConfig } from "./loadConfig";
 import { loadLocaleIDs } from "./loadLocaleIDs";
 import { loadModels } from "./loadModels";
 
-const HELP = stripIndent`
+const HELP = dedent`
 	${packageJson.description}
 
 	Usage:
@@ -62,7 +61,7 @@ const main = async () => {
 			let contents = "";
 
 			if (existsSync("slicemachine.config.json") || existsSync("sm.json")) {
-				contents = stripIndent`
+				contents = dedent`
 					import type { Config } from "prismic-ts-codegen";
 
 					const config: Config = {
@@ -73,7 +72,7 @@ const main = async () => {
 					export default config;
 				`;
 			} else {
-				contents = stripIndent`
+				contents = dedent`
 					import type { Config } from "prismic-ts-codegen";
 
 					const config: Config = {
