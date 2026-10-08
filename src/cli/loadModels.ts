@@ -3,8 +3,6 @@ import { readFileSync } from "fs";
 import type { CustomTypeModel, SharedSliceModel } from "@prismicio/client";
 import { glob } from "tinyglobby";
 
-const CUSTOM_TYPES_API_ENDPOINT = "https://customtypes.prismic.io/";
-
 const isCustomTypeModel = (input: unknown): input is CustomTypeModel => {
 	return typeof input === "object" && input !== null && "json" in input;
 };
@@ -30,8 +28,7 @@ const fetchCustomTypesAPI = async <T>(
 	path: string,
 	config: { repositoryName: string; customTypesAPIToken: string },
 ): Promise<T[]> => {
-	const url = new URL(path, CUSTOM_TYPES_API_ENDPOINT);
-	const res = await fetch(url, {
+	const res = await fetch(new URL(path, "https://customtypes.prismic.io/"), {
 		headers: {
 			repository: config.repositoryName,
 			Authorization: `Bearer ${config.customTypesAPIToken}`,
