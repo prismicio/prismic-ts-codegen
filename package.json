@@ -47,19 +47,19 @@
 		"jiti": "^2.7.0",
 		"quick-lru": "^7.3.0",
 		"tinyglobby": "^0.2.17",
-		"zod": "^4.6.6"
+		"zod": "^4.6.7"
 	},
 	"devDependencies": {
 		"@prismicio/client": "7.22.3",
 		"@prismicio/mock": "0.7.2",
 		"@types/node": "^26.6.5",
-		"@vitest/coverage-v8": "^5.0.3",
+		"@vitest/coverage-v8": "^5.0.4",
 		"oxfmt": "^0.72.0",
 		"oxlint": "^1.87.0",
 		"ts-morph": "^28.0.0",
 		"tsdown": "^0.23.1",
 		"typescript": "^7.0.2",
-		"vitest": "^5.0.3"
+		"vitest": "^5.0.4"
 	},
 	"peerDependencies": {
 		"@prismicio/client": "^6.6 || ^7",
