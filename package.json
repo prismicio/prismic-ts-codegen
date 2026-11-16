@@ -50,7 +50,7 @@
 		"zod": "^4.6.7"
 	},
 	"devDependencies": {
-		"@prismicio/client": "7.23.0",
+		"@prismicio/client": "7.23.1",
 		"@prismicio/mock": "0.7.2",
 		"@types/node": "^26.6.6",
 		"@vitest/coverage-v8": "^5.1.0",
